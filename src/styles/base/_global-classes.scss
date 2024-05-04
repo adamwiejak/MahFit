@@ -1,0 +1,35 @@
+.hoverUp {
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    transform: scale(1.03);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.ellipsisText {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.boxCenter {
+  display: grid;
+  align-content: center;
+  align-items: center;
+}
+
+// .glassMorphed {
+// backdrop-filter: brightness(0.75) blur(5px);
+// border-color: ${({ theme: { palette } }) => palette.divider};
+// }
+
+.testClass {
+  font-size: 10rem;
+  color: purple;
+}
