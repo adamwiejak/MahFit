@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { gsapDuration, gsapEasing } from "../../../utils/Gsap/config";
+import { gsapEasing } from "../../../../utils/Gsap/config";
 
 export const dotsTween: Tween = (
   barRef: Ref<HTMLElement>,

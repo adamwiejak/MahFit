@@ -1,5 +1,5 @@
 import * as styled from "./section-layout.styled";
-import { BoxProps } from "@mui/material";
+import { BoxProps, Typography } from "@mui/material";
 
 export interface ISection extends BoxProps {}
 
@@ -9,9 +9,7 @@ const SectionLayout: React.FC<ISection> = (props) => {
   return (
     <styled.Section {...rest} component="section">
       <styled.Content>
-        <styled.IdHeader>#{props.id}</styled.IdHeader>
-
-        {children}
+        {children || <Typography variant="h2"># {props.id}</Typography>}
       </styled.Content>
     </styled.Section>
   );

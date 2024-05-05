@@ -1,8 +1,6 @@
 import { LoaderFunctionArgs } from "react-router-dom";
 import { redirect } from "react-router-dom";
 
-export type AuthTask = "login" | "signup" | "logout";
-
 export function authLoader(args: LoaderFunctionArgs) {
   const tasks: AuthTask[] = ["login", "logout", "signup"];
   const task = args.params.task;

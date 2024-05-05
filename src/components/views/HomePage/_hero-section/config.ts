@@ -40,9 +40,8 @@ export const onScrollTween: Tween = (sectionRef: Ref<HTMLElement>) => {
       scrub: 0.2,
       pin: sliderEl,
       trigger: sectionEl,
-      start: "bottom bottom",
       end: "bottom 30%",
-      markers: true,
+      start: "bottom bottom",
     },
   });
 

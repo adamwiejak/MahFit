@@ -1,5 +1,5 @@
 import { Box, styled } from "@mui/material";
-import { excludeStyledProps } from "../../../helpers/functions/functions";
+import { excludeStyledProps } from "../../../../helpers/functions/functions";
 
 export const Bar = styled(Box)`
   bottom: 3%;

@@ -1,15 +1,7 @@
-import { BoxProps } from "@mui/material";
-import * as styled from "./image-switcher.styled";
-import { ResponsiveImageAsset } from "../../../classes/ResponsiveImage";
-import Image from "../image/Image";
+import * as styled from "./images-slides-switcher.styled";
+import Image from "../../image/Image";
 
-export interface IImageSwitcher extends BoxProps {
-  value: number;
-  images: ResponsiveImageAsset[];
-  onChangeImage: (idx: number) => void;
-}
-
-const ImageSwitcher: React.FC<IImageSwitcher> = (props) => {
+const ImagesSlidesSwitcher: React.FC<ISlidesSwitcher> = (props) => {
   const { value, images, onChangeImage, ...rest } = props;
 
   const changeImageHandler = (idx: number) => () => onChangeImage(idx);
@@ -30,4 +22,4 @@ const ImageSwitcher: React.FC<IImageSwitcher> = (props) => {
   );
 };
 
-export default ImageSwitcher;
+export default ImagesSlidesSwitcher;

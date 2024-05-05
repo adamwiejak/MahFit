@@ -1,6 +1,4 @@
 import gsap from "gsap";
-import { CardProps } from "@mui/material";
-import { AuthTask } from "../../views/AuthPage/loaders";
 
 export const swapAuthForm: Tween = (
   task: AuthTask,

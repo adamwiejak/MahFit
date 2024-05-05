@@ -1,17 +1,9 @@
 import * as config from "./config";
-import * as styled from "./dot-image-switcher.styled";
-import { BoxProps } from "@mui/material";
-import { ResponsiveImageAsset } from "../../../classes/ResponsiveImage";
-import useTween from "../../../hooks/useTween";
+import * as styled from "./dots-slides-switcher.styled";
+import useTween from "../../../../hooks/useTween";
 import { useRef } from "react";
 
-export interface IDotImageSwitcher extends BoxProps {
-  value: number;
-  images: ResponsiveImageAsset[];
-  onChangeImage: (idx: number) => void;
-}
-
-const DotImageSwitcher: React.FC<IDotImageSwitcher> = (props) => {
+const DotsSlidesSwitcher: React.FC<ISlidesSwitcher> = (props) => {
   const { value, images, onChangeImage, ...rest } = props;
   const barRef = useRef<HTMLElement>();
 
@@ -30,4 +22,4 @@ const DotImageSwitcher: React.FC<IDotImageSwitcher> = (props) => {
   );
 };
 
-export default DotImageSwitcher;
+export default DotsSlidesSwitcher;
