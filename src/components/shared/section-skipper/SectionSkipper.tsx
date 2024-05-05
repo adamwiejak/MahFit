@@ -13,24 +13,26 @@ const SectionSkipper = () => {
   }
 
   return (
-    <styled.Box sx={{ flexGrow: 1 }}>
+    <styled.Container sx={{ flexGrow: 1 }}>
       {config.navButtons.map(({ text }) => (
-        // <NavLink to={`/home/#${text}`} key={text}>
+        <NavLink to={`/home#${text}`} key={text}>
+          <Button
+            text={text}
+            size="large"
+            variant="text"
+            color={isActive(text) ? "secondary" : "inherit"}
+          />
+        </NavLink>
+
+        // <a href={`#${text}`} key={text}>
         //   <Button
         //     text={text}
         //     variant="text"
         //     color={isActive(text) ? "secondary" : "inherit"}
         //   />
-        // </NavLink>
-        <a href={`#${text}`} key={text}>
-          <Button
-            text={text}
-            variant="text"
-            color={isActive(text) ? "secondary" : "inherit"}
-          />
-        </a>
+        // </a>
       ))}
-    </styled.Box>
+    </styled.Container>
   );
 };
 

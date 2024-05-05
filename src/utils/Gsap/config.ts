@@ -31,3 +31,4 @@ export const gsapEasing = {
 };
 
 export * from "gsap/gsap-core";
+export { ScrollTrigger, Draggable };

@@ -10,7 +10,7 @@ const LandingLayout: React.FC<BoxProps> = (props) => {
 
   return (
     <styled.Wrapper role="Landing Layout" {...rest}>
-      {/* <Header /> */}
+      <Header />
 
       <Outlet />
 

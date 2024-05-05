@@ -7,12 +7,12 @@ export const Wrapper = styled(Box)`
   place-items: center;
   grid-auto-flow: column;
   gap: ${({ theme: { spacing } }) => spacing(4)};
-  margin: ${({ theme: { spacing } }) => spacing(1, 5)};
 `;
 
 export const Text = styled(Typography)`
   font-weight: 700;
   letter-spacing: 0.3rem;
+  line-height: 0.95;
 `;
 
 Text.defaultProps = { variant: "h4", noWrap: true };

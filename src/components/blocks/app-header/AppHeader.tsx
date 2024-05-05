@@ -10,15 +10,16 @@ import SectionSkipper from "../../shared/section-skipper/SectionSkipper";
 
 const Header: React.FC<AppBarProps> = (props) => {
   const barRef = useRef<HTMLDivElement>(null);
+
   useTween(() => config.shrinkHeaderTwen(barRef));
   useTween(() => config.showHeaderTwen(barRef));
 
   return (
     <styled.Bar {...props} ref={barRef}>
       <Logo />
+      <ThemeSwitcher />
       <SectionSkipper />
       <NavBar />
-      <ThemeSwitcher />
     </styled.Bar>
   );
 };
