@@ -1,4 +1,4 @@
-import { LoginUserData } from "../../../../utils/User/types";
+import { LoginUserData } from "../../../../API/User/types";
 import {
   emailRegEx,
   required,

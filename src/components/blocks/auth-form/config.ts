@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import { AuthTask } from "../../../API/User";
 
 export const swapAuthForm: Tween = (
   task: AuthTask,

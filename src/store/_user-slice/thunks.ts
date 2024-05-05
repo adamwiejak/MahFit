@@ -3,13 +3,13 @@ import { userSliceActions as U } from "./slice";
 import { enqueueSnackbar } from "notistack";
 import { awaitTime } from "../../helpers/functions/dummy-functions";
 import type { User as UserImpl } from "firebase/auth";
-import UserAPI from "../../utils/User/user-api";
-import LocalStorageAPI from "../../utils/LocalStorage/local-storage-api";
 import { Thunk } from "../types";
+import UserAPI from "../../API/User";
+import LocalStorage from "../../API/LocalStorage";
 
 export const onLoginUser: Thunk<UserImpl> = (user) => async (dispatch) => {
   dispatch(G.setInProgress(true));
-  const guest = LocalStorageAPI.getLocalUser();
+  const guest = LocalStorage.getLocalUser();
   const authToken = await user!.getIdToken();
 
   try {
@@ -33,13 +33,13 @@ export const onLoginUser: Thunk<UserImpl> = (user) => async (dispatch) => {
 
 export const onLogoutUser: Thunk = () => async (dispatch, getState) => {
   if (!getState().userSlice.userData) return;
-  const guest = LocalStorageAPI.getLocalUser();
+  const guest = LocalStorage.getLocalUser();
   dispatch(G.setInProgress(true));
 
   try {
     await awaitTime(250); //let loader fully enter
     dispatch(U.clearUser());
-    if (guest) LocalStorageAPI.removeLocalUser();
+    if (guest) LocalStorage.removeLocalUser();
     enqueueSnackbar("Successfully Logged Out");
   } catch (err: any) {
     enqueueSnackbar(err.message, { variant: "warning" });

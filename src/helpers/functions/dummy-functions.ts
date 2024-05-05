@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { Gender, User } from "../../utils/User/types";
+import { Gender, User } from "../../API/User/types";
 
 export function todayPlusDays(daysOffset: number) {
   const ms = Date.now() + daysOffset * 24 * 60 * 60 * 1000;

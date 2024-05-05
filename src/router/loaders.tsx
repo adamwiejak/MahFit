@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs } from "react-router-dom";
 import { redirect } from "react-router-dom";
+import { AuthTask } from "../API/User";
 
 export function authLoader(args: LoaderFunctionArgs) {
   const tasks: AuthTask[] = ["login", "logout", "signup"];

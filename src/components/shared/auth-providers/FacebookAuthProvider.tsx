@@ -1,8 +1,8 @@
 import useAsyncTaskHandler from "../../../hooks/useAsyncTask";
-import UserAPI from "../../../utils/User/user-api";
 import Button from "../../primitives/Button";
 import type { ButtonProps } from "@mui/material";
 import Icon from "../../primitives/Icon";
+import UserAPI from "../../../API/User";
 
 const FacebookAuthProvider: React.FC<Omit<ButtonProps, "text">> = (props) => {
   const { asyncHandler, isLoading } = useAsyncTaskHandler();

@@ -1,4 +1,4 @@
-import { User } from "../utils/User/types";
+import { User } from "../API/User/types";
 import store from "./Store";
 
 type ThunkFunction = (

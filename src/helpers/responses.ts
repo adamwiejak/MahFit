@@ -18,3 +18,9 @@ export const refNotAttachedResponse = (message?: string) => {
     statusText: `Referance Not Attached: ${message}`,
   });
 };
+
+export const noDatabaseDocument = () =>
+  new Response(null, {
+    status: 404,
+    statusText: "No Document Found",
+  });

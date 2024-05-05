@@ -3,12 +3,11 @@ import * as config from "./config";
 import { useForm } from "react-hook-form";
 import useAsyncTaskHandler from "../../../../hooks/useAsyncTask";
 import { onFormInputClear } from "../../../../helpers/functions/functions";
-import UserAPI, { LoginUserData } from "../../../../utils/User/user-api";
-import FormAutoFill from "../../../../_dev_tests/components/form-auto-fill/FortmAutoFill";
 import Input from "../../../primitives/Input";
 import Icon from "../../../primitives/Icon";
 import Button from "../../../primitives/Button";
 import { RetrivePasswordForm } from "../retrive-password-form/RetrivePasswordForm";
+import UserAPI, { LoginUserData } from "../../../../API/User";
 
 const LoginForm: React.FC<config.LoginFormProps> = (props) => {
   const { ...rest } = props;

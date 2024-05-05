@@ -1,4 +1,4 @@
-import { User, Workout } from "../../utils/User/types";
+import { User, Workout } from "../../API/User/types";
 import { todayPlusDays } from "../functions/dummy-functions";
 
 export const DUMMY_IMAGE_1 =

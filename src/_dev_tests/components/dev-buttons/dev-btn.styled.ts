@@ -9,7 +9,7 @@ interface StyledProps extends BoxProps {
   hovered: boolean;
 }
 
-const Container = styled(Box, { shouldForwardProp })<StyledProps>`
+export const Container = styled(Box, { shouldForwardProp })<StyledProps>`
   display: grid;
   grid-auto-flow: column;
   place-items: center;
@@ -24,7 +24,3 @@ const Container = styled(Box, { shouldForwardProp })<StyledProps>`
   opacity: ${({ hovered }) => (hovered ? "1" : "0.25")};
   transform: ${({ hovered }) => (hovered ? "" : "translate(90%,85%)")};
 `;
-
-export default {
-  Container,
-};

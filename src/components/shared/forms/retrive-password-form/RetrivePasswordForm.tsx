@@ -4,12 +4,12 @@ import { emailRegEx, required } from "../../../../helpers/data/regex";
 import { useForm } from "react-hook-form";
 import useAsyncTaskHandler from "../../../../hooks/useAsyncTask";
 import { onFormInputClear } from "../../../../helpers/functions/functions";
-import UserAPI from "../../../../utils/User/user-api";
 import Input from "../../../primitives/Input";
 import Button, { ButtondProps } from "../../../primitives/Button";
 import Icon from "../../../primitives/Icon";
 import useBoolean from "../../../../hooks/useBoolean";
 import Dialog from "../../../modals/dialog/Dialog";
+import UserAPI from "../../../../API/User";
 
 interface IRetrivePassword extends Omit<ButtondProps, "text"> {}
 

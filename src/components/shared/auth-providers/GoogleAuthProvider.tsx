@@ -1,5 +1,5 @@
+import UserAPI from "../../../API/User";
 import useAsyncTaskHandler from "../../../hooks/useAsyncTask";
-import UserAPI from "../../../utils/User/user-api";
 import Button, { ButtondProps } from "../../primitives/Button";
 import Icon from "../../primitives/Icon";
 

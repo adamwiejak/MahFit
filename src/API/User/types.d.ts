@@ -1,6 +1,7 @@
 export type Gender = "female" | "male" | "other";
 export type PersonalRecords = Record<Lift, number>;
 export type Lift = "benchPress" | "deadLift" | "squat";
+export type AuthTask = "login" | "signup" | "logout";
 
 export interface SinginUserData {
   nickname: string;

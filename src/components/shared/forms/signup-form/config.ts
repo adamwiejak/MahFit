@@ -1,7 +1,7 @@
 import { recordFromArray } from "../../../../helpers/functions/functions";
 import * as mockups from "../../../../helpers/data/mockups";
 import * as helpers from "../../../../helpers/data/regex";
-import { SinginUserData } from "../../../../utils/User/types";
+import { SinginUserData } from "../../../../API/User/types";
 
 export type InputName = Partial<keyof SinginUserData>[];
 

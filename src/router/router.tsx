@@ -5,30 +5,36 @@ import NoFoundPage from "../components/views/NoPage/NoFoundPage";
 import LandingLayout from "../components/layout/landing/LandingLayout";
 import HomePage from "../components/views/HomePage/HomePage";
 import AuthPage from "../components/views/AuthPage/AuthPage";
-import Dashboard from "../components/layout/dashboard/Dashboard";
+import DashboardLayout from "../components/layout/dashboard/DashboardLayout";
+
+import HomeView from "../components/views/Dashbard/HomeView/HomeView";
+import WorkoutsView from "../components/views/Dashbard/WorkoutsView/WorkoutsView";
+
 import * as L from "./loaders";
 
 export const router = createBrowserRouter([
   { path: "_dev", element: <DevPage /> },
+
   {
     element: <Root />,
     errorElement: <NoFoundPage />,
     children: [
       {
-        path: "/",
         element: <LandingLayout />,
-        errorElement: <NoFoundPage />,
         children: [
           { index: true, element: <Navigate to="/home" /> },
           { path: "home", element: <HomePage /> },
           { path: "auth/:task?", element: <AuthPage />, loader: L.authLoader },
         ],
       },
+
       {
         path: "/app",
-        element: <Dashboard />,
-        errorElement: <NoFoundPage />,
-        children: [],
+        element: <DashboardLayout />,
+        children: [
+          { index: true, element: <HomeView /> },
+          { path: "workouts", element: <WorkoutsView /> },
+        ],
       },
     ],
   },

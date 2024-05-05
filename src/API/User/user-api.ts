@@ -1,22 +1,29 @@
-import LocalStorageAPI from "../LocalStorage/local-storage-api";
-import Database from "../Firebase/database";
-import Auth from "../Firebase/auth";
+import { Auth, Storage, Database } from "../../utils/Firebase";
 import { DUMMY_ACCOUNT } from "../../helpers/data/dummy-data";
-import type { LoginUserData } from "./types";
-import type { SinginUserData } from "./types";
-import type { UserBaseInfo } from "./types";
-import type { User } from "./types";
+import * as T from "./types";
+import LocalStorage from "../LocalStorage";
 
-const getUserFromDB = async (uid: string): Promise<User> => {
+export const getCurrentUser = () => {
+  const currUser = Auth.getCurrentUser();
+  console.log(currUser);
+  return currUser;
+};
+
+export const logoutUser = () => {
+  const response = Auth.logoutUser();
+  return response;
+};
+
+export const getUserFromDB = async (uid: string): Promise<T.User> => {
   try {
-    const user = await Database.getDocument<User>(`users/${uid}`);
+    const user = await Database.getDocument<T.User>(`users/${uid}`);
     return user;
   } catch (err) {
     throw err;
   }
 };
 
-const setUserInDB = async (data: UserBaseInfo) => {
+export const setUserInDB = async (data: T.UserBaseInfo) => {
   try {
     await Database.setDocument(`users/${data.uid}`, { base: data });
   } catch (err) {
@@ -24,19 +31,19 @@ const setUserInDB = async (data: UserBaseInfo) => {
   }
 };
 
-const loginDemoAccount = async () => {
-  LocalStorageAPI.setLocalUser();
+export const loginDemoAccount = async () => {
+  LocalStorage.setLocalUser();
   try {
     const { email, password } = DUMMY_ACCOUNT;
     const { user } = await Auth.createUserWithEmail(email, password);
     return user;
   } catch (err: any) {
-    LocalStorageAPI.removeLocalUser();
+    LocalStorage.removeLocalUser();
     throw err;
   }
 };
 
-const singInWithGoogle = async () => {
+export const singInWithGoogle = async () => {
   try {
     const provider = await Auth.authWithGoogle();
     return provider;
@@ -45,7 +52,7 @@ const singInWithGoogle = async () => {
   }
 };
 
-const singInWithFacebook = async () => {
+export const singInWithFacebook = async () => {
   try {
     const provider = await Auth.authWithFacebook();
     return provider;
@@ -54,7 +61,7 @@ const singInWithFacebook = async () => {
   }
 };
 
-const singupUserWithEmail = async (data: SinginUserData) => {
+export const singupUserWithEmail = async (data: T.SinginUserData) => {
   const { email, password, gender, nickname } = data;
 
   try {
@@ -74,7 +81,7 @@ const singupUserWithEmail = async (data: SinginUserData) => {
   }
 };
 
-const loginUserWithEmail = async (data: LoginUserData) => {
+export const loginUserWithEmail = async (data: T.LoginUserData) => {
   console.log(data);
   try {
     alert(`Login User Here With Email, ${JSON.stringify(data)}`);
@@ -83,23 +90,6 @@ const loginUserWithEmail = async (data: LoginUserData) => {
   }
 };
 
-const retrivePassword = (email: string) => {
+export const retrivePassword = (email: string) => {
   return alert(`Retrieve password for ${email} here`);
 };
-
-const signOutUser = Auth.logoutUser;
-
-const UserAPI = {
-  signOutUser,
-  loginDemoAccount,
-  loginUserWithEmail,
-  singupUserWithEmail,
-  singInWithGoogle,
-  singInWithFacebook,
-  retrivePassword,
-  setUserInDB,
-  getUserFromDB,
-};
-
-export default UserAPI;
-export * from "./types.d";

@@ -3,13 +3,13 @@ import * as config from "./config";
 import { useForm } from "react-hook-form";
 import useAsyncTask from "../../../../hooks/useAsyncTask";
 import { onFormInputClear } from "../../../../helpers/functions/functions";
-import UserAPI, { SinginUserData } from "../../../../utils/User/user-api";
 import Input from "../../../primitives/Input";
 import Icon from "../../../primitives/Icon";
 import Select from "../../../primitives/Select";
 import RadioGroup from "../../../primitives/RadioGroup";
 import Button from "../../../primitives/Button";
 import { BoxProps } from "@mui/material";
+import UserAPI, { type SinginUserData } from "../../../../API/User";
 
 export interface ISingupForm extends BoxProps {}
 

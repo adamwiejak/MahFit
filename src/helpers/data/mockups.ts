@@ -1,4 +1,4 @@
-import { Gender, Lift } from "../../utils/User/types";
+import { Gender, Lift } from "../../API/User/types";
 import { IconName } from "../../assets/icons/iconsAsset";
 
 export const lifts: Lift[] = ["benchPress", "deadLift", "squat"];

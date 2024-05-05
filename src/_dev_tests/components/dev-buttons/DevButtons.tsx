@@ -1,13 +1,13 @@
-import styled from "./styles";
+import * as styled from "./dev-btn.styled";
 import { getStore, useAppDispatch } from "../../../store/Store";
 import { globalSliceActions as G } from "../../../store/_global-slice/slice";
 import IconButton from "../../../components/primitives/IconButton";
-import UserAPI from "../../../utils/User/user-api";
 import useBoolean from "../../../hooks/useBoolean";
-import Auth from "../../../utils/Firebase/auth";
 import useAsyncTask from "../../../hooks/useAsyncTask";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
+import { Auth } from "../../../utils/Firebase";
+import UserAPI from "../../../API/User";
 
 let t: NodeJS.Timeout;
 const cl = (data: any) => () => console.log(data);
@@ -18,15 +18,15 @@ const DevButtons: React.FC = () => {
   const dispatch = useAppDispatch();
   const user = Auth.getCurrentUser();
   const [hovered, toggleHoverd] = useBoolean(false);
-  const { inProgress, theme } = store.globalSlice;
+  const { inProgress } = store.globalSlice;
 
   const navigate = useNavigate();
-  const goToPage = (path: string) => () => navigate(path);
 
+  const goToPage = (path: string) => () => navigate(path);
   const toggleTheme = () => dispatch(G.toggleTheme());
-  const toggleInProgress = () => dispatch(G.setInProgress(!inProgress));
-  const onLogout = () => asyncHandler(UserAPI.signOutUser);
+  const onLogout = () => asyncHandler(UserAPI.logoutUser);
   const onLoginDemo = () => asyncHandler(UserAPI.loginDemoAccount);
+  const toggleInProgress = () => dispatch(G.setInProgress(!inProgress));
 
   return (
     <styled.Container
@@ -40,9 +40,11 @@ const DevButtons: React.FC = () => {
       <IconButton icon="wait" tip="Global" onClick={toggleInProgress} />
       <IconButton icon="user" tip="auth" onClick={cl(Auth.getCurrentUser())} />
 
-      {user ? (
+      {user && (
         <IconButton icon="logout" tip="Hard Logout" onClick={onLogout} />
-      ) : (
+      )}
+
+      {!user && (
         <IconButton icon="login" tip="LoginDemo" onClick={onLoginDemo} />
       )}
 

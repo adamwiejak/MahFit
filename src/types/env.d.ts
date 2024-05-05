@@ -11,4 +11,3 @@ declare module "*.svg";
 
 type Ref<T> = React.MutableRefObject<T>;
 type Tween = (...args: any) => [gsap.core.Timeline, () => void];
-type AuthTask = "login" | "signup" | "logout";
