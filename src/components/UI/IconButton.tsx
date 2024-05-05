@@ -2,17 +2,17 @@ import React from "react";
 import Icon from "./Icon";
 import Tooltip from "@mui/material/Tooltip";
 import MUIIconButton from "@mui/material/IconButton";
-import type { IconButtonProps as MUIIconButtonProps } from "@mui/material";
-import type { IconProps } from "./Icon";
+import type { IconButtonProps } from "@mui/material";
+import type { IIcon } from "./Icon";
 
-interface IconButtonProps extends MUIIconButtonProps {
+export interface IIconButton extends IconButtonProps {
   tip?: string;
-  icon: IconProps["icon"];
-  iconColor?: IconProps["color"];
-  iconSize?: IconProps["fontSize"];
+  icon: IIcon["icon"];
+  iconColor?: IIcon["color"];
+  iconSize?: IIcon["fontSize"];
 }
 
-const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
+const IconButton = React.forwardRef<HTMLButtonElement, IIconButton>(
   (props, ref) => {
     const { tip, icon, iconSize, size, ...rest } = props;
 

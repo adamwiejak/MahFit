@@ -7,7 +7,7 @@ import FacebookAuthProvider from "../../shared/auth-providers/FacebookAuthProvid
 import DemoAccountProvider from "../../shared/auth-providers/DemoAccountProvider";
 import LoginForm from "../../shared/forms/login-form/LoginForm";
 import { Link } from "react-router-dom";
-import Button from "../../primitives/Button";
+import Button from "../../UI/button/Button";
 import useTween from "../../../hooks/useTween";
 import { CardProps } from "@mui/material";
 

@@ -1,7 +1,7 @@
 import * as styled from "./logo.styled";
 import { Link } from "react-router-dom";
 import type { BoxProps } from "@mui/material/Box";
-import Icon from "../../primitives/Icon";
+import Icon from "../../UI/Icon";
 
 const Logo: React.FC<BoxProps> = (props) => {
   return (

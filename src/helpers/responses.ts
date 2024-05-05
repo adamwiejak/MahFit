@@ -12,15 +12,6 @@ export const invalidRouteResponse = (args: LoaderFunctionArgs) => {
   });
 };
 
-export const refNotAttachedResponse = (message?: string) => {
-  throw new Response(``, {
-    status: 404,
-    statusText: `Referance Not Attached: ${message}`,
-  });
-};
-
-export const noDatabaseDocument = () =>
-  new Response(null, {
-    status: 404,
-    statusText: "No Document Found",
-  });
+export const unmachedPasswords = "Passwords do not match";
+export const noDocument = "No Document Found";
+export const noUser = "User Not Found In Database. You Will Be Logout.";

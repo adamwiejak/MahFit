@@ -1,10 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../API/User/types";
-import { UserSlice } from "../types";
+import { createSlice } from "@reduxjs/toolkit";
+import * as T from "./types";
 
-const initialState: UserSlice = {
+const initialState: T.UserSlice = {
+  user: null,
   authToken: null,
-  userData: null,
   cachedFriends: {},
 };
 
@@ -12,34 +11,16 @@ const userSlice = createSlice({
   name: "userSlice",
   initialState,
   reducers: {
-    setUser(
-      state,
-      action: PayloadAction<{
-        authToken: UserSlice["authToken"];
-        userData: UserSlice["userData"];
-      }>
-    ) {
-      const { userData, authToken } = action.payload;
-      state.userData = userData;
+    setUser(state, action: T.SetUserAction) {
+      const { user, authToken } = action.payload;
+      state.user = user;
       state.authToken = authToken;
     },
 
     clearUser() {
       return initialState;
     },
-
-    removeFriend(state, action: PayloadAction<string>) {},
-
-    cacheFriend(
-      state,
-      action: PayloadAction<{ uid: string; friend: User | null }>
-    ) {
-      const { uid, friend } = action.payload;
-      const exists = state.cachedFriends.hasOwnProperty(uid);
-      // if (!exists) state.cachedFriends[uid] = friend;
-    },
   },
 });
 
-export default userSlice.reducer;
-export const userSliceActions = userSlice.actions;
+export default userSlice;

@@ -1,4 +1,4 @@
-import { GlobalSlice } from "../../store/types";
+import { GlobalSlice } from "../../store/_global-slice";
 
 const KEYS_MAP = {
   user: "GUEST",

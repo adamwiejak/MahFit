@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Image from "../../shared/image/Image";
-import IconButton from "../../primitives/IconButton";
+import IconButton from "../../UI/IconButton";
 
 export const Container = styled(Box)`
   width: 100%;

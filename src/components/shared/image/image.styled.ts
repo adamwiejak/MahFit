@@ -9,7 +9,7 @@ export interface StyledProps extends BoxProps {
   imagePosition?: "top" | "center" | "bottom" | string;
 }
 
-const bgFilter = "blur(4px) brightness(0.3) opacity(0.65)";
+const bgFilter = "blur(4px) brightness(0.2) opacity(0.45)";
 const excludedProps = ["imageFit", "imagePosition", "background"];
 const shouldForwardProp = excludeStyledProps(excludedProps);
 

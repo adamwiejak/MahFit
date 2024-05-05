@@ -4,8 +4,8 @@ import {
   required,
   passwordRegEx,
 } from "../../../../helpers/data/regex";
-import { IconName } from "../../../../assets/icons/iconsAsset";
-import { InputProps } from "../../../primitives/Input";
+import { IInput } from "../../../UI/input/Input";
+import { IIcon } from "../../../UI/Icon";
 
 export interface CreateDemoAccountProps {}
 
@@ -14,8 +14,8 @@ export interface FormData {
   password: string;
 }
 
-interface FormInput extends Omit<InputProps, "name"> {
-  icon: IconName;
+interface FormInput extends Omit<IInput, "name"> {
+  icon: IIcon["icon"];
   name: keyof FormData;
   options: RegisterOptions<FormData>;
 }

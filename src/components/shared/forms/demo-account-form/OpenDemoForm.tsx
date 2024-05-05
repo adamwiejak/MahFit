@@ -4,21 +4,20 @@ import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import useAsyncTaskHandler from "../../../../hooks/useAsyncTask";
 import { onFormInputClear } from "../../../../helpers/functions/functions";
-import FormAutoFill from "../../../../_dev_tests/components/form-auto-fill/FortmAutoFill";
-import Input from "../../../primitives/Input";
-import Icon from "../../../primitives/Icon";
-import Button from "../../../primitives/Button";
+import Input from "../../../UI/input/Input";
+import Icon from "../../../UI/Icon";
+import Button from "../../../UI/button/Button";
 
 const OpenDemoForm: React.FC<any> = (props) => {
   const { ...rest } = props;
   const { formState, ...form } = useForm<config.FormData>();
-  const { asyncHandler, isLoading } = useAsyncTaskHandler();
+  const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
 
   const onSubmit = useCallback(async (data: config.FormData) => {
     const { email, password } = data;
 
     try {
-      const response = await asyncHandler(async () => {});
+      const response = await asyncTaskHandler(async () => {});
     } catch (err: any) {
       const message = err.message;
       if (message.includes("user")) return form.setError("email", { message });
@@ -48,8 +47,6 @@ const OpenDemoForm: React.FC<any> = (props) => {
       </styled.Inputs>
 
       <styled.Actions>
-        <FormAutoFill formState={formState} formFunctions={form} />
-
         <Button
           type="submit"
           inProgress={isLoading}

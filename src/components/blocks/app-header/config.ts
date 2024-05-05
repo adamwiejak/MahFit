@@ -1,4 +1,3 @@
-import { connectStorageEmulator } from "firebase/storage";
 import { spacing } from "../../../styles/MUI/_spacing";
 import {
   gsap,
@@ -19,7 +18,7 @@ export const shrinkHeaderTwen: Tween = (barRef: Ref<HTMLDivElement>) => {
 
   tl.to([barEl, navigationEl, logoEl], {
     gap: spacing[3],
-    padding: `${spacing[1]} ${spacing[2]}`,
+    padding: `${spacing[1]} ${spacing[3]}`,
   }).to(barEl, { backdropFilter: backdrop }, "<");
 
   const cleanUp = () => {
@@ -41,7 +40,7 @@ export const showHeaderTwen: Tween = (barRef: Ref<HTMLDivElement>) => {
 
   const onUpdate = (trigger: ScrollTrigger) => {
     const { direction, end, progress } = trigger;
-    const offset = end * progress > innerHeight;
+    const offset = end * progress > 0.75 * innerHeight;
     if (direction > 0 || !offset) tl.play();
     if (direction < 0 && offset) tl.reverse();
   };

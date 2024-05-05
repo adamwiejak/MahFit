@@ -1,20 +1,11 @@
 import * as styled from "./styles";
-import Image from "../../shared/image/Image";
-import { BoxProps, Typography } from "@mui/material";
-import { rankingImageAsset } from "../../../assets/images/ranking/asset";
+import { BoxProps, CardProps, Typography } from "@mui/material";
 
-const Footer: React.FC<BoxProps> = (props) => {
+const Footer: React.FC<CardProps> = (props) => {
   const { ...rest } = props;
 
   return (
-    <styled.Container component="footer" {...rest}>
-      {/* <Image
-        background
-        fit="cover"
-        imagePosition="50% 10%"
-        imageAsset={rankingImageAsset}
-      /> */}
-
+    <styled.Container {...rest} elevation={24}>
       <Typography variant="h5">
         @2023 All Rights Reserved. Desing and Development -
         adamwiejak2@gmail.com

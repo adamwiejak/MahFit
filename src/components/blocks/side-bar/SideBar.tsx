@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 import GoogleAuthProvider from "../../shared/auth-providers/GoogleAuthProvider";
 import FacebookAuthProvider from "../../shared/auth-providers/FacebookAuthProvider";
 import DemoAccountProvider from "../../shared/auth-providers/DemoAccountProvider";
-import IconButton from "../../primitives/IconButton";
-import Button from "../../primitives/Button";
+import IconButton from "../../UI/IconButton";
+import Button from "../../UI/button/Button";
 import useTween from "../../../hooks/useTween";
 
 const SideBar: React.FC<config.SideBarProps> = (props) => {

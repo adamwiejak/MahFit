@@ -57,14 +57,11 @@ import DashboardIcon from "@mui/icons-material/DashboardTwoTone";
 import ErrorIcon from "@mui/icons-material/Error";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 
-export type IconName = keyof typeof iconsAsset;
-
 export const iconsAsset = {
   //// lift icons coresponding to Lift type from UserAPI! /////
   benchPress: custom.BenchPressIcon,
   deadLift: custom.DeadLiftIcon,
   squat: custom.SquatIcon,
-  logo: custom.Logo,
   /////////////////////////////////////////////////////////////
 
   sort: GoogleIcon,

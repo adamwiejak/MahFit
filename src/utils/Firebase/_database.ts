@@ -5,7 +5,7 @@ import { collection } from "firebase/firestore";
 import { doc } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import type { DocumentData, WithFieldValue } from "firebase/firestore";
-import { noDatabaseDocument } from "../../helpers/responses";
+import { noDocument } from "../../helpers/responses";
 
 const database = getFirestore(firebaseApp);
 
@@ -13,9 +13,8 @@ export const getDocument = async <T = unknown>(path: string) => {
   const docRef = doc(database, path);
   try {
     const docSnapshot = await getDoc(docRef);
-    if (!docSnapshot.exists()) throw noDatabaseDocument();
-
-    return docSnapshot as T;
+    if (!docSnapshot.exists()) throw new Error(noDocument);
+    return docSnapshot.data() as T;
   } catch (err) {
     throw err;
   }

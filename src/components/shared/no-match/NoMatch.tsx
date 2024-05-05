@@ -1,10 +1,10 @@
 import styled from "./styles";
 import { Link, useRouteError } from "react-router-dom";
 import type { BoxProps } from "@mui/material/Box";
-import StandardIcon from "../../primitives/Icon";
-import ButtonStandard from "../../primitives/Button";
+import StandardIcon from "../../UI/Icon";
 import Image from "../image/Image";
 import { noFoundImageAsset } from "../../../assets/images/404/asset";
+import Button from "../../UI/button/Button";
 
 const NoMatch: React.FC<BoxProps> = (props) => {
   const { ...rest } = props;
@@ -25,17 +25,11 @@ const NoMatch: React.FC<BoxProps> = (props) => {
 
         <styled.Actions>
           <Link to="..">
-            <ButtonStandard
-              text="Back"
-              endIcon={<StandardIcon icon="undo" />}
-            />
+            <Button text="Back" endIcon={<StandardIcon icon="undo" />} />
           </Link>
 
           <Link to="/home">
-            <ButtonStandard
-              text="Home"
-              endIcon={<StandardIcon icon="home" />}
-            />
+            <Button text="Home" endIcon={<StandardIcon icon="home" />} />
           </Link>
         </styled.Actions>
       </styled.CardBox>

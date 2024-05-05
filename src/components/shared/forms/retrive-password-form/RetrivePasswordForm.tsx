@@ -1,17 +1,17 @@
 import styled from "./styles";
-import { BoxProps, Divider, Typography } from "@mui/material";
+import { ButtonProps, Divider, Typography } from "@mui/material";
 import { emailRegEx, required } from "../../../../helpers/data/regex";
 import { useForm } from "react-hook-form";
 import useAsyncTaskHandler from "../../../../hooks/useAsyncTask";
 import { onFormInputClear } from "../../../../helpers/functions/functions";
-import Input from "../../../primitives/Input";
-import Button, { ButtondProps } from "../../../primitives/Button";
-import Icon from "../../../primitives/Icon";
+import Input from "../../../UI/input/Input";
+import Icon from "../../../UI/Icon";
 import useBoolean from "../../../../hooks/useBoolean";
 import Dialog from "../../../modals/dialog/Dialog";
 import UserAPI from "../../../../API/User";
+import Button from "../../../UI/button/Button";
 
-interface IRetrivePassword extends Omit<ButtondProps, "text"> {}
+interface IRetrivePassword extends Omit<ButtonProps, "text"> {}
 
 interface RetrivePasswordForm {
   email: string;
@@ -19,14 +19,14 @@ interface RetrivePasswordForm {
 
 export const RetrivePasswordForm: React.FC<IRetrivePassword> = (props) => {
   const { ...rest } = props;
-  const { asyncHandler, isLoading } = useAsyncTaskHandler();
+  const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
   const { formState, ...form } = useForm<RetrivePasswordForm>();
 
   const [retriveFormOpen, toggleRetriveFormOpen] = useBoolean(false);
 
   const submit = async (data: RetrivePasswordForm) => {
     try {
-      asyncHandler(async () => UserAPI.retrivePassword(data.email));
+      asyncTaskHandler(async () => UserAPI.retrivePassword(data.email));
     } catch (err: any) {
       console.log(err);
     }

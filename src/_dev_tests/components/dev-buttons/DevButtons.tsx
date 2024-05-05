@@ -1,7 +1,7 @@
 import * as styled from "./dev-btn.styled";
 import { getStore, useAppDispatch } from "../../../store/Store";
-import { globalSliceActions as G } from "../../../store/_global-slice/slice";
-import IconButton from "../../../components/primitives/IconButton";
+import { globalSliceActions as G } from "../../../store/_global-slice";
+import IconButton from "../../../components/UI/IconButton";
 import useBoolean from "../../../hooks/useBoolean";
 import useAsyncTask from "../../../hooks/useAsyncTask";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ let t: NodeJS.Timeout;
 const cl = (data: any) => () => console.log(data);
 
 const DevButtons: React.FC = () => {
-  const { asyncHandler } = useAsyncTask();
+  const { asyncTaskHandler } = useAsyncTask();
   const store = getStore();
   const dispatch = useAppDispatch();
   const user = Auth.getCurrentUser();
@@ -24,8 +24,8 @@ const DevButtons: React.FC = () => {
 
   const goToPage = (path: string) => () => navigate(path);
   const toggleTheme = () => dispatch(G.toggleTheme());
-  const onLogout = () => asyncHandler(UserAPI.logoutUser);
-  const onLoginDemo = () => asyncHandler(UserAPI.loginDemoAccount);
+  const onLogout = () => asyncTaskHandler(UserAPI.logoutUser);
+  const onLoginDemo = () => asyncTaskHandler(UserAPI.loginDemoAccount);
   const toggleInProgress = () => dispatch(G.setInProgress(!inProgress));
 
   return (

@@ -3,24 +3,30 @@ import * as config from "./config";
 import { useForm } from "react-hook-form";
 import useAsyncTaskHandler from "../../../../hooks/useAsyncTask";
 import { onFormInputClear } from "../../../../helpers/functions/functions";
-import Input from "../../../primitives/Input";
-import Icon from "../../../primitives/Icon";
-import Button from "../../../primitives/Button";
+import Input from "../../../UI/input/Input";
+import Icon from "../../../UI/Icon";
+import Button from "../../../UI/button/Button";
 import { RetrivePasswordForm } from "../retrive-password-form/RetrivePasswordForm";
 import UserAPI, { LoginUserData } from "../../../../API/User";
+import { TaskResponse } from "../../../../classes/TaskResponse";
 
 const LoginForm: React.FC<config.LoginFormProps> = (props) => {
   const { ...rest } = props;
-  const { asyncHandler, isLoading } = useAsyncTaskHandler();
+  const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
   const { formState, ...form } = useForm<LoginUserData>();
 
   const onSubmit = form.handleSubmit(async (data) => {
+    const asyncTask = async () => {
+      await UserAPI.loginUserWithEmail(data);
+    };
+
     try {
-      await asyncHandler(() => UserAPI.loginUserWithEmail(data));
+      await asyncTaskHandler(asyncTask);
     } catch (err: any) {
-      const message = err.message;
-      if (message.includes("email")) return form.setError("email", { message });
-      if (message.includes("password")) form.setError("password", { message });
+      console.log(err);
+      const { includes, message } = err as TaskResponse;
+      if (includes("user")) return form.setError("email", { message });
+      if (includes("password")) form.setError("password", { message });
     }
   });
 

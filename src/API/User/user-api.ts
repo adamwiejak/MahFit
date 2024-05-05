@@ -2,23 +2,18 @@ import { Auth, Storage, Database } from "../../utils/Firebase";
 import { DUMMY_ACCOUNT } from "../../helpers/data/dummy-data";
 import * as T from "./types";
 import LocalStorage from "../LocalStorage";
+import { noDocument, noUser } from "../../helpers/responses";
 
-export const getCurrentUser = () => {
-  const currUser = Auth.getCurrentUser();
-  console.log(currUser);
-  return currUser;
-};
-
-export const logoutUser = () => {
-  const response = Auth.logoutUser();
-  return response;
-};
+export const getCurrentUser = () => Auth.getCurrentUser();
+export const logoutUser = () => Auth.logoutUser();
 
 export const getUserFromDB = async (uid: string): Promise<T.User> => {
   try {
-    const user = await Database.getDocument<T.User>(`users/${uid}`);
-    return user;
-  } catch (err) {
+    const userData = await Database.getDocument<T.User>(`users/${uid}`);
+    console.log(userData);
+    return userData;
+  } catch (err: any) {
+    if (err.message === noDocument) throw new Error(noUser);
     throw err;
   }
 };
@@ -54,7 +49,7 @@ export const singInWithGoogle = async () => {
 
 export const singInWithFacebook = async () => {
   try {
-    const provider = await Auth.authWithFacebook();
+    const provider = Auth.authWithFacebook();
     return provider;
   } catch (err) {
     throw err;
@@ -66,25 +61,15 @@ export const singupUserWithEmail = async (data: T.SinginUserData) => {
 
   try {
     const { user } = await Auth.createUserWithEmail(email, password);
-    console.log(user);
-
-    // const userBaseInfo: UserBaseInfo = {
-    //   uid: user.uid,
-    //   email,
-    //   nickname,
-    //   gender,
-    // };
-
-    // await setUserInDB(userBaseInfo);
+    await setUserInDB({ uid: user.uid, email, nickname, gender });
   } catch (err) {
     throw err;
   }
 };
 
 export const loginUserWithEmail = async (data: T.LoginUserData) => {
-  console.log(data);
   try {
-    alert(`Login User Here With Email, ${JSON.stringify(data)}`);
+    await Auth.signInWithEmail(data.email, data.password);
   } catch (err) {
     throw err;
   }

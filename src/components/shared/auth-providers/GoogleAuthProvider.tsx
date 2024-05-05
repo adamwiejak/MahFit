@@ -1,13 +1,13 @@
 import UserAPI from "../../../API/User";
 import useAsyncTaskHandler from "../../../hooks/useAsyncTask";
-import Button, { ButtondProps } from "../../primitives/Button";
-import Icon from "../../primitives/Icon";
+import Button, { IButton } from "../../UI/button/Button";
+import Icon from "../../UI/Icon";
 
-const GoogleAuthProvider: React.FC<Omit<ButtondProps, "text">> = (props) => {
-  const { asyncHandler, isLoading } = useAsyncTaskHandler();
+const GoogleAuthProvider: React.FC<Omit<IButton, "text">> = (props) => {
+  const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
 
   const onGoogleAuthentication = async () => {
-    const response = await asyncHandler(UserAPI.singInWithGoogle);
+    const response = await asyncTaskHandler(UserAPI.singInWithGoogle);
   };
 
   return (

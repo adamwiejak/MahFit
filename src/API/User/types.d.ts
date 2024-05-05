@@ -15,8 +15,14 @@ export interface SinginUserData {
 }
 
 export interface LoginUserData {
-  email: string;
   password: string;
+  email: string;
+}
+
+export interface Workout {
+  title: string;
+  date: string;
+  color: string;
 }
 
 export interface UserBaseInfo {
@@ -24,12 +30,6 @@ export interface UserBaseInfo {
   email: string;
   gender: Gender;
   nickname: string;
-}
-
-export interface Workout {
-  title: string;
-  date: string;
-  color: string;
 }
 
 export interface UserDetailsInfo {

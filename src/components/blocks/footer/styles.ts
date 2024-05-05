@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
-import { Box } from "@mui/material";
+import { Card } from "@mui/material";
 
-export const Container = styled(Box)`
+export const Container = styled(Card)`
   position: relative;
   display: grid;
   place-items: center;

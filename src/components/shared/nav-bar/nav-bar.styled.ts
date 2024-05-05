@@ -5,5 +5,6 @@ export const Container = styled(Box)`
   display: grid;
   grid-auto-flow: column;
   align-content: space-between;
+  place-items: center;
   gap: ${({ theme: { spacing } }) => spacing(4)};
 `;

@@ -2,19 +2,29 @@ import * as styled from "./dashboard-layout.styled";
 import { Outlet } from "react-router-dom";
 import AppBar from "../../blocks/app-bar/AppBar";
 import AuthForm from "../../blocks/auth-form/AuthForm";
-import UserAPI from "../../../API/User";
+import { getUserSlice } from "../../../store/Store";
+import Image from "../../shared/image/Image";
+import { scheduleImageAsset } from "../../../assets/images/schedule/asset";
+import Footer from "../../blocks/footer/Footer";
 
 const DashboardLayout = () => {
-  const currUser = UserAPI.getCurrentUser();
+  const { authToken } = getUserSlice();
 
   return (
     <styled.Wrapper>
-      <AppBar position="static" />
+      <Image
+        background
+        imageAsset={scheduleImageAsset}
+        sx={{ position: "fixed" }}
+      />
+
+      <AppBar position="fixed" />
 
       <styled.Content>
-        {currUser && <Outlet />}
-        {!currUser && <AuthForm sx={{ placeSelf: "center" }} />}
+        {authToken ? <Outlet /> : <AuthForm sx={{ placeSelf: "center" }} />}
       </styled.Content>
+
+      {!authToken && <Footer />}
     </styled.Wrapper>
   );
 };

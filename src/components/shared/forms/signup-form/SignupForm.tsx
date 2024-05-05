@@ -3,34 +3,37 @@ import * as config from "./config";
 import { useForm } from "react-hook-form";
 import useAsyncTask from "../../../../hooks/useAsyncTask";
 import { onFormInputClear } from "../../../../helpers/functions/functions";
-import Input from "../../../primitives/Input";
-import Icon from "../../../primitives/Icon";
-import Select from "../../../primitives/Select";
-import RadioGroup from "../../../primitives/RadioGroup";
-import Button from "../../../primitives/Button";
+import Input from "../../../UI/input/Input";
+import Icon from "../../../UI/Icon";
+import Select from "../../../UI/Select";
+import RadioGroup from "../../../UI/RadioGroup";
+import Button from "../../../UI/button/Button";
 import { BoxProps } from "@mui/material";
 import UserAPI, { type SinginUserData } from "../../../../API/User";
+import { TaskResponse } from "../../../../classes/TaskResponse";
+import { unmachedPasswords } from "../../../../helpers/responses";
 
 export interface ISingupForm extends BoxProps {}
 
 const SignupForm: React.FC<ISingupForm> = (props) => {
-  const { asyncHandler, isLoading } = useAsyncTask();
+  const { asyncTaskHandler, isLoading } = useAsyncTask();
   const { formState, ...form } = useForm<SinginUserData>();
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { password: p, repeatPassword: rP } = data;
-    const passwordsNotMatch = "Passwords do not match";
+    const asyncTask = async () => {
+      const { password: p, repeatPassword: rP } = data;
+      if (p !== rP) throw new Error(unmachedPasswords);
+      await UserAPI.singupUserWithEmail(data);
+    };
 
     try {
-      if (p !== rP) throw new Error(passwordsNotMatch);
-      await asyncHandler(() => UserAPI.singupUserWithEmail(data));
-    } catch (asyncError: any) {
-      const { message, includes } = asyncError;
+      await asyncTaskHandler(asyncTask);
+    } catch (err: any) {
+      const { includes, message } = err as TaskResponse;
 
-      if (includes(passwordsNotMatch)) {
-        const passwordInputs: config.InputName = ["password", "repeatPassword"];
-        passwordInputs.forEach((name) => form.setError(name, { message }));
-      }
+      if (includes("email")) form.setError("email", { message });
+      if (includes("password")) form.setError("password", { message });
+      if (includes("passwords")) form.setError("repeatPassword", { message });
     }
   });
 

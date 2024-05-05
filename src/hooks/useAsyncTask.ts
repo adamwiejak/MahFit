@@ -1,32 +1,25 @@
 import { useState } from "react";
-import { dev } from "../store/Store";
-import { AsyncError } from "../classes/AsyncError";
-import { useSnackbar } from "notistack";
+import { TaskResponse } from "../classes/TaskResponse";
 
-type AsyncInput<T> = (() => Promise<T>) | Promise<T>;
+type AsyncTask<T> = () => Promise<T>;
 
 const useAsyncTask = () => {
-  const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
 
-  const asyncHandler = async <T = unknown>(input: AsyncInput<T>) => {
+  const asyncTaskHandler = async <T = unknown>(task: AsyncTask<T>) => {
     setIsLoading(true);
 
     try {
-      const resoult = input instanceof Promise ? await input : await input();
-      if (dev) console.log("ASYNC HANDLER RESOULT:", resoult);
-      return resoult;
+      return await task();
     } catch (err: any) {
-      const asyncError = new AsyncError(err);
-      if (dev) console.log("ASYNC HANDLER ERROR:", asyncError);
-      enqueueSnackbar(asyncError.message, { variant: asyncError.variant });
-      throw asyncError;
+      const response = new TaskResponse(err);
+      throw response;
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { asyncHandler, isLoading };
+  return { asyncTaskHandler, isLoading };
 };
 
 export default useAsyncTask;

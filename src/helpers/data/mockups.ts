@@ -1,9 +1,9 @@
 import { Gender, Lift } from "../../API/User/types";
-import { IconName } from "../../assets/icons/iconsAsset";
+import { IIcon } from "../../components/UI/Icon";
 
 export const lifts: Lift[] = ["benchPress", "deadLift", "squat"];
 
-export const workoutsCategorys: { type: string; icon: IconName }[] = [
+export const workoutsCategorys: { type: string; icon: IIcon["icon"] }[] = [
   { type: "Push", icon: "benchPress" },
   { type: "Pull", icon: "deadLift" },
   { type: "Legs", icon: "squat" },

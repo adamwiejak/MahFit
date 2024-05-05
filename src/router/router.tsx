@@ -6,15 +6,12 @@ import LandingLayout from "../components/layout/landing/LandingLayout";
 import HomePage from "../components/views/HomePage/HomePage";
 import AuthPage from "../components/views/AuthPage/AuthPage";
 import DashboardLayout from "../components/layout/dashboard/DashboardLayout";
-
 import HomeView from "../components/views/Dashbard/HomeView/HomeView";
 import WorkoutsView from "../components/views/Dashbard/WorkoutsView/WorkoutsView";
 
 import * as L from "./loaders";
 
 export const router = createBrowserRouter([
-  { path: "_dev", element: <DevPage /> },
-
   {
     element: <Root />,
     errorElement: <NoFoundPage />,
@@ -36,6 +33,8 @@ export const router = createBrowserRouter([
           { path: "workouts", element: <WorkoutsView /> },
         ],
       },
+
+      { path: "_dev", element: <DevPage /> },
     ],
   },
 ]);

@@ -1,13 +1,14 @@
 import * as styled from "./styles";
 import FormSection from "./_form-section/FormSection";
-import { useRef } from "react";
+import { getUserSlice } from "../../../store/Store";
+import { Navigate } from "react-router-dom";
 
 const AuthPage = () => {
-  const formSectionRef = useRef<HTMLElement>(null);
+  const { authToken } = getUserSlice();
 
   return (
-    <styled.Page ref={formSectionRef}>
-      <FormSection />
+    <styled.Page>
+      {authToken ? <Navigate to="/app" /> : <FormSection />}
     </styled.Page>
   );
 };

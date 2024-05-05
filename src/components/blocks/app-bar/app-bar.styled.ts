@@ -1,9 +1,16 @@
-import { AppBar, styled } from "@mui/material";
+import { AppBar, Toolbar as MuiToolbar, styled } from "@mui/material";
 
 export const Container = styled(AppBar)`
   display: grid;
+  grid-auto-flow: column;
   justify-content: space-between;
-  grid-template-columns: max-content max-content;
   gap: ${({ theme: { spacing } }) => spacing(6)};
-  padding: ${({ theme: { spacing } }) => spacing(2, 3)};
+  padding: ${({ theme: { spacing } }) => spacing(0, 3)};
+  z-index: ${({ theme }) => theme.zIndex.appBar};
+`;
+
+export const Toolbar = styled(MuiToolbar)`
+  gap: 1rem;
+  display: grid;
+  grid-auto-flow: column;
 `;

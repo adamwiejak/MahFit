@@ -1,6 +1,5 @@
 import gsap from "gsap";
 import { Path, FieldValues, UseFormReturn } from "react-hook-form";
-import { refNotAttachedResponse } from "../responses";
 
 //  prettier-ignore
 export const pipe = (...fns:any[]) => (x:any) => fns.reduce((f, g) => g(f), x);
@@ -49,8 +48,10 @@ export function onFormInputClear<T extends FieldValues>(
   };
 }
 
-export function compareStrings(strings: string[], phraze: string) {
-  return strings.some((string) =>
-    string.toLocaleLowerCase().includes(phraze.toLowerCase())
+export function compareStrings(phraze: string, strings: string[]) {
+  const procedString = (string: string) => string.toLowerCase().trim();
+
+  return strings.some(
+    (string) => procedString(phraze) === procedString(string)
   );
 }

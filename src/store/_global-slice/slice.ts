@@ -1,34 +1,34 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { GlobalSlice } from "../types";
+import { createSlice } from "@reduxjs/toolkit";
+import type * as T from "./types";
 
-const dayStart = 6;
-const nightStart = 19;
+const _dayStart = 6;
+const _nightStart = 19;
 
-const initialState: GlobalSlice = {
+const initialState: T.GlobalSlice = {
   isOnline: true,
   theme: undefined,
-  inProgress: false,
+  inProgress: true,
 };
 
 const globalSlice = createSlice({
   name: "globalSlice",
   initialState,
   reducers: {
-    setOnlineStatus(state, action: PayloadAction<GlobalSlice["isOnline"]>) {
-      state.isOnline = action.payload;
-    },
-
-    setInProgress(state, action: PayloadAction<GlobalSlice["inProgress"]>) {
-      state.inProgress = action.payload;
-    },
-
     getAutoTheme(state) {
       const date = new Date();
       const time = +(date.getHours() + date.getMinutes() / 60).toFixed(2);
-      state.theme = time > dayStart && time < nightStart ? "light" : "dark";
+      state.theme = time > _dayStart && time < _nightStart ? "light" : "dark";
     },
 
-    toggleTheme(state, action: PayloadAction<GlobalSlice["theme"]>) {
+    setOnlineStatus(state, action: T.SetOnlineStatusAction) {
+      state.isOnline = action.payload;
+    },
+
+    setInProgress(state, action: T.SetInProgressAction) {
+      state.inProgress = action.payload;
+    },
+
+    toggleTheme(state, action: T.ToggleThemeAction) {
       const payload = action.payload;
       if (payload) state.theme = payload;
       if (!payload) state.theme = state.theme === "dark" ? "light" : "dark";
@@ -36,5 +36,4 @@ const globalSlice = createSlice({
   },
 });
 
-export default globalSlice.reducer;
-export const globalSliceActions = globalSlice.actions;
+export default globalSlice;

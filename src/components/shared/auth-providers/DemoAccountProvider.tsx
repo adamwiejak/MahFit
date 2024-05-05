@@ -1,11 +1,11 @@
 import useBoolean from "../../../hooks/useBoolean";
-import Button from "../../primitives/Button";
-import Icon from "../../primitives/Icon";
-import type { ButtondProps } from "../../primitives/Button";
+import Button from "../../UI/button/Button";
+import Icon from "../../UI/Icon";
+import type { IButton } from "../../UI/button/Button";
 import Dialog from "../../modals/dialog/Dialog";
 import OpenDemoForm from "../forms/demo-account-form/OpenDemoForm";
 
-interface IDemoAccountProvider extends Omit<ButtondProps, "text" | "icon"> {
+interface IDemoAccountProvider extends Omit<IButton, "text" | "icon"> {
   text?: string;
   icon?: "end" | "start";
 }

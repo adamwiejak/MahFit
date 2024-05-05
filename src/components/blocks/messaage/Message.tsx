@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "./styles";
 import useAsyncTask from "../../../hooks/useAsyncTask";
-import Button from "../../primitives/Button";
+import Button from "../../UI/button/Button";
 import Spinner from "../../shared/spinner/Spinner";
 
 type Button = { onClick?: () => any | Promise<any>; text?: string };
@@ -16,18 +16,18 @@ export interface IMessage {
 
 const Message: React.FC<IMessage> = (props) => {
   const { header, paragraphs, confirmBtn, cancelBtn, onClose } = props;
-  const { asyncHandler, isLoading } = useAsyncTask();
+  const { asyncTaskHandler, isLoading } = useAsyncTask();
   const [time, setTime] = useState(5);
 
   const submitHandler = useCallback(async () => {
     const submit = confirmBtn?.onClick;
-    if (submit) await asyncHandler(submit);
+    if (submit) await asyncTaskHandler(submit);
     onClose();
   }, []);
 
   const cancelHandler = useCallback(async () => {
     const cancel = cancelBtn?.onClick;
-    if (cancel) await asyncHandler(cancel);
+    if (cancel) await asyncTaskHandler(cancel);
     onClose();
   }, []);
 

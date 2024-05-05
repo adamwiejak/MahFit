@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import IconButton from "../../../primitives/IconButton";
+import IconButton from "../../../UI/IconButton";
 
 const Form = styled(Box)`
   width: 100%;
