@@ -1,3 +1,4 @@
-import * as LocalStorage from "./local-storage-api";
+import * as LocalStorageAPI from "./local-storage-api";
 
-export default LocalStorage;
+export * from "./local-storage-api";
+export default LocalStorageAPI;

@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
 import type * as T from "./types";
+import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction as P } from "@reduxjs/toolkit";
 
 const _dayStart = 6;
 const _nightStart = 19;
@@ -20,18 +21,18 @@ const globalSlice = createSlice({
       state.theme = time > _dayStart && time < _nightStart ? "light" : "dark";
     },
 
-    setOnlineStatus(state, action: T.SetOnlineStatusAction) {
+    setOnlineStatus(state, action: P<T.SetOnlineStatusAction>) {
       state.isOnline = action.payload;
     },
 
-    setInProgress(state, action: T.SetInProgressAction) {
-      state.inProgress = action.payload;
+    toggleInProgress(state, action: P<T.ToggleInProgressAction>) {
+      if (action.payload !== undefined) state.inProgress = action.payload;
+      if (action.payload === undefined) state.inProgress = !state.inProgress;
     },
 
-    toggleTheme(state, action: T.ToggleThemeAction) {
-      const payload = action.payload;
-      if (payload) state.theme = payload;
-      if (!payload) state.theme = state.theme === "dark" ? "light" : "dark";
+    toggleTheme(state, action: P<T.ToggleThemeAction>) {
+      const toggleTo = state.theme === "dark" ? "light" : "dark";
+      state.theme = action.payload || toggleTo;
     },
   },
 });

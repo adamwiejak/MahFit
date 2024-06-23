@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import Box, { BoxProps } from "@mui/material/Box";
-import { excludeStyledProps } from "../../../helpers/functions/functions";
+import { excludeStyledProps } from "../../helpers/functions/functions";
 
 const excludedProps = ["hovered"];
 const shouldForwardProp = excludeStyledProps(excludedProps);

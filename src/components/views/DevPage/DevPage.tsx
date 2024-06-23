@@ -1,38 +1,42 @@
 import * as styled from "./styles";
-import { useNavigate } from "react-router-dom";
 import { iconsAsset } from "../../../assets/icons/iconsAsset";
 import IconButton from "../../UI/IconButton";
-import { CardProps, Icon, Typography } from "@mui/material";
+import { CardProps, Divider } from "@mui/material";
+import CreateDummyUserForm from "../../../_dev_tests/create-dummy-user/CreateDummyUser";
+import UsersList from "../../blocks/users-list/UsersList";
 import Button from "../../UI/button/Button";
+import { Storage } from "../../../utils/Firebase";
+import useAsyncTask from "../../../hooks/useAsyncTask";
+import LocalImageFile from "../../../_dev_tests/local-image-file/LocalImageFile";
 
 const DevbPage: React.FC<CardProps> = (props) => {
   const { ...rest } = props;
-  const navigate = useNavigate();
+  const { asyncTaskHandler, isLoading } = useAsyncTask();
 
   return (
-    <>
-      <Button sx={{ m: 3 }} text="Home" onClick={() => navigate("/")} />
+    <styled.Page {...rest}>
+      <styled.IconsContainer>
+        {Object.entries(iconsAsset).map((entry: any) => (
+          <IconButton
+            tip={entry[0].toString()}
+            icon={entry[0]}
+            key={entry[0]}
+            size="large"
+            color="default"
+          />
+        ))}
+      </styled.IconsContainer>
 
-      <styled.Wrapper {...rest}>
-        <styled.Container>
-          <Typography variant="h5">USED ICONS :</Typography>
+      <styled.FormsContainer elevation={20} sx={{ gridArea: "users" }}>
+        <CreateDummyUserForm />
+        <Divider />
+        <UsersList />
+      </styled.FormsContainer>
 
-          <Icon />
-        </styled.Container>
-
-        <styled.Container>
-          {Object.entries(iconsAsset).map((entry: any) => (
-            <IconButton
-              tip={entry[0].toString()}
-              icon={entry[0]}
-              key={entry[0]}
-              size="large"
-              color="default"
-            />
-          ))}
-        </styled.Container>
-      </styled.Wrapper>
-    </>
+      <styled.FormsContainer elevation={20}>
+        <LocalImageFile />
+      </styled.FormsContainer>
+    </styled.Page>
   );
 };
 

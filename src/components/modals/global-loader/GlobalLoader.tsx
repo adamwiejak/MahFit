@@ -6,7 +6,12 @@ const GlobalLoader: React.FC = () => {
   const { inProgress } = getGlobalSlice();
 
   return (
-    <Dialog open={inProgress} transitionComponent="zoom" role="global-loader">
+    <Dialog
+      open={inProgress}
+      transition="zoom"
+      role="global-loader"
+      variant="obligatory"
+    >
       <styled.Spinner />
     </Dialog>
   );

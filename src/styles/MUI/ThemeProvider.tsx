@@ -1,7 +1,6 @@
 import gsap from "gsap";
 import { getGlobalSlice } from "../../store/Store";
 import MUIThemeProvider from "@mui/material/styles/ThemeProvider";
-import { useTheme } from "@mui/material/styles";
 import { createTheme } from "@mui/material/styles";
 import { breakpoints } from "./_breakpoints";
 import { components } from "./_components";
@@ -13,7 +12,6 @@ import { useEffect } from "react";
 import { mixins } from "./_mixins";
 
 const ThemeProvider: React.FC<{ children: JSX.Element }> = (props) => {
-  const t = useTheme();
   const { theme } = getGlobalSlice();
 
   useEffect(() => {

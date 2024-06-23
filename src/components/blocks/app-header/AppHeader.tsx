@@ -8,7 +8,7 @@ import NavBar from "../../shared/nav-bar/NavBar";
 import useTween from "../../../hooks/useTween";
 import SectionSkipper from "../../shared/section-skipper/SectionSkipper";
 
-const Header: React.FC<AppBarProps> = (props) => {
+const AppHeader: React.FC<AppBarProps> = (props) => {
   const barRef = useRef<HTMLDivElement>(null);
   useTween(() => config.shrinkHeaderTwen(barRef));
   useTween(() => config.showHeaderTwen(barRef));
@@ -23,4 +23,4 @@ const Header: React.FC<AppBarProps> = (props) => {
   );
 };
 
-export default Header;
+export default AppHeader;

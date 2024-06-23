@@ -1,21 +1,19 @@
 import UserAPI from "../../../API/User";
-import useAsyncTaskHandler from "../../../hooks/useAsyncTask";
 import Button, { IButton } from "../../UI/button/Button";
 import Icon from "../../UI/Icon";
 
-const GoogleAuthProvider: React.FC<Omit<IButton, "text">> = (props) => {
-  const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
+interface IGoogleAuthProvider extends Omit<IButton, "text" | "icon"> {}
 
-  const onGoogleAuthentication = async () => {
-    const response = await asyncTaskHandler(UserAPI.singInWithGoogle);
-  };
+const GoogleAuthProvider: React.FC<IGoogleAuthProvider> = (props) => {
+  function signInHandler() {
+    UserAPI.singInWithGoogle();
+  }
 
   return (
     <Button
       {...props}
       text="Sing In With Google"
-      inProgress={isLoading}
-      onClick={onGoogleAuthentication}
+      onClick={signInHandler}
       startIcon={<Icon icon="google" sx={{ color: "common.google" }} />}
     />
   );

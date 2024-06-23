@@ -1,28 +1,31 @@
-import { firebaseApp } from "./_init";
+import firebaseApp from "./_init";
 import { getStorage, ref } from "firebase/storage";
 import { uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { deleteObject } from "firebase/storage";
+import { TaskResponse } from "../../classes/TaskResponse";
 
-const storage = getStorage(firebaseApp);
+const _storage = getStorage(firebaseApp);
 
-export const firebaseUploadFile = async (file: File, storagePath: string) => {
-  const fileRef = ref(storage, storagePath);
-  await uploadBytes(fileRef, file);
+// const paths = {
+//   user: "user",
+// };
+
+// const getPath = () => {};
+
+export const uploadFile = (file: File, storagePath: string) => {
+  return uploadBytes(ref(_storage, storagePath), file);
 };
 
-export const firebaseDeleteFile = async (storagePath: string) => {
-  const fileRef = ref(storage, storagePath);
-  deleteObject(fileRef);
+export const deleteFile = (storagePath: string) => {
+  return deleteObject(ref(_storage, storagePath));
 };
 
-export const firebaseGetUrl = async (storagePath: string) => {
-  const fileRef = ref(storage, storagePath);
-
+export async function getUrl(storagePath: string) {
   try {
-    const url = await getDownloadURL(fileRef);
-    return url;
-  } catch (err) {
-    throw err;
+    return await getDownloadURL(ref(_storage, storagePath));
+  } catch (err: any) {
+    const response = new TaskResponse(err);
+    response.displaySnackbar();
   }
-};
+}

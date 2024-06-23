@@ -56,6 +56,8 @@ import SortUpIcon from "@mui/icons-material/ArrowDropUp";
 import DashboardIcon from "@mui/icons-material/DashboardTwoTone";
 import ErrorIcon from "@mui/icons-material/Error";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import CollectionsIcon from "@mui/icons-material/Collections";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 
 export const iconsAsset = {
   //// lift icons coresponding to Lift type from UserAPI! /////
@@ -71,6 +73,8 @@ export const iconsAsset = {
   feed: FeedIcon,
   message: MessageIcon,
   dev: DevIcon,
+  avatar: ContactEmergencyIcon,
+  image: CollectionsIcon,
   dot: DotIcon,
   book: MenuBookIcon,
   add: AddIcon,

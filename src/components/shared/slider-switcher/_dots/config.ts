@@ -20,9 +20,9 @@ export const dotsTween: Tween = (
     scale: (idx) => (currValue >= idx ? 1.15 : 0.95),
   });
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.kill();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };

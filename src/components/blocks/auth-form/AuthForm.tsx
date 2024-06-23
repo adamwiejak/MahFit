@@ -3,13 +3,14 @@ import * as config from "./config";
 import { useRef } from "react";
 import SignupForm from "../../shared/forms/signup-form/SignupForm";
 import GoogleAuthProvider from "../../shared/auth-providers/GoogleAuthProvider";
-import FacebookAuthProvider from "../../shared/auth-providers/FacebookAuthProvider";
 import DemoAccountProvider from "../../shared/auth-providers/DemoAccountProvider";
 import LoginForm from "../../shared/forms/login-form/LoginForm";
 import { Link } from "react-router-dom";
 import Button from "../../UI/button/Button";
 import useTween from "../../../hooks/useTween";
 import { CardProps } from "@mui/material";
+import { getGlobalSlice } from "../../../store/Store";
+import Spinner from "../../shared/spinner/Spinner";
 
 interface IAutForm extends CardProps {
   task?: "login" | "signup";
@@ -17,13 +18,14 @@ interface IAutForm extends CardProps {
 
 const AuthForm: React.FC<IAutForm> = (props) => {
   const { task = "login", ...rest } = props;
-  const formsRef = useRef<HTMLDivElement>(null);
+  const { inProgress } = getGlobalSlice();
 
   const firstRunRef = useRef(true);
-  useTween(() => config.swapAuthForm(task, formsRef, firstRunRef), [task]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  useTween(() => config.swapAuthForm(task, containerRef, firstRunRef), [task]);
 
   return (
-    <styled.Container {...rest} ref={formsRef}>
+    <styled.Container {...rest} ref={containerRef}>
       <styled.Header variant="h5">A/B</styled.Header>
 
       <styled.Main>
@@ -34,16 +36,24 @@ const AuthForm: React.FC<IAutForm> = (props) => {
         <styled.CardBox>
           <SignupForm />
         </styled.CardBox>
+
+        <Spinner open={inProgress} />
       </styled.Main>
 
       <Link to={`/auth/${task === "login" ? "signup" : "login"}`}>
-        <Button text="" color="warning" variant="outlined" />
+        <Button
+          text=""
+          size="small"
+          color="warning"
+          variant="outlined"
+          disabled={inProgress}
+        />
       </Link>
 
       <styled.Footer>
-        <GoogleAuthProvider size="small" variant="outlined" />
-        <FacebookAuthProvider size="small" variant="outlined" />
-        <DemoAccountProvider size="small" variant="outlined" />
+        <GoogleAuthProvider disabled={inProgress} size="small" />
+        <DemoAccountProvider disabled={inProgress} size="small" />
+        {/* <FacebookAuthProvider size="small" /> */}
       </styled.Footer>
     </styled.Container>
   );

@@ -1,54 +1,50 @@
-import styled from "./styles";
-import { ButtonProps, Divider, Typography } from "@mui/material";
+import * as config from "./config";
+import * as styled from "./styles";
+import { Divider, Typography, TypographyProps } from "@mui/material";
 import { emailRegEx, required } from "../../../../helpers/data/regex";
-import { useForm } from "react-hook-form";
 import useAsyncTaskHandler from "../../../../hooks/useAsyncTask";
-import { onFormInputClear } from "../../../../helpers/functions/functions";
 import Input from "../../../UI/input/Input";
 import Icon from "../../../UI/Icon";
 import useBoolean from "../../../../hooks/useBoolean";
 import Dialog from "../../../modals/dialog/Dialog";
-import UserAPI from "../../../../API/User";
 import Button from "../../../UI/button/Button";
+import useForm from "../../../../hooks/useForm";
 
-interface IRetrivePassword extends Omit<ButtonProps, "text"> {}
-
-interface RetrivePasswordForm {
-  email: string;
-}
+interface IRetrivePassword extends Omit<TypographyProps, "variant"> {}
 
 export const RetrivePasswordForm: React.FC<IRetrivePassword> = (props) => {
   const { ...rest } = props;
-  const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
-  const { formState, ...form } = useForm<RetrivePasswordForm>();
+  const { isLoading } = useAsyncTaskHandler();
+  const { formState, form } = useForm<config.FormData>();
 
   const [retriveFormOpen, toggleRetriveFormOpen] = useBoolean(false);
 
-  const submit = async (data: RetrivePasswordForm) => {
+  const onFormSubmit = form.handleSubmit((data) => {
     try {
-      asyncTaskHandler(async () => UserAPI.retrivePassword(data.email));
+      // asyncTaskHandler(UserAPI.retrivePassword(data.email));
     } catch (err: any) {
       console.log(err);
     }
-  };
+  });
 
   return (
     <>
-      <Button
-        size="small"
-        variant="text"
+      <Typography
+        sx={{ cursor: "pointer" }}
         color="inherit"
-        {...rest}
-        text="Forgot Pasword ?"
+        variant="subtitle2"
         onClick={toggleRetriveFormOpen}
-      />
+        {...rest}
+      >
+        Forgot Pasword ?
+      </Typography>
 
       <Dialog
         open={retriveFormOpen}
-        transitionComponent="zoom"
+        transition="zoom"
         onClose={toggleRetriveFormOpen}
       >
-        <styled.Form component="form" onSubmit={form.handleSubmit(submit)}>
+        <styled.Form component="form" onSubmit={onFormSubmit}>
           <Typography>Type your email to get restore link</Typography>
           <Divider />
 
@@ -58,15 +54,15 @@ export const RetrivePasswordForm: React.FC<IRetrivePassword> = (props) => {
               label="Your Email"
               error={!!formState.errors.email?.message}
               helperText={formState.errors.email?.message}
-              onClear={onFormInputClear(form, "email")}
+              onClear={form.onInputClear("email")}
               {...form.register("email", { ...emailRegEx, ...required })}
             />
           </styled.Inputs>
 
           <styled.Actions>
             <Button
-              text="Reset Password"
               type="submit"
+              text="Reset Password"
               endIcon={<Icon icon="send" />}
               inProgress={isLoading}
             />

@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { TaskResponse } from "../classes/TaskResponse";
 
-type AsyncTask<T> = () => Promise<T>;
-
 const useAsyncTask = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const asyncTaskHandler = async <T = unknown>(task: AsyncTask<T>) => {
+  const asyncTaskHandler = async <T>(promise: Promise<T>) => {
     setIsLoading(true);
-
     try {
-      return await task();
+      const resoult = await promise;
+      return resoult;
     } catch (err: any) {
-      const response = new TaskResponse(err);
-      throw response;
+      const errResponse = new TaskResponse(err);
+      throw errResponse;
     } finally {
       setIsLoading(false);
     }

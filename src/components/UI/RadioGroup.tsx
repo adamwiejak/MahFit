@@ -13,7 +13,6 @@ export interface RadioGroupProps extends MUIRadioGroupProps {
   label?: string;
   error?: boolean;
   helperText?: string;
-  value?: string;
   color?: FormControlProps["color"];
   radioProps?: RadioProps;
   inputs: Record<string, string>;
@@ -26,8 +25,7 @@ const RadioGroup = React.forwardRef<any, RadioGroupProps>((props, ref) => {
   return (
     <FormControl error={error} color={color}>
       <FormLabel>{label}</FormLabel>
-
-      <MUIRadioGroup {...rest} value={props.value || ""}>
+      <MUIRadioGroup {...rest}>
         {Object.keys(inputs).map((key) => (
           <FormControlLabel
             key={key}

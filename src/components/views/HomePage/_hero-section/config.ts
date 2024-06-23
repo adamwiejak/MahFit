@@ -23,11 +23,11 @@ export const enterTween: Tween = (sectionRef: Ref<HTMLElement>) => {
     { opacity: 1, scale: 1 }
   );
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.revert();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };
 
 export const onScrollTween: Tween = (sectionRef: Ref<HTMLElement>) => {
@@ -52,12 +52,12 @@ export const onScrollTween: Tween = (sectionRef: Ref<HTMLElement>) => {
     .to(actionBox, { opacity: 0, yPercent: 300 }, "<")
     .to(sliderEl, { filter: "blur(5px)" }, "<");
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.scrollTrigger?.kill();
     tl.revert();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };
 
 export const images: ResponsiveImageAsset[] = [

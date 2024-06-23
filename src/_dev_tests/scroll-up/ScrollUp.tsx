@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import styled, { StyledProps } from "./scroll-up.styled";
 import * as config from "./config";
-import Icon from "../../../components/UI/Icon";
-import { scrollIntoView } from "../../../helpers/functions/functions";
-import useTween from "../../../hooks/useTween";
+import Icon from "../../components/UI/Icon";
+import { scrollIntoView } from "../../helpers/functions/functions";
+import useTween from "../../hooks/useTween";
 
 interface IScrollUp extends StyledProps {
   enterOffset?: number; //Fraction 0-1

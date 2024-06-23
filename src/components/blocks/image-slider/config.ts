@@ -1,6 +1,6 @@
 import { gsap, gsapDuration, gsapEasing } from "../../../utils/Gsap/config";
 
-const { standard, longer, test } = gsapDuration;
+const { longer } = gsapDuration;
 const { circ } = gsapEasing;
 
 export const swapImage: Tween = (
@@ -15,9 +15,9 @@ export const swapImage: Tween = (
     scale: (idx) => (idx === goTo ? 1 : 0.9),
   });
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.kill();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };

@@ -1,9 +1,9 @@
 export type GlobalSlice = {
+  theme: Theme;
   inProgress: boolean;
   isOnline: Boolean | undefined;
-  theme: "light" | "dark" | undefined;
 };
 
-export type SetOnlineStatusAction = PayloadAction<GlobalSlice["isOnline"]>;
-export type SetInProgressAction = PayloadAction<GlobalSlice["inProgress"]>;
-export type ToggleThemeAction = PayloadAction<GlobalSlice["theme"]>;
+export type ToggleThemeAction = GlobalSlice["theme"];
+export type SetOnlineStatusAction = GlobalSlice["isOnline"];
+export type ToggleInProgressAction = GlobalSlice["inProgress"] | undefined;

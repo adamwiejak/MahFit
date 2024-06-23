@@ -14,9 +14,9 @@ export const showImageTween: Tween = (containerRef: Ref<HTMLDivElement>) => {
 
   tl.to(overlay, { opacity: 0 }, "<");
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.kill();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };

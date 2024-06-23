@@ -28,11 +28,11 @@ export const openSideBar: Tween = (barRef: Ref<HTMLElement>) => {
   document.addEventListener("scroll", onScroll);
   closeBtnEl!.addEventListener("click", onBtnClose);
 
-  const cleanUp = () => {
+  const cleanup = () => {
     document.removeEventListener("scroll", onScroll);
     closeBtnEl!.removeEventListener("click", onBtnClose);
     tl.revert();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };

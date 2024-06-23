@@ -1,16 +1,16 @@
 import * as styled from "./styled";
 import { BoxProps } from "@mui/material";
 import Footer from "../../blocks/footer/Footer";
-import Header from "../../blocks/app-header/AppHeader";
+import AppHeader from "../../blocks/app-header/AppHeader";
 import { Outlet } from "react-router-dom";
-import ScrollUp from "../../../_dev_tests/components/scroll-up/ScrollUp";
+import ScrollUp from "../../../_dev_tests/scroll-up/ScrollUp";
 
 const LandingLayout: React.FC<BoxProps> = (props) => {
   const { ...rest } = props;
 
   return (
     <styled.Wrapper role="Landing Layout" {...rest}>
-      <Header />
+      <AppHeader />
 
       <Outlet />
 

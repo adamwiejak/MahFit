@@ -2,6 +2,7 @@ import { AppBar, Toolbar as MuiToolbar, styled } from "@mui/material";
 
 export const Container = styled(AppBar)`
   display: grid;
+  width: 100vw;
   grid-auto-flow: column;
   justify-content: space-between;
   gap: ${({ theme: { spacing } }) => spacing(6)};

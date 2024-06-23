@@ -1,24 +1,24 @@
-import { Tab, Tabs } from "@mui/material";
+import { Tab, Tabs, TabsProps } from "@mui/material";
 import Icon from "../../UI/Icon";
 import { useState } from "react";
 
-const UserNavBar = () => {
+interface IUserNavBar extends TabsProps {}
+
+const UserNavBar: React.FC<IUserNavBar> = (props) => {
+  const { ...rest } = props;
   const [value, setValue] = useState(0);
 
-  const handleChange = (e: React.SyntheticEvent, newValue: number) => {
+  function handleChange(e: React.SyntheticEvent, newValue: number) {
+    console.log(e);
     setValue(newValue);
-  };
+  }
 
   return (
-    <Tabs
-      value={value}
-      onChange={handleChange}
-      color="secondary"
-      sx={{ height: "100%", placeSelf: "end" }}
-    >
+    <Tabs {...rest} value={value} onChange={handleChange}>
       <Tab icon={<Icon icon="exercises" />} />
       <Tab icon={<Icon icon="group" />} />
       <Tab icon={<Icon icon="ranking" />} />
+      <Tab icon={<Icon icon="calendar" />} />
     </Tabs>
   );
 };

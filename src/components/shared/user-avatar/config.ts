@@ -9,5 +9,4 @@ type btn = {
 export const buttons: btn[] = [
   { text: "Home", icon: "home", href: "/" },
   { text: "Dashboard", icon: "dashboard", href: "/app" },
-  { text: "Settings", icon: "userSettings", href: "/_dev" },
 ];

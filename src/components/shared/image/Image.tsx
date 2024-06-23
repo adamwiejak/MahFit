@@ -32,6 +32,7 @@ const Image: React.FC<IImage> = (props) => {
     <styled.Container ref={containerRef} {...rest} component="picture">
       <img loading="lazy" role="placeholder" onLoad={setSize} src={image.src} />
       <Spinner open={!finalSize} />
+
       {finalSize && <img sizes={finalSize} onLoad={onImgLoad} {...image} />}
       <styled.Overlay />
     </styled.Container>

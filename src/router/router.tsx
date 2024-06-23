@@ -21,7 +21,11 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="/home" /> },
           { path: "home", element: <HomePage /> },
-          { path: "auth/:task?", element: <AuthPage />, loader: L.authLoader },
+          {
+            path: "auth/:task?",
+            element: <AuthPage />,
+            loader: L.authLoader,
+          },
         ],
       },
 

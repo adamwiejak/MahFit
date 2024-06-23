@@ -16,10 +16,10 @@ export const pinBackround: Tween = (sectionRef: Ref<HTMLElement>) => {
 
   //   tl.set(backgrounEl, { yPercent: -100 });
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.scrollTrigger?.kill();
     tl.revert();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };

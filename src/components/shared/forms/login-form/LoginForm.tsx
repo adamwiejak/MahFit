@@ -1,29 +1,26 @@
 import * as styled from "./styles";
 import * as config from "./config";
-import { useForm } from "react-hook-form";
 import useAsyncTaskHandler from "../../../../hooks/useAsyncTask";
-import { onFormInputClear } from "../../../../helpers/functions/functions";
 import Input from "../../../UI/input/Input";
 import Icon from "../../../UI/Icon";
 import Button from "../../../UI/button/Button";
 import { RetrivePasswordForm } from "../retrive-password-form/RetrivePasswordForm";
 import UserAPI, { LoginUserData } from "../../../../API/User";
 import { TaskResponse } from "../../../../classes/TaskResponse";
+import { BoxProps } from "@mui/material";
+import useForm from "../../../../hooks/useForm";
 
-const LoginForm: React.FC<config.LoginFormProps> = (props) => {
+export interface ILoginFormProps extends BoxProps {}
+
+const LoginForm: React.FC<ILoginFormProps> = (props) => {
   const { ...rest } = props;
   const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
-  const { formState, ...form } = useForm<LoginUserData>();
+  const { formState, form } = useForm<LoginUserData>();
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const asyncTask = async () => {
-      await UserAPI.loginUserWithEmail(data);
-    };
-
     try {
-      await asyncTaskHandler(asyncTask);
+      await asyncTaskHandler(UserAPI.signInUserWithEmail(data));
     } catch (err: any) {
-      console.log(err);
       const { includes, message } = err as TaskResponse;
       if (includes("user")) return form.setError("email", { message });
       if (includes("password")) form.setError("password", { message });
@@ -35,15 +32,15 @@ const LoginForm: React.FC<config.LoginFormProps> = (props) => {
       <styled.Inputs>
         {config.inputs.map(({ name, type, label, icon, options }) => (
           <Input
-            color="secondary"
             key={name}
             type={type}
             label={label}
+            color="secondary"
             disabled={isLoading}
             adornmentStart={<Icon icon={icon} />}
             error={!!formState.errors[name]?.message}
             helperText={formState.errors[name]?.message}
-            onClear={onFormInputClear(form, name)}
+            onClear={form.onInputClear(name)}
             {...form.register(name, options)}
           />
         ))}
@@ -58,7 +55,7 @@ const LoginForm: React.FC<config.LoginFormProps> = (props) => {
           endIcon={<Icon icon="send" />}
         />
 
-        <RetrivePasswordForm sx={{ mb: 2 }} />
+        <RetrivePasswordForm />
       </styled.Actions>
     </styled.Form>
   );

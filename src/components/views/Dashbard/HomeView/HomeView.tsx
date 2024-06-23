@@ -1,10 +1,14 @@
+import { getUserSlice } from "../../../../store/Store";
+import UserSideBar from "../../../blocks/user-side-bar/UserSideBar";
 import * as styled from "./home-view.styled";
 
 const HomeView = () => {
+  const { userData } = getUserSlice();
+
   return (
     <styled.Page>
-      <styled.SideBar>Friends List</styled.SideBar>
-      <styled.Main>Calendar</styled.Main>
+      <UserSideBar />
+      <styled.Main>{JSON.stringify(userData)}</styled.Main>
     </styled.Page>
   );
 };

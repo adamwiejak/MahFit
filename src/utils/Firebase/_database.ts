@@ -1,48 +1,48 @@
-import { firebaseApp } from "./_init";
-import { getFirestore, setDoc } from "firebase/firestore";
-import { getDoc } from "firebase/firestore";
-import { collection } from "firebase/firestore";
-import { doc } from "firebase/firestore";
-import { getDocs } from "firebase/firestore";
+import firebaseApp from "./_init";
+import { getFirestore } from "firebase/firestore";
+import { getDoc, setDoc, addDoc, getDocs } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
+import {
+  noColectionResponse,
+  noDocumentResponse,
+} from "../../helpers/responses";
 import type { DocumentData, WithFieldValue } from "firebase/firestore";
-import { noDocument } from "../../helpers/responses";
 
-const database = getFirestore(firebaseApp);
+const _database = getFirestore(firebaseApp);
 
-export const getDocument = async <T = unknown>(path: string) => {
-  const docRef = doc(database, path);
+export function addDocument(path: string, data: WithFieldValue<DocumentData>) {
+  const colRef = collection(_database, path);
+  return addDoc(colRef, data);
+}
+
+export function setDocument(
+  colPath: string,
+  docId: string,
+  data: WithFieldValue<DocumentData>
+) {
+  const docRef = doc(_database, colPath, docId);
+  return setDoc(docRef, data);
+}
+
+export async function getDocument<T = unknown>(path: string) {
   try {
-    const docSnapshot = await getDoc(docRef);
-    if (!docSnapshot.exists()) throw new Error(noDocument);
+    const docSnapshot = await getDoc(doc(_database, path));
+    if (!docSnapshot.exists()) throw noDocumentResponse;
     return docSnapshot.data() as T;
   } catch (err) {
     throw err;
   }
-};
+}
 
-export const setDocument = async <T>(
-  path: string,
-  data: WithFieldValue<DocumentData>
-) => {
-  const docRef = doc(database, path);
-  return setDoc(docRef, data);
-};
-
-export const getColection = async <T>(path: string) => {
-  const colRef = collection(database, path);
+export async function getColection<T>(path: string) {
   try {
-    const colSnapshot = await getDocs(colRef);
-    if (colSnapshot) {
-      const data: DocumentData[] = [];
-      colSnapshot.forEach((doc) => data.push(doc.data()));
-      return data;
-    } else {
-      throw new Response(null, {
-        status: 404,
-        statusText: "No Colection Found",
-      });
-    }
+    const colSnapshot = await getDocs(collection(_database, path));
+    if (!colSnapshot) throw noColectionResponse;
+
+    const data: DocumentData[] = [];
+    colSnapshot.forEach((doc) => data.push(doc.data()));
+    return data as T;
   } catch (err) {
     throw err;
   }
-};
+}

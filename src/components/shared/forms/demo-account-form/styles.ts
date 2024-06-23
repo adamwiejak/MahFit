@@ -1,39 +1,39 @@
 import { styled } from "@mui/material/styles";
-import { Box, Card } from "@mui/material";
+import { Box, Card as MuiCard, Typography } from "@mui/material";
 
-const Container = styled(Card)`
-  min-width: 50vw;
-  position: relative;
-  text-align: left;
-  padding: ${({ theme: { spacing } }) => spacing(5, 4)};
-  gap: ${({ theme: { spacing } }) => spacing(4)};
+export const Image = styled("img")`
+  height: 100%;
 `;
 
-const Form = styled(Box)`
+export const Paragraph = styled(Typography)`
+  margin: ${({ theme: { spacing } }) => spacing(1, 0)};
+`;
+
+export const Card = styled(MuiCard)`
+  display: grid;
+  gap: ${({ theme: { spacing } }) => spacing(3)};
+  padding: ${({ theme: { spacing } }) => spacing(4)};
+`;
+
+export const Form = styled(Box)`
   display: grid;
   grid-template-rows: 1fr min-content;
-  gap: ${({ theme: { spacing } }) => spacing(3)};
-  padding-top: ${({ theme: { spacing } }) => spacing(3)};
-  overflow: hidden;
+  gap: ${({ theme: { spacing } }) => spacing(1)};
 `;
 
-Form.defaultProps = { component: "form" };
-
-const Inputs = styled(Box)`
-  overflow: auto;
+export const Inputs = styled(Box)`
   display: grid;
-  gap: ${({ theme: { spacing } }) => spacing(4)};
+  align-items: center;
+  grid-template-columns: 1fr min-content;
+  gap: ${({ theme: { spacing } }) => spacing(3)};
   padding: ${({ theme: { spacing } }) => spacing(3)};
 `;
 
-const Actions = styled(Box)`
+export const Errors = styled(Box)`
   display: grid;
-  gap: ${({ theme: { spacing } }) => spacing(3)};
 `;
 
-export default {
-  Container,
-  Form,
-  Inputs,
-  Actions,
-};
+export const Actions = styled(Box)`
+  display: grid;
+  margin-top: ${({ theme: { spacing } }) => spacing(3)};
+`;

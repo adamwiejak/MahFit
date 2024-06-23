@@ -1,18 +1,21 @@
 import useAsyncTaskHandler from "../../../hooks/useAsyncTask";
-import Button from "../../UI/button/Button";
-import type { ButtonProps } from "@mui/material";
+import Button, { type IButton } from "../../UI/button/Button";
 import Icon from "../../UI/Icon";
 import UserAPI from "../../../API/User";
 
-const FacebookAuthProvider: React.FC<Omit<ButtonProps, "text">> = (props) => {
+interface IFacebookAuthProvider extends Omit<IButton, "text" | "icon"> {
+  icon?: "end" | "start";
+}
+
+const FacebookAuthProvider: React.FC<IFacebookAuthProvider> = (props) => {
   const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
 
   return (
     <Button
       {...props}
-      text="Sing In With Facebook"
       inProgress={isLoading}
-      onClick={() => asyncTaskHandler(UserAPI.singInWithFacebook)}
+      text="Sing In With Facebook"
+      onClick={UserAPI.singInWithFacebook}
       startIcon={<Icon icon="facebook" sx={{ color: "common.facebook" }} />}
     />
   );

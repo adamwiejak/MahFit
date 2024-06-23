@@ -1,5 +1,5 @@
-import { getScrolledY } from "../../../helpers/functions/functions";
-import { gsap, gsapDuration, gsapEasing } from "../../../utils/Gsap/config";
+import { getScrolledY } from "../../helpers/functions/functions";
+import { gsap, gsapDuration, gsapEasing } from "../../utils/Gsap/config";
 
 export const toggleButtonTween: Tween = (
   btnRef: Ref<HTMLButtonElement>,
@@ -20,11 +20,11 @@ export const toggleButtonTween: Tween = (
 
   document.addEventListener("scroll", onScrol);
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.kill();
     tl.scrollTrigger?.kill();
     document.removeEventListener("scroll", onScrol);
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };

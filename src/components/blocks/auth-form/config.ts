@@ -38,9 +38,9 @@ export const swapAuthForm: Tween = (
     firstRunRef.current = false;
   }
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.kill();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };

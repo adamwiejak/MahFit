@@ -1,12 +1,11 @@
 import { LoaderFunctionArgs } from "react-router-dom";
 import { redirect } from "react-router-dom";
-import { AuthTask } from "../API/User";
 
 export function authLoader(args: LoaderFunctionArgs) {
-  const tasks: AuthTask[] = ["login", "logout", "signup"];
   const task = args.params.task;
-  const validTask = tasks.some((t) => t === task);
-  return validTask ? task : redirect("/auth/login");
+  const validTasks = ["login", "signup"];
+  const isTaskValid = validTasks.some((t) => t === task);
+  return isTaskValid ? task : redirect("/auth/login");
 }
 
 export function sectionLoader(args: LoaderFunctionArgs) {

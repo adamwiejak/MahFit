@@ -21,12 +21,12 @@ export const shrinkHeaderTwen: Tween = (barRef: Ref<HTMLDivElement>) => {
     padding: `${spacing[1]} ${spacing[3]}`,
   }).to(barEl, { backdropFilter: backdrop }, "<");
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.scrollTrigger?.kill();
     tl.kill();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };
 
 export const showHeaderTwen: Tween = (barRef: Ref<HTMLDivElement>) => {
@@ -47,10 +47,10 @@ export const showHeaderTwen: Tween = (barRef: Ref<HTMLDivElement>) => {
 
   const scrollTrigger = ScrollTrigger.create({ onUpdate });
 
-  const cleanUp = () => {
+  const cleanup = () => {
     tl.kill();
     scrollTrigger.kill();
   };
 
-  return [tl, cleanUp];
+  return { tl, cleanup };
 };

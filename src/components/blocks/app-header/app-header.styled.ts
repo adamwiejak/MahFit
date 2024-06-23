@@ -2,7 +2,7 @@ import { styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
 export const Bar = styled(Box)`
-  width: 100%;
+  width: 100vw;
   display: flex;
   position: fixed;
   align-items: center;

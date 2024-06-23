@@ -38,16 +38,6 @@ export function recordFromArray(values: string[]) {
   return records;
 }
 
-export function onFormInputClear<T extends FieldValues>(
-  form: Omit<UseFormReturn<T>, "formState">,
-  inputName: Path<T>
-) {
-  return () => {
-    form.resetField!(inputName);
-    form.setFocus!(inputName);
-  };
-}
-
 export function compareStrings(phraze: string, strings: string[]) {
   const procedString = (string: string) => string.toLowerCase().trim();
 

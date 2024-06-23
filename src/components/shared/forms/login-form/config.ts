@@ -1,12 +1,7 @@
 import { LoginUserData } from "../../../../API/User/types";
-import {
-  emailRegEx,
-  required,
-  passwordRegEx,
-} from "../../../../helpers/data/regex";
-import { BoxProps } from "@mui/material";
-
-export interface LoginFormProps extends BoxProps {}
+import { emailRegEx } from "../../../../helpers/data/regex";
+import { passwordRegEx } from "../../../../helpers/data/regex";
+import { required } from "../../../../helpers/data/regex";
 
 export const inputs: FormInput<LoginUserData>[] = [
   {

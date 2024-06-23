@@ -37,3 +37,9 @@ body {
     overflow-x: hidden;
   }
 }
+
+p > span {
+  font-weight: 700;
+  margin: 0 0.1em;
+  font-style: italic;
+}

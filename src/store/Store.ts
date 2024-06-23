@@ -7,7 +7,7 @@ import type { TypedUseSelectorHook } from "react-redux";
 import type { AppDispatch, RootState } from "./types";
 
 ///////DEV//////////
-export const isDev = process.env.NODE_ENV === "development" && false;
+export const isDev = process.env.NODE_ENV === "development";
 const devMiddlewares = isDev ? [logger] : [];
 ///////////////////
 
@@ -19,13 +19,13 @@ const rootReducer = {
 export const store = configureStore({
   devTools: isDev,
   reducer: rootReducer,
-  middleware: (getDefault) => getDefault().concat(devMiddlewares),
+  // middleware: (getDefault) => getDefault().concat(devMiddlewares),
 });
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const getStore = () => useAppSelector((S) => S);
 export const getUserSlice = () => useAppSelector((S) => S.userSlice);
 export const getGlobalSlice = () => useAppSelector((S) => S.globalSlice);
 export default store;
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

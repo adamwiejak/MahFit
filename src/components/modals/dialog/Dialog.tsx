@@ -1,61 +1,64 @@
+import * as styled from "./styles";
 import gsap from "gsap";
-import styled from "./styles";
-import React from "react";
-import { Grow, Zoom, Slide } from "@mui/material";
-import type { SlideProps } from "@mui/material";
-import type { ZoomProps } from "@mui/material";
-import type { GrowProps } from "@mui/material";
-import type { DialogProps } from "@mui/material";
+import React, { useRef } from "react";
+import { Divider, type DialogProps } from "@mui/material";
+import { getTransitionComponent, type Transition } from "./config";
 
-interface CustomDialogProps extends Omit<DialogProps, "TransitionComponent"> {
-  transitionComponent?: "grow" | "zoom" | "slide";
+interface IDialog extends Omit<DialogProps, "TransitionComponent"> {
+  title?: string;
+  transition?: Transition;
+  variant?: "obligatory" | "important" | undefined;
 }
 
-const GrowTransitionComponent = React.forwardRef<unknown, GrowProps>(
-  (props, ref) => <Grow {...props} ref={ref} />
-);
-const ZoomTransitionComponent = React.forwardRef<unknown, ZoomProps>(
-  (props, ref) => <Zoom {...props} ref={ref} />
-);
-const SlideTransitionComponent = React.forwardRef<unknown, SlideProps>(
-  (props, ref) => <Slide {...props} ref={ref} direction="up" />
-);
+const Dialog: React.FC<IDialog> = (props) => {
+  const { title, onClose, variant, children, transition, ...rest } = props;
+  const dialogElRef = useRef<HTMLDivElement>(null);
 
-const transitionComponentMap = {
-  zoom: ZoomTransitionComponent,
-  grow: GrowTransitionComponent,
-  slide: SlideTransitionComponent,
-};
+  function shakeContent() {
+    const content = dialogElRef.current?.children[2];
+    gsap.effects.shake(content).play(0);
+  }
 
-const Dialog: React.FC<CustomDialogProps> = (props) => {
-  const {
-    open,
-    children,
-    transitionComponent = "grow",
-    onClose,
-    ...rest
-  } = props;
+  function closeHandler(e: MouseEvent | KeyboardEvent) {
+    const reason = e.type === "click" ? "backdropClick" : "escapeKeyDown";
+    if (variant === "obligatory") return shakeContent();
 
-  const closeHandler = (e: MouseEvent | KeyboardEvent) => {
-    if (onClose)
-      onClose({}, e.type === "click" ? "backdropClick" : "escapeKeyDown");
-    if (!onClose) {
-      const content = gsap.utils.selector(e.currentTarget!)(
-        ".MuiDialog-paper"
-      )[0];
-      gsap.effects.shake(content).play(0);
+    if (reason === "backdropClick" && variant === "important") {
+      return shakeContent();
     }
-  };
+    if (onClose) onClose({}, reason);
+  }
+
+  function onCloseIconClick() {
+    onClose!({}, "escapeKeyDown");
+  }
 
   return (
     <styled.Dialog
-      open={open}
-      disablePortal
+      ref={dialogElRef}
       onClose={closeHandler}
-      TransitionComponent={transitionComponentMap[transitionComponent]}
+      TransitionComponent={getTransitionComponent(transition)}
       {...rest}
     >
-      {children}
+      <styled.Header>
+        {title && (
+          <styled.Title color="primary" variant="h5">
+            {title}
+          </styled.Title>
+        )}
+
+        {variant !== "obligatory" && (
+          <styled.CloseIcon
+            icon="close"
+            color="secondary"
+            onClick={onCloseIconClick}
+          />
+        )}
+      </styled.Header>
+
+      <Divider variant="middle" />
+
+      <styled.Content>{children}</styled.Content>
     </styled.Dialog>
   );
 };

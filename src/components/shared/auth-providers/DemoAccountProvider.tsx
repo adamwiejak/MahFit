@@ -3,43 +3,47 @@ import Button from "../../UI/button/Button";
 import Icon from "../../UI/Icon";
 import type { IButton } from "../../UI/button/Button";
 import Dialog from "../../modals/dialog/Dialog";
-import OpenDemoForm from "../forms/demo-account-form/OpenDemoForm";
+import DemoAccountForm from "../forms/demo-account-form/DemoAccountForm";
+import { useEffect, useState } from "react";
 
-interface IDemoAccountProvider extends Omit<IButton, "text" | "icon"> {
-  text?: string;
-  icon?: "end" | "start";
-}
+/////////////////////////////////////////////////////
 
-const header = "Open Locall Demo Account?";
-const paragraphs = [
-  <>
-    You are logging in to a demo account. It works locally but still needs
-    network connetcion to provide you full expirience.
-  </>,
-  <>
-    All changes will be saved locally, and will disappear after you logout. We
-    recommend create your own full account, it's totally <span>FREE.</span>
-  </>,
-  <>Do you want to continue?</>,
-];
+interface IDemoAccountProvider extends Omit<IButton, "icon"> {}
+
+const initTimerValue = 0;
 
 const DemoAccountProvider: React.FC<IDemoAccountProvider> = (props) => {
-  const { text, icon, ...rest } = props;
+  const { text, ...rest } = props;
+  const [timer, setTimer] = useState(initTimerValue);
   const [isModalOpen, toggleModal] = useBoolean(false);
+
+  useEffect(() => {
+    if (!isModalOpen && timer > 1) return setTimer(initTimerValue);
+
+    const timeOut = setTimeout(() => {
+      if (timer > 0) setTimer((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timeOut);
+  }, [timer, isModalOpen]);
 
   return (
     <>
       <Button
         {...rest}
         onClick={toggleModal}
-        text={text || "Local Demo Account"}
-        endIcon={icon === "end" && <Icon icon="user" />}
+        text={text || "Demo Account"}
         startIcon={<Icon icon="user" />}
       />
 
-      <Dialog open={isModalOpen}>
-        <OpenDemoForm />
-        <Button text="Cancel" onClick={toggleModal} />
+      <Dialog
+        fullWidth
+        transition="slide"
+        open={isModalOpen}
+        variant={timer > 1 ? "obligatory" : "important"}
+        onClose={toggleModal}
+        title="Test Demo  Account"
+      >
+        <DemoAccountForm timer={timer} />
       </Dialog>
     </>
   );

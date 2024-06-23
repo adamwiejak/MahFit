@@ -21,13 +21,13 @@ const Message: React.FC<IMessage> = (props) => {
 
   const submitHandler = useCallback(async () => {
     const submit = confirmBtn?.onClick;
-    if (submit) await asyncTaskHandler(submit);
+    // if (submit) await asyncTaskHandler(submit);
     onClose();
   }, []);
 
   const cancelHandler = useCallback(async () => {
     const cancel = cancelBtn?.onClick;
-    if (cancel) await asyncTaskHandler(cancel);
+    // if (cancel) await asyncTaskHandler(cancel);
     onClose();
   }, []);
 

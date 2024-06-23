@@ -27,9 +27,17 @@ export const components: ThemeOptions["components"] = {
     },
   },
 
-  MuiTextField: {
-    defaultProps: {
-      // variant: "filled",
+  MuiDialog: {
+    styleOverrides: {
+      root: {
+        backdropFilter: "blur(5px)",
+      },
+    },
+  },
+
+  MuiTypography: {
+    styleOverrides: {
+      root: {},
     },
   },
 };

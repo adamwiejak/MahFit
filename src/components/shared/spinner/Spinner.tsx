@@ -9,13 +9,13 @@ interface ISpinner {
 }
 
 const Spinner: React.FC<ISpinner> = (props) => {
-  const { open, color, size } = props;
+  const { open, color, size = "20%" } = props;
 
-  return (
+  return open ? (
     <styled.Overlay>
       <styled.Spinner color={color} size={size} />
     </styled.Overlay>
-  );
+  ) : null;
 };
 
 export default Spinner;

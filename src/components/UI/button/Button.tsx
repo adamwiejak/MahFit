@@ -12,7 +12,7 @@ const Button: React.FC<IButton> = (props) => {
   const { text, inProgress, disabled, children, ...rest } = props;
 
   return (
-    <MUIButton {...rest} disabled={disabled || inProgress}>
+    <MUIButton {...rest} disabled={disabled}>
       {text}
       {children}
       {inProgress && (

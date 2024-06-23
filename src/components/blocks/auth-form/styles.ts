@@ -5,8 +5,8 @@ import { Typography } from "@mui/material";
 
 export const Container = styled(Card)`
   display: grid;
-  width: 34em;
-  max-height: 90vh;
+  width: 25vw;
+  max-height: 85vh;
   position: relative;
   place-self: center;
   text-align: center;
@@ -21,7 +21,6 @@ export const Header = styled(Typography)``;
 export const Main = styled(Box)`
   z-index: 5;
   display: grid;
-  /* overflow: hidden; */
   position: relative;
   perspective: 700px;
   grid-template-rows: 1fr;

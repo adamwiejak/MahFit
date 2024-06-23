@@ -17,6 +17,8 @@ const InputEndAdornment: React.FC<IInputEndAdornment> = (props) => {
 
   return (
     <InputAdornment position="end" {...rest}>
+      {onClear && <IconButton icon="backspace" tip="clear" onClick={onClear} />}
+
       {passwordToggler && (
         <IconButton
           color="secondary"
@@ -24,8 +26,6 @@ const InputEndAdornment: React.FC<IInputEndAdornment> = (props) => {
           icon={passwordToggler[0] ? "show" : "hide"}
         />
       )}
-
-      {onClear && <IconButton icon="backspace" tip="clear" onClick={onClear} />}
     </InputAdornment>
   );
 };

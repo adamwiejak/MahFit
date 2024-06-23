@@ -9,12 +9,11 @@ import useRouter from "../../../hooks/useRouter";
 
 const NavBar = () => {
   const [goToPage] = useRouter();
-
-  const { authToken } = getUserSlice();
+  const { accessToken } = getUserSlice();
 
   return (
     <styled.Container>
-      {!authToken && (
+      {!accessToken && (
         <>
           <Link to="/auth/signup">
             <Button
@@ -37,7 +36,7 @@ const NavBar = () => {
         </>
       )}
 
-      {authToken && (
+      {accessToken && (
         <>
           <Button
             size="large"
