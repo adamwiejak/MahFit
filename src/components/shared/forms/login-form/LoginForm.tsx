@@ -9,11 +9,13 @@ import UserAPI, { LoginUserData } from "../../../../API/User";
 import { TaskResponse } from "../../../../classes/TaskResponse";
 import { BoxProps } from "@mui/material";
 import useForm from "../../../../hooks/useForm";
+import { useNavigate } from "react-router-dom";
 
 export interface ILoginFormProps extends BoxProps {}
 
 const LoginForm: React.FC<ILoginFormProps> = (props) => {
   const { ...rest } = props;
+  const navigate = useNavigate();
   const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
   const { formState, form } = useForm<LoginUserData>();
 
@@ -22,7 +24,7 @@ const LoginForm: React.FC<ILoginFormProps> = (props) => {
       await asyncTaskHandler(UserAPI.signInUserWithEmail(data));
     } catch (err: any) {
       const { includes, message } = err as TaskResponse;
-      if (includes("user")) return form.setError("email", { message });
+      if (includes("user")) form.setError("email", { message });
       if (includes("password")) form.setError("password", { message });
     }
   });

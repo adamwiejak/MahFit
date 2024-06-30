@@ -2,10 +2,6 @@ import firebaseApp from "./_init";
 import { getFirestore } from "firebase/firestore";
 import { getDoc, setDoc, addDoc, getDocs } from "firebase/firestore";
 import { collection, doc } from "firebase/firestore";
-import {
-  noColectionResponse,
-  noDocumentResponse,
-} from "../../helpers/responses";
 import type { DocumentData, WithFieldValue } from "firebase/firestore";
 
 const _database = getFirestore(firebaseApp);
@@ -27,7 +23,8 @@ export function setDocument(
 export async function getDocument<T = unknown>(path: string) {
   try {
     const docSnapshot = await getDoc(doc(_database, path));
-    if (!docSnapshot.exists()) throw noDocumentResponse;
+    if (!docSnapshot.exists())
+      throw new Error(`Document ${path} not found in database`);
     return docSnapshot.data() as T;
   } catch (err) {
     throw err;
@@ -37,7 +34,7 @@ export async function getDocument<T = unknown>(path: string) {
 export async function getColection<T>(path: string) {
   try {
     const colSnapshot = await getDocs(collection(_database, path));
-    if (!colSnapshot) throw noColectionResponse;
+    if (!colSnapshot) throw new Error(`Colection ${path} not exists`);
 
     const data: DocumentData[] = [];
     colSnapshot.forEach((doc) => data.push(doc.data()));

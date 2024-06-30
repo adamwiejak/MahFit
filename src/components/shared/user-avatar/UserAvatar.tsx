@@ -18,8 +18,9 @@ const UserAvatar = () => {
   const avatarElRef = useRef<HTMLDivElement>(null);
   const [menuOpened, toggleMenu] = useBoolean(false);
 
-  const src =
-    userData!.details?.photoURL || avatarImages[userData!.base.gender];
+  const src = userData
+    ? userData.details?.photoURL || avatarImages[userData.base.gender]
+    : undefined;
 
   return (
     <>
@@ -31,17 +32,24 @@ const UserAvatar = () => {
         anchorEl={avatarElRef.current}
       >
         {config.buttons.map(({ icon, href, text }) => (
-          <Link to={href} key={href}>
-            <MenuItem>
-              <ListItemIcon>
-                <Icon icon={icon} />
-              </ListItemIcon>
-              <ListItemText>{text}</ListItemText>
-            </MenuItem>
-          </Link>
+          <MenuItem key={href}>
+            <ListItemIcon>
+              <Icon icon={icon} />
+            </ListItemIcon>
+            <ListItemText>{text}</ListItemText>
+          </MenuItem>
         ))}
 
         <Divider />
+
+        <Link to={"/app/settings"}>
+          <MenuItem>
+            <ListItemIcon>
+              <Icon icon="userSettings" />
+            </ListItemIcon>
+            <ListItemText>Settings</ListItemText>
+          </MenuItem>
+        </Link>
 
         <MenuItem onClick={UserAPI.logoutUser}>
           <ListItemIcon>

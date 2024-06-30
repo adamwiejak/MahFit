@@ -3,10 +3,10 @@ export type PersonalRecords = Record<Lift, number>;
 export type Lift = "benchPress" | "deadLift" | "squat";
 export type AuthTask = "login" | "signup";
 
-export type SinginDemoUserData = {
-  nickname: string;
+export type GuestData = {
+  image: string;
   gender: Gender;
-  image: File;
+  nickname: string;
 };
 
 export type SinginUserData = {

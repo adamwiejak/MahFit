@@ -7,6 +7,7 @@ type btn = {
 };
 
 export const buttons: btn[] = [
-  { text: "Home", icon: "home", href: "/" },
-  { text: "Dashboard", icon: "dashboard", href: "/app" },
+  { text: "Add Workout", icon: "add", href: "/" },
+  { text: "Set Avatar", icon: "image", href: "/" },
+  // { text: "Dashboard", icon: "dashboard", href: "/app" },
 ];

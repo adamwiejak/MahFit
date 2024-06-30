@@ -7,12 +7,6 @@ import { TaskResponse } from "../../classes/TaskResponse";
 
 const _storage = getStorage(firebaseApp);
 
-// const paths = {
-//   user: "user",
-// };
-
-// const getPath = () => {};
-
 export const uploadFile = (file: File, storagePath: string) => {
   return uploadBytes(ref(_storage, storagePath), file);
 };

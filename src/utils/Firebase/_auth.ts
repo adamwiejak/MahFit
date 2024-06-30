@@ -38,8 +38,9 @@ export function authAnonymously() {
 }
 
 export function authWithFacebook() {
-  const googleProvider = new FacebookAuthProvider();
-  return signInWithPopup(_auth, googleProvider);
+  // const googleProvider = new FacebookAuthProvider();
+  // return signInWithPopup(_auth, googleProvider);
+  alert("Facebook Provider Here. FB API Key needed");
 }
 
 export function authWithGoogle() {

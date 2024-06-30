@@ -1,39 +1,27 @@
-import * as styled from "./app-bar.styled";
-import { AppBarProps, Typography } from "@mui/material";
-import Logo from "../../shared/logo/Logo";
 import React from "react";
+import * as styled from "./styled";
+import Logo from "../../shared/logo/Logo";
 import ThemeSwitcher from "../../shared/theme-switcher/ThemeSwitcher";
-import UserAvatar from "../../shared/user-avatar/UserAvatar";
-import UserNavBar from "../../shared/user-nav-bar/UserNavBar";
-import { getUserSlice } from "../../../store/Store";
+import { type AppBarProps } from "@mui/material";
 import NavBar from "../../shared/nav-bar/NavBar";
+import SectionSkipper from "../../shared/section-skipper/SectionSkipper";
+import { getUserSlice } from "../../../store/Store";
+import UserNavBar from "../../shared/user-nav-bar/UserNavBar";
+import { useLocation } from "react-router-dom";
 
-interface IAppBar extends AppBarProps {}
-
-const AppBar: React.FC<IAppBar> = (props) => {
-  const { ...rest } = props;
-  const { userData, accessToken } = getUserSlice();
+const AppBar = React.forwardRef<any, AppBarProps>((props, ref) => {
+  const { accessToken } = getUserSlice();
+  const { pathname } = useLocation();
 
   return (
-    <styled.Container {...rest} sx={{ justifyItems: "space-between" }}>
-      <styled.Toolbar>
-        <Logo />
-        <ThemeSwitcher />
-        <Typography>{userData?.base.nickname}</Typography>
-      </styled.Toolbar>
+    <styled.Bar {...props} ref={ref}>
+      <Logo />
+      <ThemeSwitcher />
+      {pathname === "/home" && <SectionSkipper />}
 
-      {accessToken ? (
-        <styled.Toolbar>
-          <UserNavBar />
-          <UserAvatar />
-        </styled.Toolbar>
-      ) : (
-        <styled.Toolbar>
-          <NavBar />
-        </styled.Toolbar>
-      )}
-    </styled.Container>
+      {accessToken ? <UserNavBar /> : <NavBar />}
+    </styled.Bar>
   );
-};
+});
 
 export default AppBar;

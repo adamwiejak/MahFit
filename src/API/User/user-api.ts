@@ -1,30 +1,51 @@
 import * as T from "./types";
-import { Auth, Database, Storage } from "../../utils/Firebase";
+import { Auth, Database } from "../../utils/Firebase";
 import LocalStorageAPI from "../LocalStorage";
 import { DUMMY_EVENTS } from "../../helpers/data/dummy-data";
 import { User as UserImpl } from "firebase/auth";
 
-export function getCurrentUser() {
-  return Auth.getCurrentUser();
-}
-
-async function cleanUpLocalUser(user: UserImpl) {
-  LocalStorageAPI.removeLocalUser();
+async function _cleanUpLocalUser(user: UserImpl) {
   try {
-    await Storage.deleteFile(`avatars/${user.uid}`);
     await Auth.delateAccount(user);
+    LocalStorageAPI.removeLocalUser();
   } catch (err) {
     throw err;
   }
 }
 
+async function _createLocalUser(): Promise<T.User> {
+  const { gender, nickname, image } = LocalStorageAPI.getGuestData()!;
+  const { uid } = Auth.getCurrentUser()!;
+
+  try {
+    const dummyFriends = await Database.getColection<T.User[]>(`dummy-users`);
+    const friendsList = dummyFriends.map(({ base }) => {
+      return { uid: base.uid, isFav: Math.random() > 0.5 };
+    });
+
+    const dummyUser: T.User = {
+      base: { email: "guest@example.com", uid, gender, nickname },
+      details: { photoURL: image, friendsList, workouts: DUMMY_EVENTS },
+    };
+
+    LocalStorageAPI.setLocalUser(dummyUser);
+    return dummyUser;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export function getCurrentUser() {
+  return Auth.getCurrentUser();
+}
+
 export async function logoutUser() {
-  const guest = LocalStorageAPI.getLocalUser();
   const user = Auth.getCurrentUser()!;
+  const guest = LocalStorageAPI.getLocalUser();
 
   try {
     await Auth.logoutUser();
-    if (guest) await cleanUpLocalUser(user);
+    if (guest) await _cleanUpLocalUser(user);
   } catch (err) {
     throw err;
   }
@@ -48,21 +69,21 @@ export async function createUserWithEmail(data: T.SinginUserData) {
   }
 }
 
-export function signInUserWithEmail(data: T.LoginUserData) {
-  return Auth.signInWithEmail(data.email, data.password);
+export async function signInUserWithEmail(data: T.LoginUserData) {
+  const { email, password } = data;
+  return Auth.signInWithEmail(email, password);
 }
 
-export const retrivePassword = (email: string) => {
+export async function retrivePassword(email: string) {
   return Auth.resetPassword(email);
-};
+}
 
-export async function openDemo(guest: T.SinginDemoUserData) {
+export async function openDemo(guest: T.GuestData) {
   const { nickname, image, gender } = guest;
-  LocalStorageAPI.setLocalUser({ nickname, gender });
+  LocalStorageAPI.setGuestData({ nickname, gender, image });
 
   try {
-    const { user } = await Auth.authAnonymously();
-    await Storage.uploadFile(image, `avatars/${user.uid}`);
+    await Auth.authAnonymously();
   } catch (err: any) {
     throw err;
   }
@@ -76,31 +97,12 @@ export function setUserInDB(data: T.UserBaseInfo) {
   return Database.setDocument("users", data.uid, { base: data });
 }
 
-export async function createLocalUser(user: UserImpl): Promise<T.User> {
-  const guest = LocalStorageAPI.getLocalUser();
-
-  // TODO: update local storage user to valid User object {base, details} with dummy data
+export async function getLocalUser() {
+  let localUser = LocalStorageAPI.getLocalUser();
 
   try {
-    const dummyFriends = await Database.getColection<T.User[]>(`dummy-users`);
-    const photoURL = await Storage.getUrl(`avatars/${user.uid}`);
-    console.log(dummyFriends);
-
-    const friendsList = dummyFriends.map(({ base }) => {
-      return { uid: base.uid, isFav: Math.random() > 0.5 };
-    });
-
-    const dummyUser: T.User = {
-      base: {
-        uid: user.uid,
-        email: "guest@example.com",
-        gender: guest?.gender || "other",
-        nickname: guest?.nickname || "Guest",
-      },
-      details: { photoURL, friendsList, workouts: DUMMY_EVENTS },
-    };
-
-    return dummyUser;
+    if (!localUser) localUser = await _createLocalUser();
+    return localUser;
   } catch (err) {
     throw err;
   }

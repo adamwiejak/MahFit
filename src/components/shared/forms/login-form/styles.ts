@@ -18,4 +18,5 @@ export const Inputs = styled(Box)`
 export const Actions = styled(Box)`
   display: grid;
   gap: ${({ theme: { spacing } }) => spacing(3)};
+  text-align: center;
 `;

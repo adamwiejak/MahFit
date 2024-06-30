@@ -6,4 +6,4 @@ build
 .firebase
 
 
-.env*
+.env.development

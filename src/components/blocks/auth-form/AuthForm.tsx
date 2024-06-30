@@ -9,8 +9,9 @@ import { Link } from "react-router-dom";
 import Button from "../../UI/button/Button";
 import useTween from "../../../hooks/useTween";
 import { CardProps } from "@mui/material";
-import { getGlobalSlice } from "../../../store/Store";
+import { getUserSlice } from "../../../store/Store";
 import Spinner from "../../shared/spinner/Spinner";
+import FacebookAuthProvider from "../../shared/auth-providers/FacebookAuthProvider";
 
 interface IAutForm extends CardProps {
   task?: "login" | "signup";
@@ -18,11 +19,13 @@ interface IAutForm extends CardProps {
 
 const AuthForm: React.FC<IAutForm> = (props) => {
   const { task = "login", ...rest } = props;
-  const { inProgress } = getGlobalSlice();
+  const { accessToken } = getUserSlice();
 
   const firstRunRef = useRef(true);
   const containerRef = useRef<HTMLDivElement>(null);
   useTween(() => config.swapAuthForm(task, containerRef, firstRunRef), [task]);
+
+  const inProgress = accessToken === undefined;
 
   return (
     <styled.Container {...rest} ref={containerRef}>
@@ -37,7 +40,7 @@ const AuthForm: React.FC<IAutForm> = (props) => {
           <SignupForm />
         </styled.CardBox>
 
-        <Spinner open={inProgress} />
+        <Spinner open={accessToken === undefined} />
       </styled.Main>
 
       <Link to={`/auth/${task === "login" ? "signup" : "login"}`}>
@@ -45,15 +48,30 @@ const AuthForm: React.FC<IAutForm> = (props) => {
           text=""
           size="small"
           color="warning"
-          variant="outlined"
+          variant="text"
           disabled={inProgress}
         />
       </Link>
 
       <styled.Footer>
-        <GoogleAuthProvider disabled={inProgress} size="small" />
-        <DemoAccountProvider disabled={inProgress} size="small" />
-        {/* <FacebookAuthProvider size="small" /> */}
+        <FacebookAuthProvider
+          disabled={inProgress}
+          size="small"
+          variant="outlined"
+        />
+
+        <GoogleAuthProvider
+          size="small"
+          variant="outlined"
+          disabled={inProgress}
+        />
+
+        <DemoAccountProvider
+          disabled={inProgress}
+          color="success"
+          size="small"
+          variant="outlined"
+        />
       </styled.Footer>
     </styled.Container>
   );

@@ -49,15 +49,16 @@ import MessageIcon from "@mui/icons-material/QuestionAnswerTwoTone";
 import UndoIcon from "@mui/icons-material/UndoTwoTone";
 import DevIcon from "@mui/icons-material/LogoDevTwoTone";
 import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
+import FacebookIcon from "@mui/icons-material/FacebookTwoTone";
 import FeedIcon from "@mui/icons-material/FeedTwoTone";
-import SortDownIcon from "@mui/icons-material/ArrowDropDown";
+import SortDownIcon from "@mui/icons-material/ArrowDropDownTwoTone";
 import SortUpIcon from "@mui/icons-material/ArrowDropUp";
 import DashboardIcon from "@mui/icons-material/DashboardTwoTone";
 import ErrorIcon from "@mui/icons-material/Error";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 
 export const iconsAsset = {
   //// lift icons coresponding to Lift type from UserAPI! /////
@@ -72,6 +73,7 @@ export const iconsAsset = {
   facebook: FacebookIcon,
   feed: FeedIcon,
   message: MessageIcon,
+  settings: SettingsTwoToneIcon,
   dev: DevIcon,
   avatar: ContactEmergencyIcon,
   image: CollectionsIcon,

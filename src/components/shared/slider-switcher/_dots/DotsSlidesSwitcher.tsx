@@ -1,5 +1,5 @@
 import * as config from "./config";
-import * as styled from "./dots-slides-switcher.styled";
+import * as styled from "./styles";
 import useTween from "../../../../hooks/useTween";
 import { useRef } from "react";
 

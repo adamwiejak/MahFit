@@ -32,6 +32,13 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 
+  section {
+    min-height: 100vh;
+    position: relative;
+    background-color: white;
+    border-top: solid 1px black;
+  }
+
   #app {
     min-height: 100vh;
     overflow-x: hidden;

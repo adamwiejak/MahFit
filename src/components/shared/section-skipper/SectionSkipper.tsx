@@ -2,8 +2,9 @@ import * as config from "./config";
 import * as styled from "./section-skipper.styled";
 import Button from "../../UI/button/Button";
 import { useState } from "react";
+import { BoxProps } from "@mui/material";
 
-const SectionSkipper = () => {
+const SectionSkipper: React.FC<BoxProps> = (props) => {
   const [active, setActive] = useState(0);
 
   const onClick = (idx: number) => () => {
@@ -11,24 +12,14 @@ const SectionSkipper = () => {
   };
 
   return (
-    <styled.Container sx={{ flexGrow: 1 }}>
+    <styled.Container {...props}>
       {config.navButtons.map(({ text }, idx) => (
-        // <NavLink to={`/home#${text}`} key={text}>
-        //   <Button
-        //     text={text}
-        //     size="large"
-        //     onClick={onClick(idx)}
-        //     color={idx === active ? "primary" : "inherit"}
-        //     variant={idx === active ? "outlined" : "text"}
-        //   />
-        // </NavLink>
-
         <a href={`#${text}`} key={text}>
           <Button
             text={text}
             size="large"
             onClick={onClick(idx)}
-            color={idx === active ? "primary" : "inherit"}
+            color={idx === active ? "secondary" : "inherit"}
             variant={idx === active ? "outlined" : "text"}
           />
         </a>

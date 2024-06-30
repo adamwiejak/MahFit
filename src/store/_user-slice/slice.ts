@@ -4,7 +4,7 @@ import { PayloadAction as P } from "@reduxjs/toolkit";
 
 const initialState: T.UserSlice = {
   userData: null,
-  accessToken: null,
+  accessToken: undefined,
 };
 
 const userSlice = createSlice({
@@ -17,8 +17,9 @@ const userSlice = createSlice({
       state.accessToken = accessToken;
     },
 
-    clearUser() {
-      return initialState;
+    clearUser(state) {
+      state.userData = null;
+      state.accessToken = null;
     },
   },
 });

@@ -9,7 +9,6 @@ import Button from "../../../UI/button/Button";
 import { BoxProps } from "@mui/material";
 import UserAPI, { type SinginUserData } from "../../../../API/User";
 import { TaskResponse } from "../../../../classes/TaskResponse";
-import { unmachedPasswords } from "../../../../helpers/responses";
 import useForm from "../../../../hooks/useForm";
 
 export interface ISingupForm extends BoxProps {}
@@ -23,7 +22,7 @@ const SignupForm: React.FC<ISingupForm> = (props) => {
     const { password: p, repeatPassword: rP } = data;
 
     try {
-      if (p !== rP) throw new Error(unmachedPasswords);
+      if (p !== rP) throw new Error("Passwords do not match");
       await asyncTaskHandler(UserAPI.createUserWithEmail(data));
     } catch (err: any) {
       const { includes, message } = err as TaskResponse;

@@ -29,13 +29,20 @@ const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
     const image = photo?.item(0);
     if (!image) return form.setError("photo", { message: "Select an image" });
 
-    try {
-      await asyncTaskHandler(UserAPI.openDemo({ nickname, image, gender }));
-    } catch (err) {
-      const { displaySnackbar, message } = err as TaskResponse;
-      form.setError("root", { message });
-      displaySnackbar();
-    }
+    const reader = new FileReader();
+
+    reader.onload = async function () {
+      try {
+        const image = reader.result as string;
+        await asyncTaskHandler(UserAPI.openDemo({ nickname, image, gender }));
+      } catch (err) {
+        const { displaySnackbar, message } = err as TaskResponse;
+        form.setError("root", { message });
+        displaySnackbar("error");
+      }
+    };
+
+    reader.readAsDataURL(image);
   });
 
   return (

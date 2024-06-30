@@ -1,64 +1,37 @@
 import * as styled from "./nav-bar.styled";
 import { Link } from "react-router-dom";
 import Button from "../../UI/button/Button";
-import { getUserSlice } from "../../../store/Store";
 import Icon from "../../UI/Icon";
-import UserAPI from "../../../API/User";
-import UserAvatar from "../user-avatar/UserAvatar";
-import useRouter from "../../../hooks/useRouter";
+import useBoolean from "../../../hooks/useBoolean";
+import Dialog from "../../modals/dialog/Dialog";
+import LoginForm from "../forms/login-form/LoginForm";
 
 const NavBar = () => {
-  const [goToPage] = useRouter();
-  const { accessToken } = getUserSlice();
+  const [isModalOpen, toggleModal] = useBoolean(false);
 
   return (
     <styled.Container>
-      {!accessToken && (
-        <>
-          <Link to="/auth/signup">
-            <Button
-              color="secondary"
-              variant="contained"
-              text="Create Free Account"
-              startIcon={<Icon icon="user" />}
-            />
-          </Link>
+      <Link to="/auth/signup">
+        <Button
+          color="secondary"
+          variant="contained"
+          text="Create Free Account"
+          startIcon={<Icon icon="user" />}
+        />
+      </Link>
 
-          <Link to="/auth/login">
-            <Button
-              text="Login"
-              size="small"
-              color="inherit"
-              variant="outlined"
-              startIcon={<Icon icon="login" />}
-            />
-          </Link>
-        </>
-      )}
+      <Button
+        text="Login"
+        size="small"
+        color="inherit"
+        variant="outlined"
+        startIcon={<Icon icon="login" />}
+        onClick={toggleModal}
+      />
 
-      {accessToken && (
-        <>
-          <Button
-            size="large"
-            color="inherit"
-            variant="outlined"
-            onClick={() => goToPage("/app")}
-          >
-            <Icon icon="dashboard" fontSize="small" />
-          </Button>
-
-          <Button
-            size="large"
-            color="inherit"
-            variant="outlined"
-            onClick={UserAPI.logoutUser}
-          >
-            <Icon icon="logout" fontSize="small" />
-          </Button>
-
-          <UserAvatar />
-        </>
-      )}
+      <Dialog open={isModalOpen} onClose={toggleModal} transition="slide">
+        <LoginForm />
+      </Dialog>
     </styled.Container>
   );
 };

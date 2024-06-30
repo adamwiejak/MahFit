@@ -13,7 +13,7 @@ import { User } from "../../API/User";
 
 export interface ISingupForm extends BoxProps {}
 
-const SignupForm: React.FC<ISingupForm> = (props) => {
+const CreateDummyUserForm: React.FC<ISingupForm> = (props) => {
   const { asyncTaskHandler, isLoading } = useAsyncTask();
   const { formState, form } = useForm<config.FormData>();
 
@@ -78,4 +78,4 @@ const SignupForm: React.FC<ISingupForm> = (props) => {
   );
 };
 
-export default SignupForm;
+export default CreateDummyUserForm;

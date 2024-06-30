@@ -1,7 +1,7 @@
 import styled from "./styles";
 import Footer from "../../blocks/footer/Footer";
 import NoMatch from "../../shared/no-match/NoMatch";
-import Header from "../../blocks/app-header/AppHeader";
+import Header from "../../blocks/app-bar/AppBar";
 
 const NoFoundPage = () => {
   return (

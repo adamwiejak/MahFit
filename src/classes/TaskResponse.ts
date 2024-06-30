@@ -1,7 +1,7 @@
 import { VariantType, enqueueSnackbar } from "notistack";
 import { compareStrings } from "../helpers/functions/functions";
 
-const FIREBASE_ERRORS_MAP: Map<any, string> = new Map([
+const ERRORS_MAP: Map<any, string> = new Map([
   ["storage/object-not-found", "Item not found in storage"],
   ["auth/email-already-in-use", "Email already in use"],
   ["auth/invalid-email", "Invalid email"],
@@ -17,27 +17,24 @@ const FIREBASE_ERRORS_MAP: Map<any, string> = new Map([
   ["auth/app-not-registered", "App not registered"],
   ["auth/credential-already-in-use", "Credential already in use"],
   ["auth/credential-mismatch", "Credential mismatch"],
-  [undefined, "Something Went Wrong"],
 ]);
 
-type TaskResponseOption = { variant: VariantType; statusCode: number };
+function getError(err: any) {
+  return ERRORS_MAP.get(err.code) || `Something went wrong, ${err.message}`;
+}
 
 export class TaskResponse {
+  readonly err: unknown;
   readonly message: string;
   readonly statusCode: number;
-  private variant: VariantType;
 
-  constructor(err: any, options?: Partial<TaskResponseOption>) {
-    this.variant = options?.variant || "warning";
-    this.statusCode = options?.statusCode || err.statusCode || err.status;
-    this.message = err.statusText || FIREBASE_ERRORS_MAP.get(err.code);
+  constructor(err: any) {
+    this.err = err;
+    this.statusCode = err.statusCode || err.status;
+    this.message = err.statusText || getError(err);
 
     this.includes = this.includes.bind(this);
     this.displaySnackbar = this.displaySnackbar.bind(this);
-  }
-
-  setVariant(variant: VariantType) {
-    this.variant = variant;
   }
 
   includes(phraze: string) {
@@ -50,7 +47,7 @@ export class TaskResponse {
     return compareStrings(phraze, strings);
   }
 
-  displaySnackbar() {
-    enqueueSnackbar(this.message, { variant: this.variant });
+  displaySnackbar(variant?: VariantType) {
+    enqueueSnackbar(this.message, { variant });
   }
 }

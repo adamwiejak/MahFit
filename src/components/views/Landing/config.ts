@@ -1,0 +1,56 @@
+import { spacing } from "../../../styles/MUI/_spacing";
+import { gsap } from "../../../utils/Gsap/config";
+import { gsapDuration } from "../../../utils/Gsap/config";
+import { gsapEasing } from "../../../utils/Gsap/config";
+import { ScrollTrigger } from "../../../utils/Gsap/config";
+
+const { circ } = gsapEasing;
+const { standard } = gsapDuration;
+const backdrop = "brightness(0.45) blur(10px)";
+
+export const shrinkHeaderTwen: Tween = (barRef: Ref<HTMLDivElement>) => {
+  const barEl = barRef.current;
+  const [logoEl, , navigationEl] = barEl.children;
+
+  const tl = gsap.timeline({
+    scrollTrigger: { scrub: 0.8, end: 0.9 * innerHeight },
+  });
+
+  tl.to([barEl, navigationEl, logoEl], {
+    gap: spacing[3],
+    padding: `${spacing[1]} ${spacing[3]}`,
+  }).to(barEl, { backdropFilter: backdrop }, "<");
+
+  const cleanup = () => {
+    tl.scrollTrigger?.kill();
+    tl.kill();
+  };
+
+  return { tl, cleanup };
+};
+
+export const showHeaderTwen: Tween = (barRef: Ref<HTMLDivElement>) => {
+  const barEl = barRef.current;
+
+  const tl = gsap.timeline({
+    defaults: { ease: circ, duration: standard },
+  });
+
+  tl.fromTo(barEl, { yPercent: -120 }, { yPercent: 0 });
+
+  const onUpdate = (trigger: ScrollTrigger) => {
+    const { direction, end, progress } = trigger;
+    const offset = end * progress > 0.75 * innerHeight;
+    if (direction < 0 || !offset) tl.play();
+    if (direction > 0 && offset) tl.reverse();
+  };
+
+  const scrollTrigger = ScrollTrigger.create({ onUpdate });
+
+  const cleanup = () => {
+    tl.kill();
+    scrollTrigger.kill();
+  };
+
+  return { tl, cleanup };
+};
