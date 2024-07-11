@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "./styles";
-import useAsyncTask from "../../../hooks/useAsyncTask";
-import Button from "../../UI/button/Button";
-import Spinner from "../../shared/spinner/Spinner";
+import useAsyncTask from "../../hooks/useAsyncTask";
+import Button from "../../components/UI/button/Button";
+import Spinner from "../../components/shared/spinner/Spinner";
 
 type Button = { onClick?: () => any | Promise<any>; text?: string };
 

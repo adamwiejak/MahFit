@@ -8,7 +8,7 @@ import { MenuItem } from "@mui/material";
 import useBoolean from "../../../hooks/useBoolean";
 import { useRef } from "react";
 import Icon from "../../UI/Icon";
-import { getUserSlice } from "../../../store/Store";
+import { getUserSlice } from "../../../store";
 import { Link } from "react-router-dom";
 import UserAPI from "../../../API/User";
 import { avatarImages } from "../../../assets/images/avatars/asset";

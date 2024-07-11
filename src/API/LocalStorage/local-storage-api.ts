@@ -2,7 +2,7 @@ import { GuestData, User } from "../User";
 
 const KEYS_MAP = {
   guest: "GUEST",
-  localUser: "LOCAL_USER",
+  localUser: "LOCAL_USER_DATA",
   themePref: "LOCAL_THEME_PREF",
 };
 
@@ -32,7 +32,7 @@ export const getGuestData = () => _get<GuestData>(KEYS_MAP.guest);
 export const setLocalUser = (data: User) => _set(KEYS_MAP.localUser, data);
 export const getLocalUser = () => _get<User>(KEYS_MAP.localUser);
 
-export const removeLocalUser = () => {
+export const cleanLocalUser = () => {
   _remove(KEYS_MAP.guest);
   _remove(KEYS_MAP.localUser);
 };

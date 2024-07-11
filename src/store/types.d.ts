@@ -1,5 +1,5 @@
 import { User } from "../API/User/types";
-import store from "./Store";
+import store from ".";
 
 type ThunkFunction = (
   dispatch: AppDispatch,

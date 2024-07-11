@@ -6,8 +6,10 @@ import AuthPage from "../components/views/Landing/AuthPage/AuthPage";
 import HomePage from "../components/views/Landing/HomePage/HomePage";
 import DevPage from "../components/views/DevPage/DevPage";
 import NoFoundPage from "../components/views/NoPage/NoFoundPage";
-import HomeView from "../components/views/Dashboard/_app-home/HomeView";
-import WorkoutsView from "../components/views/Dashboard/_app-workouts/WorkoutsView";
+import CalendarView from "../components/views/Dashboard/_calendar/CalendarView";
+import WorkoutsView from "../components/views/Dashboard/_workouts/WorkoutsView";
+import NoMatch from "../components/shared/no-match/NoMatch";
+import SettingsPage from "../components/views/SettingsPage/SettingsPage";
 
 import * as L from "./loaders";
 
@@ -30,10 +32,28 @@ export const router = createBrowserRouter([
       {
         path: "/app",
         element: <Dashboard />,
-        errorElement: <NoFoundPage />,
         children: [
-          { index: true, element: <HomeView /> },
-          { path: "workouts", element: <WorkoutsView /> },
+          {
+            errorElement: <NoMatch />,
+            children: [
+              { index: true, element: <Navigate to="calendar" /> },
+              { path: "settings", element: <SettingsPage /> },
+              { path: "calendar", element: <CalendarView /> },
+              { path: "exercises", element: <WorkoutsView /> },
+
+              {
+                path: "group",
+                loader: L.notImplemented,
+                element: <WorkoutsView />,
+              },
+
+              {
+                path: "ranking",
+                loader: L.notImplemented,
+                element: <WorkoutsView />,
+              },
+            ],
+          },
         ],
       },
     ],

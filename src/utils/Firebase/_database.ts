@@ -23,8 +23,8 @@ export function setDocument(
 export async function getDocument<T = unknown>(path: string) {
   try {
     const docSnapshot = await getDoc(doc(_database, path));
-    if (!docSnapshot.exists())
-      throw new Error(`Document ${path} not found in database`);
+    const exist = docSnapshot.exists();
+    if (!exist) throw new Error(`Document ${path} not found in database`);
     return docSnapshot.data() as T;
   } catch (err) {
     throw err;

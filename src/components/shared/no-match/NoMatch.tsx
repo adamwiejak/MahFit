@@ -8,26 +8,27 @@ import Button from "../../UI/button/Button";
 
 const NoMatch: React.FC<BoxProps> = (props) => {
   const { ...rest } = props;
-  const error: any = useRouteError();
-  console.log(error.message);
+  const response: any = useRouteError();
+  const { status, statusText, error = { message: "" } } = response;
+  console.log(response);
 
   return (
     <styled.Container {...rest}>
       <Image background imageAsset={noFoundImageAsset} />
 
       <styled.CardBox>
-        <styled.Header>{`Status #${error?.status || "Unknown"}. ${
-          error?.statusText || "Undefined Error"
-        }`}</styled.Header>
+        <styled.Header>{`${statusText} #${status || "Unknown"}`}</styled.Header>
+
         <styled.Paragraph variant="h6">
-          {error?.data || error?.message || "Someting Went Wrong"}
+          Sorry, an unexpected error has occurred
         </styled.Paragraph>
+
+        <styled.Paragraph variant="body2">{error.message}</styled.Paragraph>
 
         <styled.Actions>
           <Link to="..">
             <Button text="Back" endIcon={<StandardIcon icon="undo" />} />
           </Link>
-
           <Link to="/home">
             <Button text="Home" endIcon={<StandardIcon icon="home" />} />
           </Link>

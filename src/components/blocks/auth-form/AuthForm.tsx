@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import Button from "../../UI/button/Button";
 import useTween from "../../../hooks/useTween";
 import { CardProps } from "@mui/material";
-import { getUserSlice } from "../../../store/Store";
+import { getUserSlice } from "../../../store";
 import Spinner from "../../shared/spinner/Spinner";
 import FacebookAuthProvider from "../../shared/auth-providers/FacebookAuthProvider";
 

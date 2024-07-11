@@ -1,5 +1,5 @@
 import * as styled from "./styled";
-import { getGlobalSlice } from "../../../store/Store";
+import { getGlobalSlice } from "../../../store";
 import Dialog from "../dialog/Dialog";
 
 const GlobalLoader: React.FC = () => {

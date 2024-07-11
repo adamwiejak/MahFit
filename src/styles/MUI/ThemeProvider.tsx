@@ -1,7 +1,7 @@
 import gsap from "gsap";
-import { getGlobalSlice } from "../../store/Store";
+import { getGlobalSlice } from "../../store";
 import MUIThemeProvider from "@mui/material/styles/ThemeProvider";
-import { createTheme } from "@mui/material/styles";
+import { createTheme, useTheme } from "@mui/material/styles";
 import { breakpoints } from "./_breakpoints";
 import { components } from "./_components";
 import { customPalette } from "./_palettes";

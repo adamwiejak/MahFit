@@ -1,7 +1,7 @@
 import { AuthTask } from "../../../../../API/User";
 import { workoutImageAsset } from "../../../../../assets/images/workout/asset";
 import useRouteData from "../../../../../hooks/useRouteData";
-import { getUserSlice } from "../../../../../store/Store";
+import { getUserSlice } from "../../../../../store";
 import AuthForm from "../../../../blocks/auth-form/AuthForm";
 import Image from "../../../../shared/image/Image";
 import * as styled from "./styles";

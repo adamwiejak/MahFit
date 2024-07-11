@@ -42,12 +42,11 @@ export type UserDetailsInfo = {
   photoURL: string;
   workouts: Workout[];
   personalRecords: Partial<PersonalRecords>;
-  friendsList: { uid: string; isFav: boolean }[];
+  friendsList: { uid: UserBaseInfo["uid"]; isFav: boolean }[];
 };
 
 export type User = {
   base: UserBaseInfo;
   details?: Partial<UserDetailsInfo>;
+  // settings?: Partial<UserSettings>;
 };
-
-// export declare function getUserFromDB(uid: string): Promise<User>;

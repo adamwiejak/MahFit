@@ -15,6 +15,10 @@ type Ref<T> = React.MutableRefObject<T>;
 
 type Tween = (...args: any) => { tl: gsap.core.Timeline; cleanup?: () => void };
 
+interface IContextProvider {
+  children: JSX.Element | JSX.Element[];
+}
+
 interface FormInput<T> extends Omit<InputProps, "name"> {
   name: keyof T;
   label?: string;

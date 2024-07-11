@@ -7,7 +7,7 @@ import { User as UserImpl } from "firebase/auth";
 async function _cleanUpLocalUser(user: UserImpl) {
   try {
     await Auth.delateAccount(user);
-    LocalStorageAPI.removeLocalUser();
+    LocalStorageAPI.cleanLocalUser();
   } catch (err) {
     throw err;
   }
@@ -81,7 +81,6 @@ export async function retrivePassword(email: string) {
 export async function openDemo(guest: T.GuestData) {
   const { nickname, image, gender } = guest;
   LocalStorageAPI.setGuestData({ nickname, gender, image });
-
   try {
     await Auth.authAnonymously();
   } catch (err: any) {
@@ -89,8 +88,17 @@ export async function openDemo(guest: T.GuestData) {
   }
 }
 
-export function getUserFromDB(uid: string): Promise<T.User> {
+export function getUserFromDB(uid: string) {
   return Database.getDocument<T.User>(`users/${uid}`);
+}
+
+export function getUsersFromDB(uids: string[]) {
+  // FIXME:
+  const guest = LocalStorageAPI.getLocalUser();
+  const promise = uids.map((uid) =>
+    Database.getDocument<T.User>(`${guest ? "dummy-users" : "users"}/${uid}`)
+  );
+  return Promise.all(promise);
 }
 
 export function setUserInDB(data: T.UserBaseInfo) {

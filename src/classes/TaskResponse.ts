@@ -6,21 +6,17 @@ const ERRORS_MAP: Map<any, string> = new Map([
   ["auth/email-already-in-use", "Email already in use"],
   ["auth/invalid-email", "Invalid email"],
   ["auth/operation-not-allowed", "Operation not allowed"],
-  ["auth/weak-password", "Weak password"],
   ["auth/user-disabled", "User disabled"],
   ["auth/user-not-found", "User not found"],
   ["auth/wrong-password", "Wrong password"],
-  ["auth/argument-error", "Argument error"],
   ["auth/app-deleted", "App deleted"],
   ["auth/app-not-authorized", "App not authorized"],
   ["auth/app-not-installed", "App not installed"],
   ["auth/app-not-registered", "App not registered"],
-  ["auth/credential-already-in-use", "Credential already in use"],
-  ["auth/credential-mismatch", "Credential mismatch"],
 ]);
 
 function getError(err: any) {
-  return ERRORS_MAP.get(err.code) || `Something went wrong, ${err.message}`;
+  return ERRORS_MAP.get(err.code) || err.message || "Something went wrong";
 }
 
 export class TaskResponse {

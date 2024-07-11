@@ -1,5 +1,5 @@
 import * as styled from "./dev-btn.styled";
-import { getStore, useAppDispatch } from "../../store/Store";
+import { getStore, useAppDispatch } from "../../store";
 import { globalSliceActions as G } from "../../store/_global-slice";
 import IconButton from "../../components/UI/IconButton";
 import useBoolean from "../../hooks/useBoolean";

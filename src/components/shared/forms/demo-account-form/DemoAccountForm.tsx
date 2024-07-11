@@ -28,9 +28,7 @@ const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
     const gender = "other";
     const image = photo?.item(0);
     if (!image) return form.setError("photo", { message: "Select an image" });
-
     const reader = new FileReader();
-
     reader.onload = async function () {
       try {
         const image = reader.result as string;

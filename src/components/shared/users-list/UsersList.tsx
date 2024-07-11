@@ -1,47 +1,35 @@
 import * as styled from "./styles";
-import { useEffect, useState } from "react";
-import { Database as DB } from "../../../utils/Firebase";
-import { User } from "../../../API/User";
-import useAsyncTask from "../../../hooks/useAsyncTask";
+import { BoxProps, Typography } from "@mui/material";
+import React, { useContext } from "react";
 import UserWidget from "../user-widget/UserWidget";
-import Button from "../../UI/button/Button";
-import Icon from "../../UI/Icon";
+import { FilterFriendsContext } from "../../../context/friends-filter";
+import { getUserSlice } from "../../../store";
 
-const UsersList = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const { asyncTaskHandler, isLoading } = useAsyncTask();
+interface IUsersList extends BoxProps {}
 
-  async function fetchdummyUsers() {
-    try {
-      const resoult = await asyncTaskHandler<User[]>(
-        DB.getColection("dummy-users")
-      );
-      setUsers(resoult);
-    } catch (err: any) {
-      console.log(err);
-    }
+const UsersList: React.FC<IUsersList> = (props) => {
+  const { ...rest } = props;
+  const { userData } = getUserSlice();
+
+  const {
+    state: { friendsList },
+    setFriendsList,
+  } = useContext(FilterFriendsContext);
+
+  if (!friendsList) {
+    setFriendsList(userData?.details?.friendsList || []);
   }
 
-  useEffect(() => {
-    fetchdummyUsers();
-  }, []);
-
   return (
-    <styled.Wrapper>
-      <styled.List>
-        {users?.map(({ base }) => (
-          <UserWidget uid={base.uid} key={base.uid} />
-        ))}
-      </styled.List>
+    <styled.UsersList {...rest}>
+      {friendsList?.map(({ uid }) => (
+        <UserWidget key={uid} uid={uid} />
+      ))}
 
-      <Button
-        variant="outlined"
-        inProgress={isLoading}
-        onClick={fetchdummyUsers}
-        endIcon={<Icon icon="group" />}
-        text="Fetch Dummy Users Colection"
-      />
-    </styled.Wrapper>
+      {!friendsList?.length && (
+        <Typography>Have No Friends, You Loser</Typography>
+      )}
+    </styled.UsersList>
   );
 };
 

@@ -14,12 +14,12 @@ export interface IIconButton extends IconButtonProps {
 
 const IconButton = React.forwardRef<HTMLButtonElement, IIconButton>(
   (props, ref) => {
-    const { tip, icon, iconSize, size, ...rest } = props;
+    const { tip, icon, iconSize, iconColor, size, ...rest } = props;
 
     return (
       <Tooltip title={tip} enterDelay={350} enterNextDelay={320} arrow>
         <MUIIconButton ref={ref} size={size} {...rest}>
-          <Icon icon={icon} fontSize={iconSize || size} />
+          <Icon icon={icon} color={iconColor} fontSize={iconSize || size} />
         </MUIIconButton>
       </Tooltip>
     );

@@ -24,14 +24,11 @@ export const paragraphs = [
   </>,
 
   <>
-    Demo account leverages <span>local-storage</span> to preserve data between
-    browser sesions. All data will be deleted when you logged out.
+    Demo account leverages <span>local-storage</span>. It's all temporary and
+    all data will be <span>lost permanently</span> when you log out.
   </>,
 
-  <>
-    It is temporary account and will be <span>lost permanently</span> if you log
-    out.
-  </>,
+  <></>,
 
   <>
     Demo acoount comes with predefied dummy <span>friends/users/workouts </span>

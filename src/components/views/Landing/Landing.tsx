@@ -12,8 +12,8 @@ const Landing: React.FC<BoxProps> = (props) => {
   const { ...rest } = props;
   const barRef = useRef<HTMLDivElement>(null);
 
-  // useTween(() => config.shrinkHeaderTwen(barRef));
   useTween(() => config.showHeaderTwen(barRef));
+  // useTween(() => config.shrinkHeaderTwen(barRef));
 
   return (
     <styled.Wrapper role="Landing Layout" {...rest}>

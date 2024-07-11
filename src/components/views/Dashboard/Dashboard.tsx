@@ -1,42 +1,26 @@
 import * as styled from "./styles";
-import { Navigate, Outlet } from "react-router-dom";
-import { getUserSlice } from "../../../store/Store";
-import Image from "../../shared/image/Image";
-import { scheduleImageAsset } from "../../../assets/images/schedule/asset";
-import UserSideBar from "../../blocks/user-side-bar/UserSideBar";
+import { Navigate } from "react-router-dom";
+import { getUserSlice } from "../../../store";
+import UserSideBar from "../../blocks/users-side-bar/UsersSideBar";
 import AppHeader from "../../blocks/app-bar/AppBar";
-import Button from "../../UI/button/Button";
+import UserTabs from "../../shared/user-tabs/UserTabs";
+import FilterFriendsContextProvider from "../../../context/friends-filter";
 
 const Dashboard = () => {
   const { accessToken } = getUserSlice();
 
   return (
-    <styled.Wrapper>
-      <AppHeader position="static" sx={{ gridArea: "bar" }} />
+    <FilterFriendsContextProvider>
+      <styled.Wrapper>
+        <AppHeader position="static" sx={{ gridArea: "bar" }} />
 
-      <Image
-        background
-        sx={{ position: "fixed" }}
-        imageAsset={scheduleImageAsset}
-      />
+        <UserSideBar sx={{ gridArea: "side" }} />
 
-      <UserSideBar sx={{ gridArea: "side" }} />
-
-      <styled.Content>
-        {accessToken ? (
-          <>
-            <span>
-              <Button text="home" />
-              <Button text="workouts" />
-              <Button text="invaild" />
-            </span>
-            <Outlet />
-          </>
-        ) : (
-          <Navigate to="/auth" />
-        )}
-      </styled.Content>
-    </styled.Wrapper>
+        <styled.Content>
+          {accessToken ? <UserTabs /> : <Navigate to="/auth" />}
+        </styled.Content>
+      </styled.Wrapper>
+    </FilterFriendsContextProvider>
   );
 };
 
