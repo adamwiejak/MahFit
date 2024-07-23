@@ -6,7 +6,6 @@ import { getAuth } from "firebase/auth";
 import { signInAnonymously } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { signOut, signInWithEmailAndPassword } from "firebase/auth";
-import { FacebookAuthProvider } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 import type { NextOrObserver, User as UserImpl } from "firebase/auth";

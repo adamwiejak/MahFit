@@ -5,25 +5,26 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import MUISelect from "@mui/material/Select";
 import type { SelectProps as MUISelectProps } from "@mui/material";
+import { Options } from "../../types/forms";
 
 export interface SelectProps extends MUISelectProps<string> {
+  options: Options;
   helperText?: string;
-  inputs: Record<string, string>;
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   (props, ref) => {
-    const { label, inputs, helperText, error, value, ...rest } = props;
-    const keys = useMemo(() => Object.keys(inputs), [inputs]);
+    const { label, options, helperText, error, ...rest } = props;
+    const optionsEntries = useMemo(() => Object.entries(options), [options]);
 
     return (
       <FormControl error={error}>
         {label && <InputLabel>{label}</InputLabel>}
 
-        <MUISelect ref={ref} {...rest} label={label} value={value || ""}>
-          {keys.map((key) => (
-            <MenuItem key={key} value={inputs[key]}>
-              {key}
+        <MUISelect ref={ref} defaultValue="" {...rest} label={label}>
+          {optionsEntries.map(([k, v]) => (
+            <MenuItem key={k} value={v}>
+              {k}
             </MenuItem>
           ))}
         </MUISelect>

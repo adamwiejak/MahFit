@@ -14,12 +14,11 @@ import SettingsPage from "../components/views/SettingsPage/SettingsPage";
 import * as L from "./loaders";
 
 export const router = createBrowserRouter([
-  { path: "_dev", element: <DevPage /> },
-
   {
     element: <Root />,
     errorElement: <NoFoundPage />,
     children: [
+      { path: "_dev", element: <DevPage /> },
       {
         element: <Landing />,
         children: [

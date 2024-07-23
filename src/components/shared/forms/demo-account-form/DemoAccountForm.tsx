@@ -7,7 +7,7 @@ import SelectProfilePhoto from "../../select-profile-photo/SelectProfilePhoto";
 import useForm from "../../../../hooks/useForm";
 import UserAPI from "../../../../API/User";
 import useAsyncTask from "../../../../hooks/useAsyncTask";
-import type { TaskResponse } from "../../../../classes/TaskResponse";
+import Select from "../../../UI/Select";
 
 interface IDemoAccontForm {
   timer: number;
@@ -15,32 +15,25 @@ interface IDemoAccontForm {
 
 const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
   const { timer, ...rest } = props;
-  const { formState, form } = useForm<config.FormData>();
+  const { formState, form } = useForm<config.DemoAccountFormData>();
   const { asyncTaskHandler, isLoading } = useAsyncTask();
-  const disabled = isLoading || !!timer;
+
+  const btnDisabled = isLoading || !!timer;
 
   function onBaseAvatarSelect(files: FileList) {
     form.setValue("photo", files, { shouldValidate: true });
   }
 
   const onSubmit = form.handleSubmit(async (data) => {
-    const { photo, nickname } = data;
-    const gender = "other";
-    const image = photo?.item(0);
-    if (!image) return form.setError("photo", { message: "Select an image" });
+    const { photo, nickname, gender } = data;
+    const file = photo?.item(0);
+    if (!file) return form.setError("photo", { message: "Select an image" });
     const reader = new FileReader();
     reader.onload = async function () {
-      try {
-        const image = reader.result as string;
-        await asyncTaskHandler(UserAPI.openDemo({ nickname, image, gender }));
-      } catch (err) {
-        const { displaySnackbar, message } = err as TaskResponse;
-        form.setError("root", { message });
-        displaySnackbar("error");
-      }
+      const image = reader.result as string;
+      await asyncTaskHandler(UserAPI.openDemo({ nickname, image, gender }));
     };
-
-    reader.readAsDataURL(image);
+    reader.readAsDataURL(file);
   });
 
   return (
@@ -60,43 +53,49 @@ const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
         {...rest}
       >
         <styled.Inputs>
-          {config.inputs.map(({ name, icon, label, options }, idx) => (
+          {config.inputs.map(({ name, icon, label, registerOptions }, idx) => (
             <Input
               key={idx}
               size="small"
               label={label}
-              disabled={disabled}
-              adornmentStart={icon && <Icon icon={icon} />}
-              error={!!formState.errors[name]?.message}
+              disabled={isLoading}
               onClear={form.onInputClear(name)}
-              {...form.register(name, options)}
-              defaultValue="Batman"
+              {...form.register(name, registerOptions)}
+              error={!!formState.errors[name]?.message}
+              helperText={formState.errors[name]?.message}
+              adornmentStart={icon && <Icon icon={icon} />}
+            />
+          ))}
+
+          {config.selects.map(({ options, name, label, registerOptions }) => (
+            <Select
+              key={name}
+              size="small"
+              label={label}
+              options={options}
+              variant="outlined"
+              disabled={isLoading}
+              error={!!formState.errors[name]?.message}
+              {...form.register(name, registerOptions)}
+              helperText={formState.errors[name]?.message}
             />
           ))}
 
           <SelectProfilePhoto
             onBaseAvatarSelect={onBaseAvatarSelect}
             inputProps={{
-              disabled,
+              disabled: isLoading,
               error: !!formState.errors.photo?.message,
               ...form.register("photo"),
             }}
           />
         </styled.Inputs>
 
-        <styled.Errors>
-          {Object.values(formState.errors).map((err, i) => (
-            <styled.Paragraph key={i} color="error" variant="caption">
-              {err.message as string}
-            </styled.Paragraph>
-          ))}
-        </styled.Errors>
-
         <styled.Actions>
           <Button
             type="submit"
             color="success"
-            disabled={disabled}
+            disabled={btnDisabled}
             inProgress={isLoading}
             text={`Create Demo Account ${timer ? `(${timer})` : ""}`}
             endIcon={<Icon icon="send" />}

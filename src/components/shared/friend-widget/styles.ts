@@ -1,6 +1,7 @@
 import { Box, Card, styled } from "@mui/material";
 
 export const Container = styled(Card)`
+  min-height: 5rem;
   display: grid;
   gap: ${({ theme: { spacing } }) => spacing(1)};
   grid-template-columns: 0.25fr 1fr min-content;
@@ -25,6 +26,8 @@ export const Image = styled(Card)`
 
 export const Info = styled(Box)`
   grid-area: info;
+  display: grid;
+  grid-template-columns: min-content 1fr;
   text-align: center;
 `;
 

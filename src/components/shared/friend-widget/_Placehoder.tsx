@@ -1,5 +1,5 @@
-import { Avatar, CardProps, Skeleton, Typography } from "@mui/material";
 import * as styled from "./styles";
+import { Avatar, CardProps, Skeleton, Typography } from "@mui/material";
 
 interface ISkeleton extends CardProps {
   uid: string;

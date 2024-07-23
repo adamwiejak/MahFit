@@ -9,7 +9,7 @@ import RadioGroup from "../../components/UI/RadioGroup";
 import Button from "../../components/UI/button/Button";
 import Input from "../../components/UI/input/Input";
 import { Database as DB } from "../../utils/Firebase";
-import { User } from "../../API/User";
+import UserAPI, { User } from "../../API/User";
 
 export interface ISingupForm extends BoxProps {}
 
@@ -20,15 +20,17 @@ const CreateDummyUserForm: React.FC<ISingupForm> = (props) => {
   const onSubmit = form.handleSubmit(async (data) => {
     const { nickname, gender, photoURL } = data;
     const uid = uuidv4();
+    const birthDate = new Date();
     const email = `${nickname.toLowerCase()}@.example.com`;
 
     const dumyUser: User = {
-      base: { nickname, gender, uid, email },
+      base: { nickname, gender, uid, email, birthDate },
       details: { photoURL },
     };
 
     try {
-      await asyncTaskHandler(DB.setDocument(`dummy-users`, uid, dumyUser));
+      const userRef = UserAPI.createUserQuery(uid);
+      await asyncTaskHandler(DB.setDocument(userRef, dumyUser));
     } catch (err: any) {
       console.log(err);
       form.setError("root", { message: err.message });
@@ -39,24 +41,24 @@ const CreateDummyUserForm: React.FC<ISingupForm> = (props) => {
     <styled.Wrapper>
       <styled.Form component="form" onSubmit={onSubmit} {...props}>
         <styled.Inputs>
-          {config.inputs.map((input, i) => (
+          {config.inputs.map(({ name, type, label, icon, registerOptions }) => (
             <Input
               color="secondary"
-              key={input.name}
-              type={input.type}
-              label={input.label}
+              key={name}
+              type={type}
+              label={label}
               disabled={isLoading}
-              adornmentStart={<Icon icon={input.icon} />}
-              error={!!formState.errors[input.name]?.message}
-              onClear={form.onInputClear(input.name)}
-              {...form.register(input.name, input.options)}
+              onClear={form.onInputClear(name)}
+              {...form.register(name, registerOptions)}
+              error={!!formState.errors[name]?.message}
+              adornmentStart={icon && <Icon icon={icon} />}
             />
           ))}
 
           <RadioGroup
             row
             disabled={isLoading}
-            inputs={config.radioGroup.inputs}
+            options={config.radioGroup.options}
             error={!!formState.errors.gender?.message}
             {...form.register(
               config.radioGroup.name,

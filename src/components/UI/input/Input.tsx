@@ -33,7 +33,6 @@ export interface IInput extends BaseTextFieldProps {
 const Input = React.forwardRef<HTMLDivElement, IInput>((props, ref) => {
   const { type, adornmentStart, onClear, ...rest } = props;
   const passwordToggler = useBoolean(false);
-
   const showPasword = type === "password" && passwordToggler[0] ? "text" : type;
 
   const startAdornment = adornmentStart && (

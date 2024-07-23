@@ -1,31 +1,41 @@
+import { Gender } from "../../../../API/User";
+import { gendersMockup } from "../../../../helpers/data/mockups";
 import { nameRegEx, required } from "../../../../helpers/data/regex";
+import { FormInput, FormSelect } from "../../../../types/forms";
 
-export interface FormData {
+export interface DemoAccountFormData {
+  gender: Gender;
   nickname: string;
   photo: FileList;
 }
 
-export const inputs: FormInput<FormData>[] = [
+export const selects: FormSelect<DemoAccountFormData>[] = [
   {
+    name: "gender",
+    label: "Gender",
+    options: gendersMockup,
+    registerOptions: { ...required },
+  },
+];
+
+export const inputs: FormInput<DemoAccountFormData>[] = [
+  {
+    icon: "user",
     name: "nickname",
     label: "Nickname *",
-    icon: "user",
-    options: {
-      ...nameRegEx,
-      required: { value: true, message: "Type your nickname" },
-    },
+    registerOptions: { ...nameRegEx, ...required },
   },
 ];
 
 export const paragraphs = [
   <>
-    You are logging in to a <span>demo-account</span>, althoug it still needs
-    network connetcion to provide you all app features.
+    You are logging in to a <span>demo-account</span>, it is local acount but
+    still needs network connetcion to provide you all app features.
   </>,
 
   <>
     Demo account leverages <span>local-storage</span>. It's all temporary and
-    all data will be <span>lost permanently</span> when you log out.
+    all data will be <span>removed</span> when you log out.
   </>,
 
   <></>,

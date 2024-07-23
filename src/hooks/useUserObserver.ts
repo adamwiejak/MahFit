@@ -4,11 +4,9 @@ import { useSnackbar } from "notistack";
 import { useAppDispatch } from "../store";
 import { useEffect } from "react";
 import { onLoginUser, onLogoutUser } from "../store/thunks";
-import { useNavigate } from "react-router-dom";
 import { globalSliceActions as G } from "../store/_global-slice";
 
 const useUserObserver = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
 

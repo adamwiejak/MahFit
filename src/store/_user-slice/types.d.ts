@@ -6,6 +6,6 @@ export type UserSlice = {
 };
 
 export type SetUserAction = {
+  userData: User;
   accessToken: UserSlice["accessToken"];
-  userData: UserSlice["userData"];
 };

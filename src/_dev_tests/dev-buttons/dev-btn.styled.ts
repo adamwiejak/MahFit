@@ -14,7 +14,7 @@ export const Container = styled(Card, { shouldForwardProp })<StyledProps>`
   grid-auto-flow: column;
   place-items: center;
   position: fixed;
-  z-index: 9900;
+  z-index: 999999900;
   bottom: 5px;
   right: 0%;
   transition: all 0.25s ease-in-out;

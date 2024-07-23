@@ -4,11 +4,12 @@ export const components: ThemeOptions["components"] = {
   MuiButton: {
     defaultProps: {
       variant: "contained",
+      fullWidth: true,
     },
   },
 
   MuiSelect: {
-    defaultProps: { variant: "standard" },
+    // defaultProps: { variant: "standard" },
   },
 
   MuiFormGroup: {

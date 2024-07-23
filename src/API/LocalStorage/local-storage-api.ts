@@ -1,7 +1,8 @@
-import { GuestData, User } from "../User";
+import { GuestData, User, UserBaseInfo } from "../User";
 
 const KEYS_MAP = {
   guest: "GUEST",
+  user: "USER_DATA",
   localUser: "LOCAL_USER_DATA",
   themePref: "LOCAL_THEME_PREF",
 };
@@ -20,18 +21,28 @@ const _remove = (k: string) => {
 };
 
 // THEMEN PREF
-export const setLocalTheme = (theme: Theme) => _set(KEYS_MAP.themePref, theme);
-export const getLocalThemePref = () => _get<Theme>(KEYS_MAP.themePref);
-export const removeLocalThemePref = () => _remove(KEYS_MAP.themePref);
+// export const setLocalTheme = (theme: Theme) => _set(KEYS_MAP.themePref, theme);
+// export const getLocalThemePref = () => _get<Theme>(KEYS_MAP.themePref);
+// export const removeLocalThemePref = () => _remove(KEYS_MAP.themePref);
 
 // GUEST DATA
-export const setGuestData = (guest: GuestData) => _set(KEYS_MAP.guest, guest);
 export const getGuestData = () => _get<GuestData>(KEYS_MAP.guest);
+export const setGuestData = (guest: GuestData) => _set(KEYS_MAP.guest, guest);
 
-//  LOCAL USER
-export const setLocalUser = (data: User) => _set(KEYS_MAP.localUser, data);
+// LOCAL USER
 export const getLocalUser = () => _get<User>(KEYS_MAP.localUser);
+export const setLocalUser = (data: User) => _set(KEYS_MAP.localUser, data);
 
+//  USER
+export const cacheUser = (data: Omit<UserBaseInfo, "uid">) =>
+  _set(KEYS_MAP.user, data);
+
+export const getCachedUser = () =>
+  _get<Omit<UserBaseInfo, "uid">>(KEYS_MAP.user);
+
+export const delateCachedUser = () => _remove(KEYS_MAP.user);
+
+// cleanup
 export const cleanLocalUser = () => {
   _remove(KEYS_MAP.guest);
   _remove(KEYS_MAP.localUser);

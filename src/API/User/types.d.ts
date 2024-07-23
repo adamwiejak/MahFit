@@ -13,11 +13,8 @@ export type SinginUserData = {
   nickname: string;
   email: string;
   password: string;
-  repeatPassword: string;
   gender: Gender;
-  month: string;
-  year: string;
-  day: string;
+  birthDate: Date;
 };
 
 export type LoginUserData = {
@@ -29,6 +26,7 @@ export type Workout = {
   title: string;
   date: string;
   color: string;
+  passed: boolean;
 };
 
 export type UserBaseInfo = {
@@ -36,17 +34,20 @@ export type UserBaseInfo = {
   email: string;
   gender: Gender;
   nickname: string;
+  // TODO: stringifi date  Date.Local string
+  birthDate: Date;
 };
 
-export type UserDetailsInfo = {
+export type UserDetailsInfo = Partial<{
   photoURL: string;
   workouts: Workout[];
   personalRecords: Partial<PersonalRecords>;
   friendsList: { uid: UserBaseInfo["uid"]; isFav: boolean }[];
-};
+}>;
 
-export type User = {
-  base: UserBaseInfo;
-  details?: Partial<UserDetailsInfo>;
-  // settings?: Partial<UserSettings>;
-};
+// export type User = {
+//   isDummy?: boolean;
+//   base: UserBaseInfo;
+//   details?: UserDetailsInfo;
+//   // settings?: Partial<UserSettings>;
+// };

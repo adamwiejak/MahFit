@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { TaskResponse } from "../classes/TaskResponse";
+import { TaskError } from "../classes/TaskError";
 
 const useAsyncTask = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const asyncTaskHandler = async <T>(promise: Promise<T>) => {
+  const asyncTaskHandler = async <T = unknown>(promise: Promise<T>) => {
     setIsLoading(true);
     try {
-      const resoult = await promise;
-      return resoult;
+      return await promise;
     } catch (err: any) {
-      const errResponse = new TaskResponse(err);
-      throw errResponse;
+      const errTask = new TaskError(err);
+      throw errTask;
     } finally {
       setIsLoading(false);
     }
@@ -21,3 +20,4 @@ const useAsyncTask = () => {
 };
 
 export default useAsyncTask;
+export * from "../classes/TaskError";

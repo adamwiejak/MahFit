@@ -1,16 +1,29 @@
-import UserAPI, { UserBaseInfo, UserDetailsInfo } from "../../API/User";
 import { createContext, useReducer } from "react";
 import reducer, { initialState } from "./_reducer";
-import type { IFilterFriendsContext } from "./types";
+import {
+  filterFavActionType,
+  initFriendsActionType,
+  resetFiltersActionType,
+  searchFriendActionType,
+  setFriendActionType,
+} from "./types";
+import {
+  type FiltredFriend,
+  type Friend,
+  type IFilterFriendsContext,
+  type Uid,
+} from "./types";
 
 //////////////////////////////////////////////////////////////////
 
 export const FilterFriendsContext = createContext<IFilterFriendsContext>({
   state: initialState,
-  filterFav: () => {},
-  getFriend: () => null,
+  setFriend: () => {},
+  initFriends: () => {},
+  resetFilters: () => {},
   searchFriends: () => {},
-  setFriendsList: () => {},
+  toggleFilterFavs: () => {},
+  getFriendData: () => undefined,
 });
 
 export const FilterFriendsContextProvider: React.FC<IContextProvider> = (
@@ -18,39 +31,38 @@ export const FilterFriendsContextProvider: React.FC<IContextProvider> = (
 ) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  function setFriendsList(list: UserDetailsInfo["friendsList"]) {
-    dispatch({ type: "SET_FRIENDS_LIST", payload: list });
+  function initFriends(list: FiltredFriend[]) {
+    dispatch({ type: initFriendsActionType, payload: list });
   }
 
-  async function getFriend(uid: UserBaseInfo["uid"]) {
-    const { friends } = state;
-    const friend = friends.find((f) => f.base.uid === uid);
-    if (friend) return friend;
-
-    try {
-      // FIXME: unite dummy-users and users by add isDummyy prop to User interface
-      const user = await UserAPI.getUserFromDB(uid);
-      console.log(user);
-      dispatch({ type: "SET_FRIEND", payload: user });
-    } catch (err) {
-      console.log(err);
-    }
+  function setFriend(friend: Friend) {
+    dispatch({ type: setFriendActionType, payload: friend });
   }
 
   function searchFriends(input: string) {
-    dispatch({ type: "SEARCH_FRIENDS", payload: input });
+    dispatch({ type: searchFriendActionType, payload: input });
   }
 
-  function filterFav(toggleTo: boolean) {
-    dispatch({ type: "FILTER_FAV", payload: toggleTo });
+  function toggleFilterFavs() {
+    dispatch({ type: filterFavActionType });
+  }
+
+  function resetFilters() {
+    dispatch({ type: resetFiltersActionType });
+  }
+
+  function getFriendData(uid: Uid) {
+    return state.friends?.find((f) => f.uid === uid);
   }
 
   const value = {
     state,
+    setFriend,
+    initFriends,
+    resetFilters,
     searchFriends,
-    filterFav,
-    getFriend,
-    setFriendsList,
+    getFriendData,
+    toggleFilterFavs,
   };
 
   return (

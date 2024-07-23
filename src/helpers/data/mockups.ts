@@ -1,28 +1,37 @@
 import { Gender, Lift } from "../../API/User/types";
-import { IIcon } from "../../components/UI/Icon";
+import { IconName } from "../../components/UI/Icon";
 
-export const lifts: Lift[] = ["benchPress", "deadLift", "squat"];
+export const liftsMockup: Record<string, Lift> = {
+  squat: "squat",
+  deadLift: "deadLift",
+  benchPress: "benchPress",
+};
 
-export const workoutsCategorys: { type: string; icon: IIcon["icon"] }[] = [
-  { type: "Push", icon: "benchPress" },
-  { type: "Pull", icon: "deadLift" },
-  { type: "Legs", icon: "squat" },
-  { type: "Cardio", icon: "cardio" },
-];
+export const gendersMockup: Record<string, Gender> = {
+  Female: "female",
+  Male: "male",
+  Other: "other",
+};
 
-export const genders: Gender[] = ["female", "male", "other"];
+export const workoutsMockup: { name: string; icon: IconName; color: string }[] =
+  [
+    { name: "Cardio", icon: "cardio", color: "green" },
+    { name: "Push", icon: "benchPress", color: "red" },
+    { name: "Legs", icon: "squat", color: "pink" },
+    { name: "Pull", icon: "deadLift", color: "blue" },
+  ];
 
-export const weekDays = [
+export const weekDaysMockup = [
+  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
-  "Sunday",
 ];
 
-export const months = [
+export const monthsMockup = [
   "January",
   "February",
   "March",
@@ -37,12 +46,6 @@ export const months = [
   "December",
 ];
 
-export const monthDays = new Array(31)
+export const yearsMockup = new Array(100)
   .fill(1)
-  .map((el, idx) => idx + 1)
-  .map((el) => el.toString());
-
-export const years = new Array(80)
-  .fill(1)
-  .map((el, idx) => new Date().getFullYear() - idx)
-  .map((el) => el.toString());
+  .map((_, idx) => (new Date().getFullYear() - idx).toString());

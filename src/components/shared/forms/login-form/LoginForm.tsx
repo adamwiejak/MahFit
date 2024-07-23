@@ -5,25 +5,24 @@ import Input from "../../../UI/input/Input";
 import Icon from "../../../UI/Icon";
 import Button from "../../../UI/button/Button";
 import { RetrivePasswordForm } from "../retrive-password-form/RetrivePasswordForm";
-import UserAPI, { LoginUserData } from "../../../../API/User";
-import { TaskResponse } from "../../../../classes/TaskResponse";
+import UserAPI from "../../../../API/User";
+import { TaskError } from "../../../../classes/TaskError";
 import { BoxProps } from "@mui/material";
 import useForm from "../../../../hooks/useForm";
-import { useNavigate } from "react-router-dom";
 
 export interface ILoginFormProps extends BoxProps {}
 
 const LoginForm: React.FC<ILoginFormProps> = (props) => {
   const { ...rest } = props;
-  const navigate = useNavigate();
   const { asyncTaskHandler, isLoading } = useAsyncTaskHandler();
-  const { formState, form } = useForm<LoginUserData>();
+  const { formState, form } = useForm<config.FormData>();
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
       await asyncTaskHandler(UserAPI.signInUserWithEmail(data));
     } catch (err: any) {
-      const { includes, message } = err as TaskResponse;
+      const { includes, message } = err as TaskError;
+      console.log(err);
       if (includes("user")) form.setError("email", { message });
       if (includes("password")) form.setError("password", { message });
     }
@@ -32,18 +31,18 @@ const LoginForm: React.FC<ILoginFormProps> = (props) => {
   return (
     <styled.Form component="form" onSubmit={onSubmit} {...rest}>
       <styled.Inputs>
-        {config.inputs.map(({ name, type, label, icon, options }) => (
+        {config.inputs.map(({ name, type, label, icon, registerOptions }) => (
           <Input
             key={name}
             type={type}
             label={label}
             color="secondary"
             disabled={isLoading}
-            adornmentStart={<Icon icon={icon} />}
+            onClear={form.onInputClear(name)}
+            {...form.register(name, registerOptions)}
             error={!!formState.errors[name]?.message}
             helperText={formState.errors[name]?.message}
-            onClear={form.onInputClear(name)}
-            {...form.register(name, options)}
+            adornmentStart={icon && <Icon icon={icon} />}
           />
         ))}
       </styled.Inputs>

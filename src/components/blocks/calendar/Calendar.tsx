@@ -1,21 +1,25 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import { Workout } from "../../../API/User";
 
-const DUMMY_EVENTS = [
-  { title: "event 1", date: "2024-06-28" },
-  { title: "event 2", date: "2024-06-30" },
-];
+interface ICalendar {
+  events?: Workout[];
+}
 
-const Calendar = () => {
+const Calendar: React.FC<ICalendar> = (props) => {
+  const { events = [], ...rest } = props;
+
   return (
     <FullCalendar
-      events={DUMMY_EVENTS}
-      initialView="dayGridMonth"
+      {...rest}
+      firstDay={1}
+      events={events}
       plugins={[dayGridPlugin]}
+      initialView="dayGridMonth"
       headerToolbar={{
-        left: "today",
-        center: "title",
-        right: "prev,dayGridMonth,dayGridWeek,dayGridDay,next",
+        left: "title",
+        center: "",
+        right: "prev,dayGridMonth,dayGridWeek,dayGridDay,next, today",
       }}
     />
   );

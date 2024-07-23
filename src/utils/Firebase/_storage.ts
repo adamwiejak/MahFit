@@ -3,7 +3,7 @@ import { getStorage, ref } from "firebase/storage";
 import { uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { deleteObject } from "firebase/storage";
-import { TaskResponse } from "../../classes/TaskResponse";
+import { TaskError } from "../../classes/TaskError";
 
 const _storage = getStorage(firebaseApp);
 
@@ -19,7 +19,7 @@ export async function getUrl(storagePath: string) {
   try {
     return await getDownloadURL(ref(_storage, storagePath));
   } catch (err: any) {
-    const response = new TaskResponse(err);
+    const response = new TaskError(err);
     response.displaySnackbar();
   }
 }

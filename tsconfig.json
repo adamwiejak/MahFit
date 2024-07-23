@@ -19,6 +19,10 @@
     //   "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"]
     // }
   },
-  "include": ["src", "src/vite-env.d.tsts"],
+  "include": [
+    "src",
+    "src/vite-env.d.tsts",
+    "src/helpers/functions/dummy-data.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

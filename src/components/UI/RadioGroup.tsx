@@ -8,29 +8,30 @@ import Radio from "@mui/material/Radio";
 import type { FormControlProps } from "@mui/material";
 import type { RadioGroupProps as MUIRadioGroupProps } from "@mui/material";
 import type { RadioProps } from "@mui/material";
+import { Options } from "../../types/forms";
 
-export interface RadioGroupProps extends MUIRadioGroupProps {
+export interface IRadioGroupProps extends MUIRadioGroupProps {
   label?: string;
   error?: boolean;
+  options: Options;
   helperText?: string;
-  color?: FormControlProps["color"];
   radioProps?: RadioProps;
-  inputs: Record<string, string>;
+  color?: FormControlProps["color"];
 }
 
-const RadioGroup = React.forwardRef<any, RadioGroupProps>((props, ref) => {
-  const { inputs, label, error, radioProps, color, helperText, ...rest } =
+const RadioGroup = React.forwardRef<any, IRadioGroupProps>((props, ref) => {
+  const { options, label, error, radioProps, color, helperText, ...rest } =
     props;
 
   return (
     <FormControl error={error} color={color}>
       <FormLabel>{label}</FormLabel>
       <MUIRadioGroup {...rest}>
-        {Object.keys(inputs).map((key) => (
+        {Object.keys(options).map((key) => (
           <FormControlLabel
             key={key}
             label={key}
-            value={inputs[key]}
+            value={options[key]}
             sx={{ color: error ? "error.dark" : "" }}
             control={<Radio ref={ref} color={color} {...radioProps} />}
           />

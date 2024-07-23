@@ -15,19 +15,19 @@ const ERRORS_MAP: Map<any, string> = new Map([
   ["auth/app-not-registered", "App not registered"],
 ]);
 
-function getError(err: any) {
+function _getError(err: any) {
   return ERRORS_MAP.get(err.code) || err.message || "Something went wrong";
 }
 
-export class TaskResponse {
+export class TaskError {
   readonly err: unknown;
   readonly message: string;
   readonly statusCode: number;
 
   constructor(err: any) {
     this.err = err;
+    this.message = _getError(err);
     this.statusCode = err.statusCode || err.status;
-    this.message = err.statusText || getError(err);
 
     this.includes = this.includes.bind(this);
     this.displaySnackbar = this.displaySnackbar.bind(this);
@@ -36,6 +36,7 @@ export class TaskResponse {
   includes(phraze: string) {
     const phrazeLong = phraze.length;
     const letters = this.message.split("");
+
     const strings: string[] = [];
     for (let i = 0; i <= letters.length - phrazeLong; i++) {
       strings.push(this.message.substring(i, i + phrazeLong));

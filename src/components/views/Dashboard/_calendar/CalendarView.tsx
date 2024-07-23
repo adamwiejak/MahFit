@@ -1,26 +1,28 @@
 import * as styled from "./styles";
 import Calendar from "../../../blocks/calendar/Calendar";
 import { SpeedDial, SpeedDialAction } from "@mui/material";
-import Icon, { IconName } from "../../../UI/Icon";
-
-const actions: { name: string; icon: IconName }[] = [
-  { name: "Cardio", icon: "cardio" },
-  { name: "Bench Press", icon: "benchPress" },
-  { name: "Squat", icon: "squat" },
-  { name: "Dead Lift", icon: "deadLift" },
-];
+import Icon from "../../../UI/Icon";
+import { getUserSlice } from "../../../../store";
+import { useContext } from "react";
+import { FilterFriendsContext } from "../../../../context/friends-filter";
+import { workoutsMockup } from "../../../../helpers/data/mockups";
 
 const HomeView = () => {
+  const { userData } = getUserSlice();
+  const { state } = useContext(FilterFriendsContext);
+
+  const events = [...(userData?.details?.workouts || []), ...state.workouts];
+
   return (
     <styled.Page>
-      <Calendar />
+      <Calendar events={events} />
 
       <SpeedDial
+        icon={<Icon icon="add" />}
         ariaLabel="SpeedDial basic example"
         sx={{ position: "absolute", bottom: 16, right: 16 }}
-        icon={<Icon icon="add" />}
       >
-        {actions.map((action) => (
+        {workoutsMockup.map((action) => (
           <SpeedDialAction
             key={action.name}
             tooltipTitle={action.name}

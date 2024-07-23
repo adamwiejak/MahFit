@@ -1,9 +1,7 @@
 import type * as T from "./types";
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction as P } from "@reduxjs/toolkit";
-
-const _dayStart = 6;
-const _nightStart = 19;
+import { dayStart, nightStart } from "../../helpers/data/const";
 
 const initialState: T.GlobalSlice = {
   isOnline: true,
@@ -18,7 +16,7 @@ const globalSlice = createSlice({
     getAutoTheme(state) {
       const date = new Date();
       const time = +(date.getHours() + date.getMinutes() / 60).toFixed(2);
-      state.theme = time > _dayStart && time < _nightStart ? "light" : "dark";
+      state.theme = time > dayStart && time < nightStart ? "light" : "dark";
     },
 
     setOnlineStatus(state, action: P<T.SetOnlineStatusAction>) {

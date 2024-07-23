@@ -12,8 +12,8 @@ export const Container = styled(Card)`
   text-align: center;
   overflow: visible;
   grid-template-rows: min-content minmax(10px, 1fr) min-content;
-  gap: ${({ theme: { spacing } }) => spacing(4)};
-  padding: ${({ theme: { spacing } }) => spacing(4)};
+  gap: ${({ theme: { spacing } }) => spacing(3)};
+  padding: ${({ theme: { spacing } }) => spacing(4, 3)};
 `;
 
 export const Header = styled(Typography)``;
@@ -25,7 +25,7 @@ export const Main = styled(Box)`
   perspective: 700px;
   grid-template-rows: 1fr;
   grid-template-areas: "main";
-  gap: ${({ theme: { spacing } }) => spacing()};
+  margin: ${({ theme: { spacing } }) => spacing(0, 3)};
 `;
 
 export const CardBox = styled(Card)`
@@ -42,5 +42,5 @@ CardBox.defaultProps = {
 
 export const Footer = styled(Box)`
   display: grid;
-  gap: ${({ theme: { spacing } }) => spacing(2)};
+  gap: ${({ theme: { spacing } }) => spacing(3)};
 `;

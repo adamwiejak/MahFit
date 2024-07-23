@@ -8,7 +8,7 @@ import useTimer from "../../../hooks/useTimer";
 
 /////////////////////////////////////////////////////
 
-const initTimerValue = 0;
+const initTimerValue = 5;
 interface IDemoAccountProvider extends Omit<IButton, "icon"> {}
 
 const DemoAccountProvider: React.FC<IDemoAccountProvider> = (props) => {

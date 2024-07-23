@@ -14,18 +14,15 @@ const Dialog: React.FC<IDialog> = (props) => {
   const { title, onClose, variant, children, transition, ...rest } = props;
   const dialogElRef = useRef<HTMLDivElement>(null);
 
-  function shakeContent() {
+  function shake() {
     const content = dialogElRef.current?.children[2];
     gsap.effects.shake(content).play(0);
   }
 
   function closeHandler(e: MouseEvent | KeyboardEvent) {
+    if (variant === "obligatory") return shake();
     const reason = e.type === "click" ? "backdropClick" : "escapeKeyDown";
-    if (variant === "obligatory") return shakeContent();
-
-    if (reason === "backdropClick" && variant === "important") {
-      return shakeContent();
-    }
+    if (variant === "important" && reason === "backdropClick") return shake();
     if (onClose) onClose({}, reason);
   }
 
