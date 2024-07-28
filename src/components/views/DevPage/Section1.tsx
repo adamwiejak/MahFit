@@ -4,19 +4,17 @@ import IconButton from "../../UI/IconButton";
 
 const Section1 = () => {
   return (
-    <>
-      <styled.Container>
-        {Object.entries(iconsAsset).map((entry: any) => (
-          <IconButton
-            size="large"
-            key={entry[0]}
-            color="default"
-            icon={entry[0]}
-            tip={entry[0].toString()}
-          />
-        ))}
-      </styled.Container>
-    </>
+    <styled.Container>
+      {Object.entries(iconsAsset).map((entry: any) => (
+        <IconButton
+          size="large"
+          key={entry[0]}
+          color="default"
+          icon={entry[0]}
+          tip={entry[0].toString()}
+        />
+      ))}
+    </styled.Container>
   );
 };
 

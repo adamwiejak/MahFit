@@ -1,9 +1,10 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { Workout } from "../../../API/User";
+import type { WorkoutData } from "../../../API/User";
+import Workout from "../../../classes/Workout";
 
 interface ICalendar {
-  events?: Workout[];
+  events?: WorkoutData[];
 }
 
 const Calendar: React.FC<ICalendar> = (props) => {
@@ -13,7 +14,7 @@ const Calendar: React.FC<ICalendar> = (props) => {
     <FullCalendar
       {...rest}
       firstDay={1}
-      events={events}
+      events={events.map((e) => new Workout(e))}
       plugins={[dayGridPlugin]}
       initialView="dayGridMonth"
       headerToolbar={{

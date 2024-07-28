@@ -1,26 +1,24 @@
 import * as T from "./types";
-import { Auth, Database } from "../../utils/Firebase";
 import LocalStorageAPI from "../LocalStorage";
 import { User as UserImpl } from "firebase/auth";
-import { generateDummyWorkouts } from "../../helpers/functions/dummy-data";
-import { User } from "../../classes/User";
-
-// CONST QUERYIES
-export const dummyUsersQuery = Database.query(
-  Database.createColectionRef("users"),
-  Database.where("isDummy", "==", true)
-);
-
-export const createUserQuery = (uid: T.UserBaseInfo["uid"]) =>
-  Database.createDocumentRef(`users/${uid}`);
+import Auth from "../../utils/Firebase/auth";
+import Database from "../../utils/Firebase/database";
+import {
+  fillDummyUser,
+  generateDummyWorkouts,
+} from "../../helpers/functions/dummy-data";
 
 // AUTHENTICATION
 export async function createUserWithEmail(data: T.SinginUserData) {
-  const { email, password, gender, nickname, birthDate } = data;
+  const { email, password, gender, nickname, date } = data;
+  LocalStorageAPI.cacheUser({
+    email,
+    gender,
+    nickname,
+    photoURL: undefined,
+    birthDate: date.toDateString(),
+  });
   try {
-    const userBaseInfo = { gender, email, nickname, birthDate };
-    console.log(userBaseInfo);
-    LocalStorageAPI.cacheUser(userBaseInfo);
     await Auth.createUserWithEmail(email, password);
   } catch (err) {
     throw err;
@@ -56,42 +54,12 @@ export async function logoutUser() {
 }
 
 // VALID USER
-export async function getUser(uid: T.UserBaseInfo["uid"]) {
+export async function getUser(uid: T.Uid) {
   try {
-    const userData = await getUserData(uid);
-    const cacheUserData = LocalStorageAPI.getCachedUser();
-
-    if (userData) return userData;
-
-    if (!cacheUserData)
-      throw new Error("Not found data on servers. Loging out...");
-
-    const userBaseInfo = { ...cacheUserData, uid };
-    setUserInDB(userBaseInfo);
-    LocalStorageAPI.delateCachedUser();
-    return new User(userBaseInfo);
-  } catch (err) {
-    throw err;
-  }
-}
-
-export async function getUserData(uid: string) {
-  const { getDoc } = Database;
-  const userQuery = createUserQuery(uid);
-  try {
-    const snapshot = await getDoc(userQuery);
-    return snapshot.exists() ? (snapshot.data() as User) : undefined;
-  } catch (err) {
-    throw err;
-  }
-}
-
-export async function setUserInDB(data: T.UserBaseInfo) {
-  const { setDocument } = Database;
-  const userQuery = createUserQuery(data.uid);
-  try {
-    await setDocument(userQuery, { base: data });
-    return new User(data);
+    const userData = await Database.getUserData(uid);
+    if (!userData) return undefined;
+    if (userData.isDummy) await fillDummyUser(userData);
+    return userData;
   } catch (err) {
     throw err;
   }
@@ -107,27 +75,31 @@ async function _cleanUpLocalUser(user: UserImpl) {
   }
 }
 
-async function _createLocalUser(): Promise<User> {
-  const { gender, nickname, image } = LocalStorageAPI.getGuestData()!;
-  const { uid } = Auth.getCurrentUser()!;
+async function _createLocalUser() {
+  const localUser = LocalStorageAPI.getGuestData();
+  const userImpl = Auth.getCurrentUser();
+  if (!localUser || !userImpl) return undefined;
+  const uid = userImpl.uid;
+  const email = "guest@example.com";
+  const birthDate = new Date().toDateString();
+  const { gender, nickname, image } = localUser;
+  const workouts = generateDummyWorkouts(15, uid);
 
   try {
-    const birthDate = new Date();
-    const email = "guest@example.com";
-    const dumyWorkouts = generateDummyWorkouts(15);
-    const dummyFriends = await Database.getColection<User[]>(dummyUsersQuery);
+    const { getColection } = Database;
+    const dummyFriends = await getColection<T.UserData[]>(
+      Database.dummyUsersQuery
+    );
 
     const friendsList = dummyFriends.map(({ base }) => {
       return { uid: base.uid, isFav: Math.random() > 0.5 };
     });
 
-    const dummyUser: User = {
-      base: { email, uid, gender, nickname, birthDate },
-      details: { photoURL: image, friendsList, workouts: dumyWorkouts },
-    };
-
-    LocalStorageAPI.setLocalUser(dummyUser);
-    return dummyUser;
+    const base = { email, uid, gender, nickname, birthDate, photoURL: image };
+    const details = { friendsList, workouts, records: {} };
+    const userData: T.UserData = { base, details, isDummy: true };
+    LocalStorageAPI.setLocalUser(userData);
+    return userData;
   } catch (err) {
     throw err;
   }
@@ -136,7 +108,6 @@ async function _createLocalUser(): Promise<User> {
 export async function getLocalUser() {
   let localUser = LocalStorageAPI.getLocalUser();
   if (localUser) return localUser;
-
   try {
     localUser = await _createLocalUser();
     return localUser;

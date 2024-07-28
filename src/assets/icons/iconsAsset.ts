@@ -61,10 +61,12 @@ import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 
 export const iconsAsset = {
-  //// lift icons coresponding to Lift type from UserAPI! /////
-  benchPress: custom.BenchPressIcon,
-  deadLift: custom.DeadLiftIcon,
+  // !!! lift/sort icons coresponding to Lift and Order types !!!! /////
+  sortUp: SortUpIcon,
+  sortDown: SortDownIcon,
   squat: custom.SquatIcon,
+  deadLift: custom.DeadLiftIcon,
+  benchPress: custom.BenchPressIcon,
   /////////////////////////////////////////////////////////////
 
   sort: GoogleIcon,
@@ -82,8 +84,6 @@ export const iconsAsset = {
   add: AddIcon,
   dashboard: DashboardIcon,
   minus: MinusIcon,
-  sortDown: SortDownIcon,
-  sortUp: SortUpIcon,
   arrowsDown: ArrowsDown,
   arrowsUp: ArrowsUp,
   arrowLeft: ChevronLeftIcon,

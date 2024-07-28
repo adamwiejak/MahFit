@@ -12,7 +12,8 @@ const StyledInput = styled(TextField)`
     transition: all 0.2s ease-in-out;
     pointer-events: none;
 
-    &:hover {
+    &:hover,
+    &:focus {
       opacity: 1;
       pointer-events: all;
     }

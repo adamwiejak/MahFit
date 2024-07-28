@@ -1,29 +1,19 @@
+import * as T from "./types";
 import { createContext, useReducer } from "react";
 import reducer, { initialState } from "./_reducer";
-import {
-  filterFavActionType,
-  initFriendsActionType,
-  resetFiltersActionType,
-  searchFriendActionType,
-  setFriendActionType,
-} from "./types";
-import {
-  type FiltredFriend,
-  type Friend,
-  type IFilterFriendsContext,
-  type Uid,
-} from "./types";
+import { Friend, Lift, Uid, UserData } from "../../API/User";
 
 //////////////////////////////////////////////////////////////////
 
-export const FilterFriendsContext = createContext<IFilterFriendsContext>({
+const FilterFriendsContext = createContext<T.IFilterFriendsContext>({
   state: initialState,
+  init: ([]) => {},
   setFriend: () => {},
-  initFriends: () => {},
+  sortFriends: () => {},
   resetFilters: () => {},
   searchFriends: () => {},
+  getFriend: () => undefined,
   toggleFilterFavs: () => {},
-  getFriendData: () => undefined,
 });
 
 export const FilterFriendsContextProvider: React.FC<IContextProvider> = (
@@ -31,37 +21,47 @@ export const FilterFriendsContextProvider: React.FC<IContextProvider> = (
 ) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  function initFriends(list: FiltredFriend[]) {
-    dispatch({ type: initFriendsActionType, payload: list });
+  function init(list: Friend[]) {
+    dispatch({ type: T.initActionType, payload: list });
   }
 
-  function setFriend(friend: Friend) {
-    dispatch({ type: setFriendActionType, payload: friend });
+  function setFriend(friendData: UserData) {
+    dispatch({ type: T.setFriendActionType, payload: friendData });
   }
 
   function searchFriends(input: string) {
-    dispatch({ type: searchFriendActionType, payload: input });
+    dispatch({ type: T.searchFriendActionType, payload: input });
+  }
+
+  function sortFriends(lift: Lift) {
+    const toggleTo = state.sorted?.order === "sortUp" ? "sortDown" : "sortUp";
+
+    dispatch({
+      type: T.sortFriendsActionType,
+      payload: { by: lift, order: toggleTo },
+    });
   }
 
   function toggleFilterFavs() {
-    dispatch({ type: filterFavActionType });
+    dispatch({ type: T.filterFavActionType });
   }
 
   function resetFilters() {
-    dispatch({ type: resetFiltersActionType });
+    dispatch({ type: T.resetFiltersActionType });
   }
 
-  function getFriendData(uid: Uid) {
-    return state.friends?.find((f) => f.uid === uid);
+  function getFriend(uid: Uid) {
+    return state.friends?.[uid];
   }
 
   const value = {
     state,
+    init,
+    getFriend,
     setFriend,
-    initFriends,
+    sortFriends,
     resetFilters,
     searchFriends,
-    getFriendData,
     toggleFilterFavs,
   };
 
@@ -72,4 +72,4 @@ export const FilterFriendsContextProvider: React.FC<IContextProvider> = (
   );
 };
 
-export default FilterFriendsContextProvider;
+export default FilterFriendsContext;

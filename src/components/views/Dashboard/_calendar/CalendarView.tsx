@@ -4,13 +4,12 @@ import { SpeedDial, SpeedDialAction } from "@mui/material";
 import Icon from "../../../UI/Icon";
 import { getUserSlice } from "../../../../store";
 import { useContext } from "react";
-import { FilterFriendsContext } from "../../../../context/friends-filter";
+import FilterFriendsContext from "../../../../context/friends-filter";
 import { workoutsMockup } from "../../../../helpers/data/mockups";
 
 const HomeView = () => {
   const { userData } = getUserSlice();
   const { state } = useContext(FilterFriendsContext);
-
   const events = [...(userData?.details?.workouts || []), ...state.workouts];
 
   return (

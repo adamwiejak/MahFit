@@ -2,10 +2,15 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
 export const Page = styled(Box)`
-  gap: 0.5rem;
-  padding: 0.5rem;
+  gap: ${({ theme: { spacing } }) => spacing(2)};
+  display: grid;
   height: 100vh;
   overflow: hidden;
-  display: grid;
-  grid-template-rows: min-content minmax(0, 1fr);
+  padding: 5rem 0.5rem 0.5rem 0.5rem;
+  grid-auto-rows: min-content minmax(0, 1fr);
+
+  > div {
+    border: solid 1px black;
+    padding: ${({ theme: { spacing } }) => spacing(2)};
+  }
 `;

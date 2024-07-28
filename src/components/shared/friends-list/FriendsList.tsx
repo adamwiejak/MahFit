@@ -2,7 +2,7 @@ import * as styled from "./styles";
 import { BoxProps } from "@mui/material";
 import React, { useContext } from "react";
 import FriendWidget from "../friend-widget/FriendWidget";
-import { FilterFriendsContext } from "../../../context/friends-filter";
+import FilterFriendsContext from "../../../context/friends-filter";
 import Button from "../../UI/button/Button";
 import Icon from "../../UI/Icon";
 
@@ -15,8 +15,8 @@ const FriendsList: React.FC<IFriendsList> = (props) => {
     state: { filtredFriends, friends },
   } = useContext(FilterFriendsContext);
 
-  const noFriends = friends && !friends.length;
-  const emptySearch = !!friends && !filtredFriends?.length && !noFriends;
+  const noFriends = !friends && filtredFriends;
+  const emptySearch = !filtredFriends?.length && !noFriends;
 
   return (
     <styled.FriendsList {...rest}>

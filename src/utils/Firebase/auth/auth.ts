@@ -1,4 +1,4 @@
-import firebaseApp from "./_init";
+import firebaseApp from "../_init";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { deleteUser } from "firebase/auth";
@@ -10,7 +10,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 import type { NextOrObserver, User as UserImpl } from "firebase/auth";
 
-export const _auth = getAuth(firebaseApp);
+const _auth = getAuth(firebaseApp);
 
 export function getCurrentUser() {
   return _auth.currentUser;
@@ -37,8 +37,6 @@ export function authAnonymously() {
 }
 
 export function authWithFacebook() {
-  // const googleProvider = new FacebookAuthProvider();
-  // return signInWithPopup(_auth, googleProvider);
   alert("Facebook Provider Here. FB API Key needed");
 }
 
@@ -54,3 +52,6 @@ export function resetPassword(email: string) {
 export function delateAccount(user: UserImpl) {
   return deleteUser(user);
 }
+
+// export * from "firebase/auth";
+export * as Auth from "./auth";

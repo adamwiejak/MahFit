@@ -25,7 +25,7 @@ export const store = configureStore({
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
+export default store;
 export const getStore = () => useAppSelector((S) => S);
 export const getUserSlice = () => useAppSelector((S) => S.userSlice);
 export const getGlobalSlice = () => useAppSelector((S) => S.globalSlice);
-export default store;

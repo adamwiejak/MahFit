@@ -1,58 +1,64 @@
-import { Query } from "firebase/firestore";
-import UserAPI, { User, UserDetailsInfo, Workout } from "../../API/User";
-import { dummyUsersQuery } from "../../API/User/user-api";
-import { Database } from "../../utils/Firebase";
-import { msPerDay } from "../data/const";
+import { v4 as uuidv4 } from "uuid";
+import { Friend, Uid, UserData, WorkoutData } from "../../API/User";
+import Database from "../../utils/Firebase/database";
+import { msPerDay, msPerHour } from "../data/const";
+import { workoutTypesMockup } from "../data/mockups";
 import { randomNumberBetween } from "./functions";
 
-export function getRandomColor() {
-  const colors = ["red", "green", "yellow", "blue"];
-  const idx = randomNumberBetween(0, colors.length - 1);
-  return colors[idx];
+export function getRandomType() {
+  const idx = randomNumberBetween(0, workoutTypesMockup.length - 1);
+  return workoutTypesMockup[idx];
 }
 
-export function generateRandoMRecords() {
+export function generateRandomRecords() {
+  const f = randomNumberBetween(30, 180);
   return {
-    benchPress: randomNumberBetween(30, 240),
-    squat: randomNumberBetween(60, 260),
-    deadLift: randomNumberBetween(80, 350),
+    benchPress: Math.floor(f * 1),
+    squat: Math.floor(f * 1.2),
+    deadLift: Math.floor(f * 1.5),
   };
 }
 
-export function generateDummyWorkouts(amount: number) {
+export function generateDummyWorkouts(amount: number, author: Uid) {
   const now = Date.now();
-  const workouts: Record<number, Workout> = {};
+  const workouts: Record<number, WorkoutData> = {};
 
   do {
-    const daysOffset = randomNumberBetween(-amount, amount);
-    const timeOffset = +randomNumberBetween(-6, 6) * (msPerDay / 24);
-    const date = new Date(now + daysOffset * msPerDay + timeOffset);
+    const hoursOffset = +randomNumberBetween(-12, 12) * msPerHour;
+    const daysOffset = randomNumberBetween(-amount / 2, amount / 2) * msPerDay;
+    const date = new Date(now + daysOffset + hoursOffset);
     const day = date.getDate();
 
     if (workouts[day]) continue;
 
     workouts[day] = {
-      title: `Workout on ${date.toLocaleDateString()}`,
-      date: date.toISOString(),
-      color: getRandomColor(),
-      passed: Math.random() > 0.5,
+      author,
+      uid: uuidv4(),
+      type: getRandomType(),
+      start: date.toDateString(),
+      title: `Workout of ${author} on ${date.toLocaleDateString()}`,
     };
   } while (Object.keys(workouts).length < amount);
 
   return Object.values(workouts);
 }
 
-export async function fillDummyUser(userData: User) {
+export async function fillDummyUser(userData: UserData) {
+  const userUid = userData.base.uid;
   const { getDocs } = Database;
-  const friendsList: UserDetailsInfo["friendsList"] = [];
-  const dummyfriendsSnapshot = await getDocs(dummyUsersQuery);
-  const workouts = generateDummyWorkouts(randomNumberBetween(3, 10));
+  const friendsList: Friend[] = [];
+  const workouts = generateDummyWorkouts(randomNumberBetween(3, 10), userUid);
 
-  dummyfriendsSnapshot.forEach((doc) => {
-    const { base } = doc.data() as User;
-    if (base.uid !== userData.base.uid)
-      friendsList.push({ uid: base.uid, isFav: Math.random() > 0.5 });
-  });
+  try {
+    const dummyfriendsSnapshot = await getDocs(Database.dummyUsersQuery);
+    dummyfriendsSnapshot.forEach((doc) => {
+      const { base } = doc.data() as UserData;
+      const isFav = Math.random() > 0.5;
+      if (base.uid !== userUid) friendsList.push({ uid: base.uid, isFav });
+    });
 
-  userData.details = { ...userData.details, workouts, friendsList };
+    userData.details = { ...userData.details, workouts, friendsList };
+  } catch (err) {
+    throw err;
+  }
 }

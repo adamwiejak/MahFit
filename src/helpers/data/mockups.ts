@@ -1,11 +1,19 @@
-import { Gender, Lift } from "../../API/User/types";
+import { Gender, WorkoutType } from "../../API/User";
 import { IconName } from "../../components/UI/Icon";
 
-export const liftsMockup: Record<string, Lift> = {
-  squat: "squat",
-  deadLift: "deadLift",
-  benchPress: "benchPress",
-};
+// export const liftsMockup: Record<string, Lift> = {
+//   squat: "squat",
+//   deadLift: "deadLift",
+//   benchPress: "benchPress",
+// };
+
+export const workoutTypesMockup: WorkoutType[] = [
+  "push",
+  "pull",
+  "legs",
+  "upper",
+  "custom",
+];
 
 export const gendersMockup: Record<string, Gender> = {
   Female: "female",

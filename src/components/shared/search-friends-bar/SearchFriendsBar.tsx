@@ -1,11 +1,11 @@
-import * as styled from "./styles";
-import { CardProps } from "@mui/material";
 import Icon from "../../UI/Icon";
-import IconButton from "../../UI/IconButton";
-import Input from "../../UI/input/Input";
+import * as styled from "./styles";
 import { useContext } from "react";
-import { FilterFriendsContext } from "../../../context/friends-filter/_context";
+import Input from "../../UI/input/Input";
+import { CardProps } from "@mui/material";
 import Button from "../../UI/button/Button";
+import IconButton from "../../UI/IconButton";
+import FilterFriendsContext from "../../../context/friends-filter/_context";
 
 interface ISearchFriendsBar extends CardProps {}
 
@@ -15,7 +15,7 @@ const SearchFriendsBar: React.FC<ISearchFriendsBar> = (props) => {
   const { state, searchFriends, resetFilters } =
     useContext(FilterFriendsContext);
 
-  const filtred = state.searchPhraze || state.filtredFavs;
+  const filtred = !!state.search || state.filtredFavs;
 
   return (
     <styled.Bar {...rest}>
@@ -32,7 +32,7 @@ const SearchFriendsBar: React.FC<ISearchFriendsBar> = (props) => {
 
       <Input
         size="small"
-        value={state.searchPhraze}
+        value={state.search}
         onClear={() => searchFriends("")}
         adornmentStart={<Icon icon="search" />}
         onChange={(e) => searchFriends(e.currentTarget.value)}

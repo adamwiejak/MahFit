@@ -1,80 +1,79 @@
 import * as styled from "./styles";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { CardProps, Typography } from "@mui/material";
-import type { UserBaseInfo } from "../../../API/User";
+import type { Uid } from "../../../API/User";
 import Placehoder from "./_Placehoder";
 import IconButton from "../../UI/IconButton";
 import LiftRecord from "../lift-record/LiftRecord";
-import { FilterFriendsContext, Friend } from "../../../context/friends-filter";
+import FilterFriendsContext from "../../../context/friends-filter";
 import UserAPI from "../../../API/User";
-import { fillDummyUser } from "../../../helpers/functions/dummy-data";
 import { TaskError } from "../../../classes/TaskError";
+import { FriendUser } from "../../../classes/FriendUser";
+
+type Data = FriendUser | null | undefined;
 
 interface IFriendWidget extends CardProps {
-  uid: UserBaseInfo["uid"];
+  uid: Uid;
 }
-
-type Data = Friend | null | undefined;
 
 const FriendWidget: React.FC<IFriendWidget> = (props) => {
   const { uid, ...rest } = props;
-  const { state, getFriendData, setFriend } = useContext(FilterFriendsContext);
-  const [data, setData] = useState<Data>(getFriendData(uid));
+  const [friend, setFriendUser] = useState<Data>(undefined);
+  const { state, getFriend, setFriend } = useContext(FilterFriendsContext);
 
-  async function fetchFriend() {
-    const { filtredFriends } = state;
-    const isFav = !!filtredFriends?.find((f) => f.uid === uid)?.isFav;
-
+  const fetchFriendData = useRef(async function () {
     try {
-      const userData = await UserAPI.getUserData(uid);
+      const userData = await UserAPI.getUser(uid);
       if (!userData) throw new TaskError(new Error(`User ${uid} not exist`));
-      if (userData.isDummy) await fillDummyUser(userData);
-      const friend = { uid, isFav, data: userData };
-      setFriend(friend);
-      setData(friend);
+      setFriend(userData);
     } catch (err) {
+      setFriendUser(null);
       const { displaySnackbar } = err as TaskError;
       displaySnackbar("warning");
-      setData(null);
     }
-  }
+  });
 
-  if (data === undefined) fetchFriend();
+  if (friend === undefined) fetchFriendData.current();
+  useEffect(() => setFriendUser(getFriend(uid)), [state.friends]);
 
-  return data ? (
-    <styled.Container {...rest}>
-      <styled.Image>
-        <img src={data.data?.details?.photoURL} />
+  return friend ? (
+    <styled.Container elevation={10} {...rest}>
+      <styled.Image elevation={20}>
+        <img src={friend.getPhotoUrl()} />
       </styled.Image>
 
       <styled.Info>
         <IconButton
           size="small"
-          icon={data.isFav ? "starFilled" : "starBorder"}
-          iconColor={data.isFav ? "warning" : "inherit"}
+          icon={friend.isFav ? "starFilled" : "starBorder"}
+          iconColor={friend.isFav ? "warning" : "inherit"}
         />
         <Typography
           variant="button"
           sx={{ cursor: "pointer" }}
-          onClick={() => console.log(data)}
+          onClick={() => console.log(friend)}
         >
-          {data.data?.base.nickname}
+          {friend.getNickname()}
         </Typography>
       </styled.Info>
 
       <styled.Records>
-        <LiftRecord value={200} type="deadLift" />
-        <LiftRecord value={170} type="squat" />
-        <LiftRecord value={145} type="benchPress" />
+        <LiftRecord value={friend.getRecords().deadLift} type="deadLift" />
+        <LiftRecord value={friend.getRecords().squat} type="squat" />
+        <LiftRecord value={friend.getRecords().benchPress} type="benchPress" />
       </styled.Records>
 
-      <styled.Actions>
+      <styled.Actions elevation={20}>
         <IconButton size="small" icon="removeFriend" />
         <IconButton size="small" icon="dotsVertical" />
       </styled.Actions>
     </styled.Container>
   ) : (
-    <Placehoder isLoading={data === undefined} uid={uid} />
+    <Placehoder
+      onClick={() => console.log(state, friend)}
+      isLoading={friend === undefined}
+      uid={uid}
+    />
   );
 };
 

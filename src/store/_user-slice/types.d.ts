@@ -1,11 +1,11 @@
-import { User } from "../../API/User";
+import { UserData } from "../../API/User";
 
 export type UserSlice = {
-  userData: User | null;
+  userData: UserData | null;
   accessToken: undefined | string | null;
 };
 
 export type SetUserAction = {
-  userData: User;
+  userData: UserData;
   accessToken: UserSlice["accessToken"];
 };

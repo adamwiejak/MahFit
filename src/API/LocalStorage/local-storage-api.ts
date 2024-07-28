@@ -1,4 +1,4 @@
-import { GuestData, User, UserBaseInfo } from "../User";
+import { CachedUserData, GuestData, UserData } from "../User";
 
 const KEYS_MAP = {
   guest: "GUEST",
@@ -7,18 +7,18 @@ const KEYS_MAP = {
   themePref: "LOCAL_THEME_PREF",
 };
 
-const _set = (k: string, v: any) => {
+function _set(k: string, v: any) {
   localStorage.setItem(k, JSON.stringify(v));
-};
+}
 
-const _get = <T>(k: string) => {
+function _get<T>(k: string) {
   const item = localStorage.getItem(k);
   return item ? (JSON.parse(item) as T) : undefined;
-};
+}
 
-const _remove = (k: string) => {
+function _remove(k: string) {
   return localStorage.removeItem(k);
-};
+}
 
 // THEMEN PREF
 // export const setLocalTheme = (theme: Theme) => _set(KEYS_MAP.themePref, theme);
@@ -30,20 +30,15 @@ export const getGuestData = () => _get<GuestData>(KEYS_MAP.guest);
 export const setGuestData = (guest: GuestData) => _set(KEYS_MAP.guest, guest);
 
 // LOCAL USER
-export const getLocalUser = () => _get<User>(KEYS_MAP.localUser);
-export const setLocalUser = (data: User) => _set(KEYS_MAP.localUser, data);
+export const getLocalUser = () => _get<UserData>(KEYS_MAP.localUser);
+export const setLocalUser = (data: UserData) => _set(KEYS_MAP.localUser, data);
 
-//  USER
-export const cacheUser = (data: Omit<UserBaseInfo, "uid">) =>
-  _set(KEYS_MAP.user, data);
-
-export const getCachedUser = () =>
-  _get<Omit<UserBaseInfo, "uid">>(KEYS_MAP.user);
-
-export const delateCachedUser = () => _remove(KEYS_MAP.user);
-
-// cleanup
 export const cleanLocalUser = () => {
   _remove(KEYS_MAP.guest);
   _remove(KEYS_MAP.localUser);
 };
+
+//  USER
+export const delateCachedUser = () => _remove(KEYS_MAP.user);
+export const getCachedUser = () => _get<CachedUserData>(KEYS_MAP.user);
+export const cacheUser = (data: CachedUserData) => _set(KEYS_MAP.user, data);

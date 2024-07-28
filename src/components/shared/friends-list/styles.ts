@@ -4,8 +4,7 @@ export const FriendsList = styled(Box)`
   display: grid;
   overflow: auto;
   grid-auto-rows: min-content;
-  gap: ${({ theme: { spacing } }) => spacing(2)};
-  padding: ${({ theme: { spacing } }) => spacing(2)};
+  gap: ${({ theme: { spacing } }) => spacing(1)};
 `;
 
 export const Header = styled(Typography)`

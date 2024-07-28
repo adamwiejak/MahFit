@@ -12,6 +12,8 @@ declare module "*.svg";
 
 type Theme = "light" | "dark" | undefined;
 
+type Order = "sortDown" | "sortUp" | undefined;
+
 type Ref<T> = React.MutableRefObject<T>;
 
 type Tween = (...args: any) => {

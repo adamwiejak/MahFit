@@ -2,14 +2,16 @@ import * as styled from "./styles";
 import * as config from "./config";
 import { v4 as uuidv4 } from "uuid";
 import useForm from "../../hooks/useForm";
-import useAsyncTask from "../../hooks/useAsyncTask";
+import useAsyncTask, { TaskError } from "../../hooks/useAsyncTask";
 import { BoxProps } from "@mui/material";
 import Icon from "../../components/UI/Icon";
 import RadioGroup from "../../components/UI/RadioGroup";
 import Button from "../../components/UI/button/Button";
 import Input from "../../components/UI/input/Input";
-import { Database as DB } from "../../utils/Firebase";
-import UserAPI, { User } from "../../API/User";
+import { UserData } from "../../API/User";
+import Database from "../../utils/Firebase/database";
+import User from "../../classes/User";
+import { generateRandomRecords } from "../../helpers/functions/dummy-data";
 
 export interface ISingupForm extends BoxProps {}
 
@@ -17,23 +19,35 @@ const CreateDummyUserForm: React.FC<ISingupForm> = (props) => {
   const { asyncTaskHandler, isLoading } = useAsyncTask();
   const { formState, form } = useForm<config.FormData>();
 
+  async function cleanupUsers() {
+    try {
+      const promise = Database.getColection<UserData[]>(Database.usersQuery);
+      const users = await asyncTaskHandler(promise);
+      const undummyFilter = users?.filter((u) => u.isDummy !== true);
+      console.log("DELATED_ACCOUNTS:", undummyFilter);
+      undummyFilter.forEach(async ({ base: { uid } }) => {
+        const docRef = Database.createDocumentRef(`users/${uid}`);
+        await Database.deleteDocument(docRef);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const onSubmit = form.handleSubmit(async (data) => {
     const { nickname, gender, photoURL } = data;
     const uid = uuidv4();
-    const birthDate = new Date();
+    const birthDate = new Date().toDateString();
     const email = `${nickname.toLowerCase()}@.example.com`;
-
-    const dumyUser: User = {
-      base: { nickname, gender, uid, email, birthDate },
-      details: { photoURL },
-    };
+    const base = { uid, email, gender, photoURL, nickname, birthDate };
+    const details = { records: generateRandomRecords() };
 
     try {
-      const userRef = UserAPI.createUserQuery(uid);
-      await asyncTaskHandler(DB.setDocument(userRef, dumyUser));
+      const fakeUser = new User({ base, details, isDummy: true });
+      await asyncTaskHandler(Database.setUserInDB(fakeUser));
     } catch (err: any) {
-      console.log(err);
-      form.setError("root", { message: err.message });
+      const { displaySnackbar } = err as TaskError;
+      displaySnackbar("error");
     }
   });
 
@@ -73,6 +87,12 @@ const CreateDummyUserForm: React.FC<ISingupForm> = (props) => {
             inProgress={isLoading}
             text="Create Dummy User in DB"
             endIcon={<Icon icon="send" />}
+          />
+
+          <Button
+            inProgress={isLoading}
+            onClick={cleanupUsers}
+            text="Remove Undummy Users/Authentication"
           />
         </styled.Actions>
       </styled.Form>

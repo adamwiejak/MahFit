@@ -1,36 +1,45 @@
-import { User, UserBaseInfo, UserDetailsInfo, Workout } from "../../API/User";
+import { FriendUser } from "../../classes/FriendUser";
+import type {
+  Friend,
+  Lift,
+  Uid,
+  UserData,
+  WorkoutData,
+} from "../../API/User/types";
 
-export const filterFavActionType = "FILTER_FAV";
-export const resetFiltersActionType = "RESET_FILTERS";
+export const initActionType = "INIT";
 export const setFriendActionType = "SET_FRIEND";
-export const initFriendsActionType = "INIT_FRIENDS";
+export const filterFavActionType = "FILTER_FAV";
+export const sortFriendsActionType = "SORT_FRIENDS";
+export const resetFiltersActionType = "RESET_FILTERS";
 export const searchFriendActionType = "SEARCH_FRIENDS";
 
 export type Action =
   | { type: typeof filterFavActionType }
   | { type: typeof resetFiltersActionType }
-  | { type: typeof setFriendActionType; payload: Friend }
-  | { type: typeof searchFriendActionType; payload: string }
-  | { type: typeof initFriendsActionType; payload: FiltredFriend[] };
+  | { type: typeof initActionType; payload: Friend[] }
+  | { type: typeof setFriendActionType; payload: UserData }
+  | { type: typeof sortFriendsActionType; payload: Sorted }
+  | { type: typeof searchFriendActionType; payload: string };
 
-export type Uid = UserBaseInfo["uid"];
-export type Friend = FiltredFriend & { data: User };
-export type FiltredFriend = { uid: Uid; isFav: boolean };
+export type Sorted = { by: Lift; order: Order };
 
 export interface State {
-  workouts: Workout[];
+  search: string;
   filtredFavs: boolean;
-  searchPhraze: string;
-  friends: Friend[] | undefined;
-  filtredFriends: FiltredFriend[] | undefined;
+  workouts: WorkoutData[];
+  sorted: Sorted | undefined;
+  filtredFriends: Friend[] | undefined;
+  friends: Record<string, FriendUser> | undefined;
 }
 
 export type IFilterFriendsContext = {
   state: State;
   resetFilters: () => void;
   toggleFilterFavs: () => void;
-  setFriend: (friend: Friend) => void;
+  init: (list: Friend[]) => void;
+  sortFriends: (lift: Lift) => void;
   searchFriends: (input: string) => void;
-  initFriends: (list: FiltredFriend[]) => void;
-  getFriendData: (uid: Uid) => Friend | undefined;
+  setFriend: (friend: UserData) => void;
+  getFriend: (uid: Uid) => FriendUser | undefined;
 };

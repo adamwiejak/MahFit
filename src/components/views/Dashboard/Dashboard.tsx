@@ -1,10 +1,10 @@
 import * as styled from "./styles";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { getUserSlice } from "../../../store";
 import AppHeader from "../../blocks/app-bar/AppBar";
 import UserTabs from "../../shared/user-tabs/UserTabs";
 import UsersSideBar from "../../blocks/user-side-bar/UsersSideBar";
-import FilterFriendsContextProvider from "../../../context/friends-filter";
+import { FilterFriendsContextProvider } from "../../../context/friends-filter";
 
 const Dashboard = () => {
   const { accessToken, userData } = getUserSlice();
@@ -21,6 +21,8 @@ const Dashboard = () => {
 
         <styled.Content>
           {accessToken ? <UserTabs /> : <Navigate to="/auth" />}
+
+          <Outlet />
         </styled.Content>
       </FilterFriendsContextProvider>
     </styled.Wrapper>

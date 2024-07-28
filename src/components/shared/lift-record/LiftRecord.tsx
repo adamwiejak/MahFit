@@ -5,7 +5,7 @@ import { Lift } from "../../../API/User";
 
 interface ILiftRecord extends BoxProps {
   type: Lift;
-  value: number;
+  value: number | undefined;
 }
 
 const LiftRecord: React.FC<ILiftRecord> = (props) => {
@@ -14,7 +14,7 @@ const LiftRecord: React.FC<ILiftRecord> = (props) => {
   return (
     <styled.Container {...rest}>
       <Icon icon={type} />
-      <Typography>{value}</Typography>
+      <Typography>{value || "??"}</Typography>
     </styled.Container>
   );
 };

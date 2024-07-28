@@ -19,7 +19,7 @@ const UserAvatar = () => {
   const [menuOpened, toggleMenu] = useBoolean(false);
 
   const src = userData
-    ? userData.details?.photoURL || avatarImages[userData.base.gender]
+    ? userData.base.photoURL || avatarImages[userData.base.gender]
     : undefined;
 
   return (

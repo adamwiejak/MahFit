@@ -6,20 +6,18 @@ import { enqueueSnackbar } from "notistack";
 import UserAPI from "../../API/User";
 import LocalStorageAPI from "../../API/LocalStorage";
 
-export const onLoginUser: Thunk<UserImpl> = (user) => async (dispatch) => {
+export const onLoginUser: Thunk<UserImpl> = (userImpl) => async (dispatch) => {
   dispatch(G.toggleInProgress(true));
 
   try {
-    if (!user) throw new Error("Invalid user durning authenticating process");
-    const guest = user?.isAnonymous && LocalStorageAPI.getGuestData;
-    const accessToken = await user.getIdToken();
+    const guest = userImpl!.isAnonymous && LocalStorageAPI.getGuestData;
+    const accessToken = await userImpl!.getIdToken();
 
     const userData = guest
       ? await UserAPI.getLocalUser()
-      : await UserAPI.getUser(user.uid);
+      : await UserAPI.getUser(userImpl!.uid);
 
-    // TODO: "2024-07-22T21:31:45.241Z"
-    console.log(new Date(userData.base.birthDate));
+    if (!userData) throw new Error(`No ${guest && "Guest"} User  Data found`);
 
     dispatch(U.setUser({ accessToken, userData }));
     enqueueSnackbar("Sucessfully Loged In", { variant: "success" });

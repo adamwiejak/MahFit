@@ -1,6 +1,6 @@
-import FilterFriendsContextProvider from "./_context";
+import FilterFriendsContext from "./_context";
 
-export default FilterFriendsContextProvider;
+export default FilterFriendsContext;
+export * as types from "./types";
 export * from "./_context";
 export * from "./types";
-export * as types from "./types";

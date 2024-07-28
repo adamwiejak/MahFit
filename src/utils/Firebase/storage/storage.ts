@@ -1,9 +1,9 @@
-import firebaseApp from "./_init";
+import firebaseApp from "../_init";
 import { getStorage, ref } from "firebase/storage";
 import { uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { deleteObject } from "firebase/storage";
-import { TaskError } from "../../classes/TaskError";
+import { TaskError } from "../../../classes/TaskError";
 
 const _storage = getStorage(firebaseApp);
 
@@ -15,7 +15,7 @@ export const deleteFile = (storagePath: string) => {
   return deleteObject(ref(_storage, storagePath));
 };
 
-export async function getUrl(storagePath: string) {
+export async function getURL(storagePath: string) {
   try {
     return await getDownloadURL(ref(_storage, storagePath));
   } catch (err: any) {

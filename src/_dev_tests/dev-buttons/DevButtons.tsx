@@ -5,7 +5,7 @@ import IconButton from "../../components/UI/IconButton";
 import useBoolean from "../../hooks/useBoolean";
 import useAsyncTask from "../../hooks/useAsyncTask";
 import { useNavigate } from "react-router-dom";
-import { Auth } from "../../utils/Firebase";
+import Auth from "../../utils/Firebase/auth";
 import UserAPI from "../../API/User";
 import { Card } from "@mui/material";
 

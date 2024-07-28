@@ -3,8 +3,9 @@ import { Box, Card, styled } from "@mui/material";
 export const Container = styled(Card)`
   min-height: 5rem;
   display: grid;
+  grid-template-columns: 0.3fr 1fr min-content;
   gap: ${({ theme: { spacing } }) => spacing(1)};
-  grid-template-columns: 0.25fr 1fr min-content;
+  padding: ${({ theme: { spacing } }) => spacing(1)};
 
   grid-template-areas:
     "img info actions"
@@ -14,11 +15,11 @@ export const Container = styled(Card)`
 export const Image = styled(Card)`
   grid-area: img;
   position: relative;
-  margin: ${({ theme: { spacing } }) => spacing(2, 0, 2, 2)};
 
   img {
     width: 100%;
     height: 100%;
+    inset: 0;
     position: absolute;
     object-fit: cover;
   }

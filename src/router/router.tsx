@@ -18,10 +18,10 @@ export const router = createBrowserRouter([
     element: <Root />,
     errorElement: <NoFoundPage />,
     children: [
-      { path: "_dev", element: <DevPage /> },
       {
         element: <Landing />,
         children: [
+          { path: "_dev", element: <DevPage /> },
           { index: true, element: <Navigate to="/home" /> },
           { path: "home", element: <HomePage /> },
           { path: "auth/:task?", element: <AuthPage />, loader: L.authLoader },

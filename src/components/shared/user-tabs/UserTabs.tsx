@@ -26,8 +26,6 @@ const UserTabs: React.FC<IUserTabs> = (props) => {
           ))}
         </styled.Tabs>
       </styled.Wrapper>
-
-      <Outlet />
     </>
   );
 };
