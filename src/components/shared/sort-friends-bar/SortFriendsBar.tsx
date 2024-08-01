@@ -2,7 +2,7 @@ import * as styled from "./styles";
 import * as config from "./config";
 import IconButton from "../../UI/IconButton";
 import Icon from "../../UI/Icon";
-import { CardProps } from "@mui/material";
+import { Card, CardProps, Divider } from "@mui/material";
 import { useContext } from "react";
 import FilterFriendsContext from "../../../context/friends-filter";
 import { Lift } from "../../../API/User";
@@ -27,17 +27,23 @@ const SortFriendsBar: React.FC<ISortFriendsBar> = (props) => {
           <styled.Btn key={icon}>
             <IconButton
               icon={icon}
-              // disabled={emptySearch}
-              size={currLiftSort ? "medium" : "small"}
+              size="small"
               onClick={() => sortFriends(icon as Lift)}
               color={currLiftSort ? "inherit" : "default"}
             />
-            {currLiftSort && order && <Icon icon={order} />}
+            {currLiftSort && order && (
+              <Icon
+                icon={order}
+                fontSize="small"
+                color={order === "sortDown" ? "error" : "success"}
+              />
+            )}
           </styled.Btn>
         );
       })}
 
       <IconButton
+        sx={{ ml: 4 }}
         color="warning"
         onClick={toggleFilterFavs}
         icon={state.filtredFavs ? "starFilled" : "starBorder"}

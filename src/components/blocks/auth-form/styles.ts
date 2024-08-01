@@ -4,16 +4,16 @@ import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 
 export const Container = styled(Card)`
-  display: grid;
   width: 25vw;
+  display: grid;
   max-height: 85vh;
   position: relative;
   place-self: center;
   text-align: center;
   overflow: visible;
-  grid-template-rows: min-content minmax(10px, 1fr) min-content;
   gap: ${({ theme: { spacing } }) => spacing(3)};
-  padding: ${({ theme: { spacing } }) => spacing(4, 3)};
+  padding: ${({ theme: { spacing } }) => spacing(4, 3, 3, 3)};
+  grid-template-rows: min-content minmax(10px, 1fr) min-content;
 `;
 
 export const Header = styled(Typography)``;

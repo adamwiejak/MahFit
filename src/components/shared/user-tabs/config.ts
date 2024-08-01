@@ -5,5 +5,4 @@ export const tabs: IconName[] = [
   "exercises",
   "group",
   "ranking",
-  "message",
 ];

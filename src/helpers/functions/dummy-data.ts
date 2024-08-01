@@ -44,9 +44,9 @@ export function generateDummyWorkouts(amount: number, author: Uid) {
 }
 
 export async function fillDummyUser(userData: UserData) {
-  const userUid = userData.base.uid;
   const { getDocs } = Database;
   const friendsList: Friend[] = [];
+  const userUid = userData.base.uid;
   const workouts = generateDummyWorkouts(randomNumberBetween(3, 10), userUid);
 
   try {

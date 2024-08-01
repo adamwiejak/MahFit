@@ -1,10 +1,11 @@
-import { Typography } from "@mui/material";
 import * as styled from "./styles.";
 
 const WorkoutsView = () => {
   return (
     <styled.View>
-      <Typography variant="h3">Workouts View</Typography>
+      {new Array(40).fill(1).map((_, idx) => (
+        <styled.WorkoutCard>Workout #{idx + 1}</styled.WorkoutCard>
+      ))}
     </styled.View>
   );
 };

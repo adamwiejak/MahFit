@@ -1,5 +1,5 @@
-import { Outlet } from "react-router-dom";
 import { isDev } from "../../store";
+import { Outlet } from "react-router-dom";
 import DevButtons from "../../_dev_tests/dev-buttons/DevButtons";
 import GlobalLoader from "../modals/global-loader/GlobalLoader";
 import useUserObserver from "../../hooks/useUserObserver";
@@ -10,7 +10,7 @@ const Root: React.FC = () => {
   return (
     <>
       <Outlet />
-      <GlobalLoader />
+      {/* <GlobalLoader /> */}
       {isDev && <DevButtons />}
     </>
   );

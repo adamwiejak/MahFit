@@ -32,14 +32,8 @@ const AuthForm: React.FC<IAutForm> = (props) => {
       <styled.Header variant="h5">A/B</styled.Header>
 
       <styled.Main>
-        <styled.CardBox>
-          <LoginForm />
-        </styled.CardBox>
-
-        <styled.CardBox>
-          <SignupForm />
-        </styled.CardBox>
-
+        <LoginForm elevation={10} />
+        <SignupForm elevation={10} />
         <Spinner open={accessToken === undefined} />
       </styled.Main>
 

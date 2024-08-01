@@ -18,6 +18,7 @@ export const Container = styled(Box, { shouldForwardProp })<StyledProps>`
   height: 100%;
   width: 100%;
   display: block;
+  pointer-events: none;
   filter: ${({ background }) => (background ? bgFilter : "")};
   position: ${({ background }) => (background ? "absolute" : "relative")};
 

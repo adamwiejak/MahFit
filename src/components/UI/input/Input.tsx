@@ -7,7 +7,7 @@ import InputEndAdornment from "./_InputEndAdornment";
 import useBoolean from "../../../hooks/useBoolean";
 
 const StyledInput = styled(TextField)`
-  button:first-of-type {
+  button {
     opacity: 0;
     transition: all 0.2s ease-in-out;
     pointer-events: none;
@@ -19,7 +19,7 @@ const StyledInput = styled(TextField)`
     }
   }
 
-  input:focus ~ * button:first-of-type {
+  input:focus ~ * button {
     opacity: 1;
     pointer-events: all;
   }

@@ -10,8 +10,8 @@ export type WorkoutData = {
   author: Uid;
   uid: string;
   title: string;
-  start: string;
   type: WorkoutType;
+  start: string /*stringified Data*/;
 };
 
 export type AuthTask = "login" | "signup";

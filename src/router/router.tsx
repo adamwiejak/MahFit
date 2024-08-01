@@ -9,11 +9,12 @@ import NoFoundPage from "../components/views/NoPage/NoFoundPage";
 import CalendarView from "../components/views/Dashboard/_calendar/CalendarView";
 import WorkoutsView from "../components/views/Dashboard/_workouts/WorkoutsView";
 import NoMatch from "../components/shared/no-match/NoMatch";
-import SettingsPage from "../components/views/SettingsPage/SettingsPage";
 
 import * as L from "./loaders";
 
 export const router = createBrowserRouter([
+  { path: "_dev", element: <DevPage /> },
+
   {
     element: <Root />,
     errorElement: <NoFoundPage />,
@@ -21,7 +22,6 @@ export const router = createBrowserRouter([
       {
         element: <Landing />,
         children: [
-          { path: "_dev", element: <DevPage /> },
           { index: true, element: <Navigate to="/home" /> },
           { path: "home", element: <HomePage /> },
           { path: "auth/:task?", element: <AuthPage />, loader: L.authLoader },
@@ -33,11 +33,11 @@ export const router = createBrowserRouter([
         element: <Dashboard />,
         children: [
           {
-            errorElement: <NoMatch />,
             children: [
               { index: true, element: <Navigate to="calendar" /> },
-              { path: "settings", element: <SettingsPage /> },
+
               { path: "calendar", element: <CalendarView /> },
+
               { path: "exercises", element: <WorkoutsView /> },
 
               {
@@ -52,6 +52,7 @@ export const router = createBrowserRouter([
                 element: <WorkoutsView />,
               },
             ],
+            errorElement: <NoMatch />,
           },
         ],
       },

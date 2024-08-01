@@ -21,8 +21,8 @@
   },
   "include": [
     "src",
+    "main.tsx",
     "src/vite-env.d.tsts",
-    "src/helpers/functions/dummy-data.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

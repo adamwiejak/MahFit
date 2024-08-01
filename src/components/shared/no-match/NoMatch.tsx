@@ -2,8 +2,6 @@ import styled from "./styles";
 import { Link, useRouteError } from "react-router-dom";
 import type { BoxProps } from "@mui/material/Box";
 import StandardIcon from "../../UI/Icon";
-import Image from "../image/Image";
-import { noFoundImageAsset } from "../../../assets/images/404/asset";
 import Button from "../../UI/button/Button";
 
 const NoMatch: React.FC<BoxProps> = (props) => {
@@ -14,8 +12,6 @@ const NoMatch: React.FC<BoxProps> = (props) => {
 
   return (
     <styled.Container {...rest}>
-      <Image background imageAsset={noFoundImageAsset} />
-
       <styled.CardBox>
         <styled.Header>{`${statusText} #${status || "Unknown"}`}</styled.Header>
 

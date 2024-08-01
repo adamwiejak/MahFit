@@ -2,6 +2,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import type { WorkoutData } from "../../../API/User";
 import Workout from "../../../classes/Workout";
+import { useMemo } from "react";
 
 interface ICalendar {
   events?: WorkoutData[];
@@ -10,13 +11,16 @@ interface ICalendar {
 const Calendar: React.FC<ICalendar> = (props) => {
   const { events = [], ...rest } = props;
 
+  const workouts = useMemo(() => events.map((e) => new Workout(e)), [events]);
+
   return (
     <FullCalendar
       {...rest}
       firstDay={1}
-      events={events.map((e) => new Workout(e))}
+      events={workouts}
+      stickyHeaderDates
       plugins={[dayGridPlugin]}
-      initialView="dayGridMonth"
+      initialView="dayGridWeek"
       headerToolbar={{
         left: "title",
         center: "",

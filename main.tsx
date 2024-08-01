@@ -1,11 +1,11 @@
-import "./styles/index.scss";
+import "./main.scss";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import store from "./store";
+import store from "./src/store";
 import { RouterProvider } from "react-router-dom";
-import { router } from "./router/router";
+import { router } from "./src/router/router";
 import { Provider } from "react-redux";
-import ThemeProvider from "./styles/MUI/ThemeProvider";
+import ThemeProvider from "./src/styles/MUI/ThemeProvider";
 import { SnackbarProvider } from "notistack";
 
 export const root = document.getElementById("root")!;

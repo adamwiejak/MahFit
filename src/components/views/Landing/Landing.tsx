@@ -17,7 +17,7 @@ const Landing: React.FC<BoxProps> = (props) => {
 
   return (
     <styled.Wrapper role="Landing Layout" {...rest}>
-      <AppHeader ref={barRef} />
+      <AppHeader  ref={barRef} />
 
       <Outlet />
 

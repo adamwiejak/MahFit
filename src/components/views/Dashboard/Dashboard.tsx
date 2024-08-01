@@ -1,5 +1,4 @@
 import * as styled from "./styles";
-import { Navigate, Outlet } from "react-router-dom";
 import { getUserSlice } from "../../../store";
 import AppHeader from "../../blocks/app-bar/AppBar";
 import UserTabs from "../../shared/user-tabs/UserTabs";
@@ -11,19 +10,17 @@ const Dashboard = () => {
 
   return (
     <styled.Wrapper>
-      <AppHeader position="static" sx={{ gridArea: "bar" }} />
+      <AppHeader position="static" sx={{ gridArea: "header" }} />
 
       <FilterFriendsContextProvider>
-        <UsersSideBar
-          sx={{ gridArea: "side" }}
-          friendsList={userData?.details?.friendsList}
-        />
+        {accessToken && (
+          <UsersSideBar
+            sx={{ gridArea: "side" }}
+            friendsList={userData?.details?.friendsList}
+          />
+        )}
 
-        <styled.Content>
-          {accessToken ? <UserTabs /> : <Navigate to="/auth" />}
-
-          <Outlet />
-        </styled.Content>
+        <UserTabs sx={{ gridArea: "main" }} disabeled={!accessToken} />
       </FilterFriendsContextProvider>
     </styled.Wrapper>
   );

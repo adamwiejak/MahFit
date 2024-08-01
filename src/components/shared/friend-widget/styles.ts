@@ -6,10 +6,20 @@ export const Container = styled(Card)`
   grid-template-columns: 0.3fr 1fr min-content;
   gap: ${({ theme: { spacing } }) => spacing(1)};
   padding: ${({ theme: { spacing } }) => spacing(1)};
+  transition: all 0.25s;
 
   grid-template-areas:
     "img info actions"
     "img records actions";
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(0.97);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 `;
 
 export const Image = styled(Card)`

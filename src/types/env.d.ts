@@ -22,5 +22,5 @@ type Tween = (...args: any) => {
 };
 
 interface IContextProvider {
-  children: JSX.Element | JSX.Element[];
+  children: any | JSX.Element | JSX.Element[];
 }

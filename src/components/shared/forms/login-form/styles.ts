@@ -1,5 +1,13 @@
 import { styled } from "@mui/material/styles";
-import { Box } from "@mui/material";
+import { Box, Card } from "@mui/material";
+
+export const CardBox = styled(Card)`
+  display: grid;
+  grid-area: main;
+  height: fit-content;
+  backface-visibility: hidden;
+  padding: ${({ theme: { spacing } }) => spacing(3, 3, 2, 3)};
+`;
 
 export const Form = styled(Box)`
   display: grid;

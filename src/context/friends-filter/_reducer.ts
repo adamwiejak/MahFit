@@ -59,9 +59,10 @@ function reducer(state: T.State, action: T.Action): T.State {
 
     case T.setFriendActionType: {
       const friendData = action.payload;
-      const { friends, workouts } = state;
       const uid = friendData.base.uid;
+      const { friends, workouts } = state;
       if (friends?.[uid]) return state;
+
       const isFav = !!state.filtredFriends?.find((f) => f.uid === uid)?.isFav;
       const friend = new FriendUser(friendData, isFav);
       const updateWorkouts = [...workouts, ...friend.getWorkouts()];
@@ -110,6 +111,7 @@ function reducer(state: T.State, action: T.Action): T.State {
         search: "",
         workouts,
         filtredFriends,
+        sorted: undefined,
         filtredFavs: false,
       };
     }

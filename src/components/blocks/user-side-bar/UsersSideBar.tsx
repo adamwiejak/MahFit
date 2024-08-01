@@ -20,7 +20,7 @@ const UsersSideBar: React.FC<IUsersSideBar> = (props) => {
   }, [friendsList]);
 
   return (
-    <styled.Container elevation={10} {...rest}>
+    <styled.Container elevation={20} {...rest}>
       <SortFriendsBar elevation={10} />
       <FriendsList />
       <SearchFriendsBar elevation={10} />
