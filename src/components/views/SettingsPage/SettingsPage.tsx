@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import { Typography } from "@mui/material";
 
 const SettingsPage = () => {

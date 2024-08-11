@@ -1,39 +1,38 @@
 import * as config from "./config";
-import * as styled from "./image.styled";
-import { useRef, useState } from "react";
-import ResponsiveImage from "../../../classes/ResponsiveImage";
-import type { ResponsiveImageAsset } from "../../../classes/ResponsiveImage";
+import * as styled from "./.styles";
+import { useMemo, useRef, useState } from "react";
 import { BoxProps } from "@mui/material";
-import useTween from "../../../hooks/useTween";
-import Spinner from "../spinner/Spinner";
 
-export interface IImage extends BoxProps, styled.StyledProps {
+export interface IImage extends BoxProps {
   imageAsset: ResponsiveImageAsset;
 }
 
 const Image: React.FC<IImage> = (props) => {
   const { imageAsset, ...rest } = props;
-  const [finalSize, setFinalSize] = useState("");
+  const [size, setSize] = useState("");
   const containerRef = useRef<HTMLDivElement>(null!);
 
-  const image = new ResponsiveImage(imageAsset);
-  const tlRef = useTween(() => config.showImageTween(containerRef));
+  const srcSet = useMemo(() => imageAsset.images.map(({ src, width }) => `${src} ${width}w`).join(", "), [imageAsset]);
 
-  function setSize() {
-    const imgSize = `${containerRef.current.clientWidth}px`;
-    setFinalSize(imgSize);
+  /*the lowest guality img for temporary, blured placeholder */
+  function getDefaultSrc() {
+    const widths = imageAsset.images.map(({ width }) => width);
+    const smallestIdx = widths.findIndex((el) => el === Math.min(...widths));
+    return imageAsset.images[smallestIdx].src;
   }
 
-  function onImgLoad() {
-    tlRef.current?.play();
+  function setFinalSize() {
+    setSize(`${containerRef.current.clientWidth}px`);
+  }
+
+  function onFinalImageLoad() {
+    config.rmeoveOverlayTween(containerRef);
   }
 
   return (
     <styled.Container ref={containerRef} {...rest} component="picture">
-      <img loading="lazy" role="placeholder" onLoad={setSize} src={image.src} />
-      <Spinner open={!finalSize} />
-
-      {finalSize && <img sizes={finalSize} onLoad={onImgLoad} {...image} />}
+      <img loading="lazy" onLoad={setFinalSize} src={getDefaultSrc()} />
+      {size && <img sizes={size} srcSet={srcSet} onLoad={onFinalImageLoad} />}
       <styled.Overlay />
     </styled.Container>
   );

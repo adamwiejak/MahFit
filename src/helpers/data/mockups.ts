@@ -1,11 +1,7 @@
-import { Gender, WorkoutType } from "../../API/User";
+import { Gender, Lift, WorkoutType } from "../../API/User";
 import { IconName } from "../../components/UI/Icon";
 
-// export const liftsMockup: Record<string, Lift> = {
-//   squat: "squat",
-//   deadLift: "deadLift",
-//   benchPress: "benchPress",
-// };
+export const liftsMockup: Lift[] = ["squat", "deadLift", "benchPress"];
 
 export const workoutTypesMockup: WorkoutType[] = [
   "push",

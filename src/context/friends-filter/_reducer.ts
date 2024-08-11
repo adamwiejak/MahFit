@@ -1,49 +1,58 @@
 import * as T from "./types";
 import { compareStrings } from "../../helpers/functions/functions";
-import { WorkoutData } from "../../API/User";
+import { Lift } from "../../API/User";
 import { FriendUser } from "../../classes/FriendUser";
+import { WorkoutData } from "../../utils/Firebase/database";
 
 export const initialState: T.State = {
+  friends: {},
   workouts: [],
-  search: "",
+  isLoading: true,
+  searchPhraze: "",
   sorted: undefined,
+  filtredFriends: [],
   filtredFavs: false,
-  friends: undefined,
-  filtredFriends: undefined,
 };
 
-type FriendsInput = T.State["friends"] | FriendUser[];
-
 // HELPERS
-function _convertFriendsToArray(input: FriendsInput) {
-  return Array.isArray(input) ? [...input] : Object.values(input || {});
+function _getFriendsUsersArray(input: T.State["friends"]) {
+  return Object.values(input || {});
 }
 
-function _filterByPhraze(list: FriendsInput, phraze: string) {
-  const friends = _convertFriendsToArray(list);
-  return friends.filter((friend) => {
+function _getSearchedFriendsUsersArray(state: T.State) {
+  const { filtredFriends, friends } = state;
+  return filtredFriends?.map(({ uid }) => friends![uid]);
+}
+
+function _convertToFriendsList(list: FriendUser[]) {
+  return list.map((f) => {
+    return { isFav: f.isFav(), uid: f.getUid() };
+  });
+}
+
+function _extractFriendsWorkouts(friends: FriendUser[]) {
+  const workouts: WorkoutData[] = [];
+  friends.forEach((f) => workouts.push(...f.getWorkouts()));
+  return workouts;
+}
+
+function _filterByPhraze(friends: T.State["friends"], phraze: string) {
+  return _getFriendsUsersArray(friends).filter((friend) => {
     const { nickname, email } = friend.getUserData().base;
     if (compareStrings(phraze, [nickname, email])) return friend;
   });
 }
 
-function _filterFavFriends(list: FriendsInput) {
-  const arrayList = _convertFriendsToArray(list);
-  return arrayList?.filter(({ isFav }) => isFav === true);
+function _filterFavFriends(list: FriendUser[]) {
+  return list?.filter((friend) => friend.isFav());
 }
 
-function _extractFriendsWorkouts(list: FriendsInput) {
-  const workouts: WorkoutData[] = [];
-  const friends = Array.isArray(list) ? list : Object.values(list || {});
-  friends.forEach((f) => workouts.push(...f.getWorkouts()));
-  return workouts;
+function _sortUp(list: FriendUser[], lift: Lift) {
+  list.sort((a, b) => (a.getCurrRecord(lift) || 0) - (b.getCurrRecord(lift) || 0));
 }
 
-function _convertFriendsUsersToFriends(list: FriendsInput) {
-  const friendsArray = _convertFriendsToArray(list);
-  return friendsArray.map((f) => {
-    return { isFav: f.getIsFav(), uid: f.getUid() };
-  });
+function _sortDown(list: FriendUser[], lift: Lift) {
+  list.sort((a, b) => (b.getCurrRecord(lift) || 0) - (a.getCurrRecord(lift) || 0));
 }
 
 ////////////////////////////////////////////////////////////////
@@ -53,64 +62,71 @@ function reducer(state: T.State, action: T.Action): T.State {
   switch (action.type) {
     case T.initActionType: {
       const filtredFriends = action.payload;
-      const friends = filtredFriends.length ? {} : undefined;
-      return { ...state, filtredFriends, friends };
+      return { ...state, filtredFriends, isLoading: false };
     }
 
     case T.setFriendActionType: {
-      const friendData = action.payload;
-      const uid = friendData.base.uid;
+      const friend = action.payload;
       const { friends, workouts } = state;
+      const uid = friend.getUid();
       if (friends?.[uid]) return state;
-
-      const isFav = !!state.filtredFriends?.find((f) => f.uid === uid)?.isFav;
-      const friend = new FriendUser(friendData, isFav);
       const updateWorkouts = [...workouts, ...friend.getWorkouts()];
       const updatedFriends = { ...friends, [uid]: friend };
       return { ...state, friends: updatedFriends, workouts: updateWorkouts };
     }
 
     case T.searchFriendActionType: {
-      const search = action.payload;
-      const { filtredFavs, friends } = state;
-      let searchedFriends = _filterByPhraze(friends, search);
+      const { friends, filtredFavs } = state;
+      const searchPhraze = action.payload;
+      let searchedFriends = _filterByPhraze(friends, searchPhraze);
       if (filtredFavs) searchedFriends = _filterFavFriends(searchedFriends);
       const workouts = _extractFriendsWorkouts(searchedFriends);
-      const filtredFriends = _convertFriendsUsersToFriends(searchedFriends);
-      return { ...state, workouts, search, filtredFriends };
+      const filtredFriends = _convertToFriendsList(searchedFriends);
+      return { ...state, workouts, searchPhraze, filtredFriends };
     }
 
     case T.filterFavActionType: {
-      const { search, filtredFavs, friends } = state;
+      const { searchPhraze, filtredFavs, friends, sorted } = state;
       const condition = !filtredFavs;
-      const searched = search ? _filterByPhraze(friends, search) : friends;
-      const filterByFav = condition ? _filterFavFriends(searched) : searched;
-      const workouts = _extractFriendsWorkouts(filterByFav);
-      const filtredFriends = _convertFriendsUsersToFriends(filterByFav);
+
+      let searched = searchPhraze ? _filterByPhraze(friends, searchPhraze) : _getFriendsUsersArray(friends);
+
+      if (condition) searched = _filterFavFriends(searched);
+      if (sorted?.order === "sortUp") _sortUp(searched, sorted.lift);
+      if (sorted?.order === "sortDown") _sortDown(searched, sorted.lift);
+
+      const workouts = _extractFriendsWorkouts(searched);
+      const filtredFriends = _convertToFriendsList(searched);
+
       return { ...state, filtredFriends, workouts, filtredFavs: condition };
     }
 
     case T.sortFriendsActionType: {
-      const sorted = action.payload;
-      const { by, order } = sorted;
-      const filtredFriends = [...(state.filtredFriends || [])];
+      const lift = action.payload;
+      const { sorted } = state;
+      const order = sorted?.order === "sortUp" ? "sortDown" : "sortUp";
 
-      // TODO:
-      // if (order === "sortDown") filtredFriends.sort((a, b) => a - b);
-      // if (order === "sortDown") filtredFriends.sort((a, b) => b - a);
+      const sortedFriends = _getSearchedFriendsUsersArray(state);
+      if (!sortedFriends) return state;
+      if (order === "sortUp") _sortUp(sortedFriends, lift);
+      if (order === "sortDown") _sortDown(sortedFriends, lift);
 
-      return { ...state, sorted, filtredFriends };
+      return {
+        ...state,
+        sorted: { lift, order },
+        filtredFriends: _convertToFriendsList(sortedFriends),
+      };
     }
 
     case T.resetFiltersActionType: {
-      const friends = state.friends;
-      const workouts = _extractFriendsWorkouts(friends);
-      const filtredFriends = _convertFriendsUsersToFriends(friends || []);
+      const friendsUsers = _getFriendsUsersArray(state.friends);
+      const workouts = _extractFriendsWorkouts(friendsUsers);
+      const filtredFriends = _convertToFriendsList(friendsUsers);
       return {
         ...state,
-        search: "",
         workouts,
         filtredFriends,
+        searchPhraze: "",
         sorted: undefined,
         filtredFavs: false,
       };

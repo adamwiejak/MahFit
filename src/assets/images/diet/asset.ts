@@ -1,4 +1,3 @@
-import type { ResponsiveImageAsset } from "../../../classes/ResponsiveImage";
 import xs from "./diet_150.jpg";
 import sm from "./diet_1200.jpg";
 import md from "./diet_1800.jpg";

@@ -1,4 +1,4 @@
-import { ResponsiveImageAsset } from "../../../classes/ResponsiveImage";
+import md from "./schedule_922.jpg";
 import lg from "./schedule_922.jpg";
 import xs from "./schedule_185.jpg";
 

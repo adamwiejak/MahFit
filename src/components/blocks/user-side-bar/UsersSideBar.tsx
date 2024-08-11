@@ -1,29 +1,19 @@
-import * as styled from "./styles";
-import { useContext, useEffect } from "react";
+import * as styled from "./.styles";
 import { CardProps } from "@mui/material";
-import { Friend } from "../../../API/User";
 import FriendsList from "../../shared/friends-list/FriendsList";
 import SortFriendsBar from "../../shared/sort-friends-bar/SortFriendsBar";
 import SearchFriendsBar from "../../shared/search-friends-bar/SearchFriendsBar";
-import FilterFriendsContext from "../../../context/friends-filter";
 
-interface IUsersSideBar extends CardProps {
-  friendsList?: Friend[];
-}
+interface IUsersSideBar extends CardProps {}
 
 const UsersSideBar: React.FC<IUsersSideBar> = (props) => {
-  const { friendsList = [], ...rest } = props;
-  const { init } = useContext(FilterFriendsContext);
-
-  useEffect(() => {
-    init(friendsList);
-  }, [friendsList]);
+  const { ...rest } = props;
 
   return (
-    <styled.Container elevation={20} {...rest}>
-      <SortFriendsBar elevation={10} />
+    <styled.Container {...rest}>
+      <SortFriendsBar elevation={24} />
       <FriendsList />
-      <SearchFriendsBar elevation={10} />
+      <SearchFriendsBar elevation={24} />
     </styled.Container>
   );
 };

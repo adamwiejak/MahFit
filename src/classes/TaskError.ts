@@ -28,7 +28,6 @@ export class TaskError {
     this.err = err;
     this.message = _getError(err);
     this.statusCode = err.statusCode || err.status;
-
     this.includes = this.includes.bind(this);
     this.displaySnackbar = this.displaySnackbar.bind(this);
   }

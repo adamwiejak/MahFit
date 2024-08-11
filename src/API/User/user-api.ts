@@ -1,31 +1,24 @@
 import * as T from "./types";
 import LocalStorageAPI from "../LocalStorage";
-import { User as UserImpl } from "firebase/auth";
 import Auth from "../../utils/Firebase/auth";
-import Database from "../../utils/Firebase/database";
-import {
-  fillDummyUser,
-  generateDummyWorkouts,
-} from "../../helpers/functions/dummy-data";
+import Database, { dummyUsersQuery, getUserDocumentQuery, UserData } from "../../utils/Firebase/database";
+import { fillDummyUser, generateDummyWorkouts, generateRandomRecords } from "../../helpers/functions/dummy-data";
+import type { CachedTempGuestData } from "../LocalStorage";
 
 // AUTHENTICATION
-export async function createUserWithEmail(data: T.SinginUserData) {
-  const { email, password, gender, nickname, date } = data;
-  LocalStorageAPI.cacheUser({
-    email,
-    gender,
-    nickname,
-    photoURL: undefined,
-    birthDate: date.toDateString(),
-  });
+export async function createUserWithEmail(data: T.SinginData) {
+  const { email, password } = data;
+  const { setSigninData, removeSigninData } = LocalStorageAPI;
   try {
+    setSigninData(data);
     await Auth.createUserWithEmail(email, password);
   } catch (err) {
+    removeSigninData();
     throw err;
   }
 }
 
-export async function signInUserWithEmail(data: T.LoginUserData) {
+export async function signInUserWithEmail(data: T.LoginData) {
   const { email, password } = data;
   return Auth.signInWithEmail(email, password);
 }
@@ -44,20 +37,42 @@ export async function retrivePassword(email: string) {
 
 export async function logoutUser() {
   const user = Auth.getCurrentUser()!;
-  const guest = LocalStorageAPI.getLocalUser() && user.isAnonymous;
+  const { removeGuestData, getLocalUser, removeLocalUser, removeSigninData } = LocalStorageAPI;
+
   try {
+    const isGuest = getLocalUser() && user.isAnonymous;
     await Auth.logoutUser();
-    if (guest) await _cleanUpLocalUser(user);
+    if (isGuest) await Auth.delateAccount(user);
+  } catch (err) {
+    throw err;
+  } finally {
+    removeGuestData();
+    removeLocalUser();
+    removeSigninData();
+  }
+}
+
+// VALID USER
+export async function setUserInDB(userData: UserData) {
+  const uid = userData.base.uid;
+  const { setDocument } = Database;
+  try {
+    const userQuery = getUserDocumentQuery(uid);
+    await setDocument(userQuery, userData);
   } catch (err) {
     throw err;
   }
 }
 
-// VALID USER
-export async function getUser(uid: T.Uid) {
+export async function getUserData(uid: T.Uid) {
+  const aaa: T.Lift = "benchPress";
+
+  const { getDoc } = Database;
+  const userQuery = getUserDocumentQuery(uid);
   try {
-    const userData = await Database.getUserData(uid);
-    if (!userData) return undefined;
+    const snapshot = await getDoc(userQuery);
+    if (!snapshot.exists()) return undefined;
+    const userData = snapshot.data() as UserData;
     if (userData.isDummy) await fillDummyUser(userData);
     return userData;
   } catch (err) {
@@ -65,63 +80,79 @@ export async function getUser(uid: T.Uid) {
   }
 }
 
-// LOCAL GUEST USER
-async function _cleanUpLocalUser(user: UserImpl) {
+async function _createBrandNewUser(uid: T.Uid) {
+  const { getSigninData, removeSigninData } = LocalStorageAPI;
+
   try {
-    LocalStorageAPI.cleanLocalUser();
-    await Auth.delateAccount(user);
+    const cachedData = getSigninData();
+    const newUserData: UserData = { base: { ...cachedData, uid }, isDummy: false };
+    await setUserInDB(newUserData);
+    return newUserData;
   } catch (err) {
+    logoutUser();
+    throw err;
+  } finally {
+    removeSigninData();
+  }
+}
+
+export async function getAuthUser(uid: T.Uid): Promise<UserData> {
+  try {
+    const userData = await getUserData(uid);
+    return userData ? userData : await _createBrandNewUser(uid);
+  } catch (err) {
+    logoutUser();
     throw err;
   }
 }
 
-async function _createLocalUser() {
-  const localUser = LocalStorageAPI.getGuestData();
+// LOCAL GUEST USER
+async function _createNewLocalUser() {
+  const { getGuestData, setLocalUser, removeGuestData } = LocalStorageAPI;
+  const cachedGuestData = getGuestData();
   const userImpl = Auth.getCurrentUser();
-  if (!localUser || !userImpl) return undefined;
+  if (!cachedGuestData || !userImpl) throw Error("Local user authentication failed. Loging out...");
+
   const uid = userImpl.uid;
   const email = "guest@example.com";
   const birthDate = new Date().toDateString();
-  const { gender, nickname, image } = localUser;
   const workouts = generateDummyWorkouts(15, uid);
 
   try {
-    const { getColection } = Database;
-    const dummyFriends = await getColection<T.UserData[]>(
-      Database.dummyUsersQuery
-    );
+    const dummyFriends = await Database.getColection<UserData[]>(dummyUsersQuery);
 
     const friendsList = dummyFriends.map(({ base }) => {
       return { uid: base.uid, isFav: Math.random() > 0.5 };
     });
 
-    const base = { email, uid, gender, nickname, birthDate, photoURL: image };
-    const details = { friendsList, workouts, records: {} };
-    const userData: T.UserData = { base, details, isDummy: true };
-    LocalStorageAPI.setLocalUser(userData);
+    const base = { ...cachedGuestData, uid, email, birthDate };
+    const details = { friendsList, workouts, records: generateRandomRecords() };
+    const userData: UserData = { base, details, isDummy: true };
+    setLocalUser(userData);
+    removeGuestData();
     return userData;
   } catch (err) {
+    logoutUser();
     throw err;
   }
 }
 
 export async function getLocalUser() {
-  let localUser = LocalStorageAPI.getLocalUser();
-  if (localUser) return localUser;
   try {
-    localUser = await _createLocalUser();
-    return localUser;
+    const localUser = LocalStorageAPI.getLocalUser();
+    return localUser ? localUser : await _createNewLocalUser();
   } catch (err) {
     throw err;
   }
 }
 
-export async function openDemo(guest: T.GuestData) {
-  const { nickname, image, gender } = guest;
-  LocalStorageAPI.setGuestData({ nickname, gender, image });
+export async function openDemo(guestData: CachedTempGuestData) {
+  const { setGuestData, removeGuestData } = LocalStorageAPI;
+  setGuestData(guestData);
   try {
     await Auth.authAnonymously();
   } catch (err: any) {
+    removeGuestData();
     throw err;
   }
 }

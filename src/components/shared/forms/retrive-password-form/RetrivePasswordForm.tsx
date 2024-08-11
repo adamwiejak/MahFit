@@ -1,14 +1,14 @@
 import * as config from "./config";
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import { Divider, Typography, TypographyProps } from "@mui/material";
 import { emailRegEx, required } from "../../../../helpers/data/regex";
 import useAsyncTaskHandler from "../../../../hooks/useAsyncTask";
 import Input from "../../../UI/input/Input";
 import Icon from "../../../UI/Icon";
 import useBoolean from "../../../../hooks/useBoolean";
-import Dialog from "../../../modals/dialog/Dialog";
 import Button from "../../../UI/button/Button";
 import useForm from "../../../../hooks/useForm";
+import Dialog from "../../dialog/Dialog";
 
 interface IRetrivePassword extends Omit<TypographyProps, "variant"> {}
 
@@ -39,11 +39,7 @@ export const RetrivePasswordForm: React.FC<IRetrivePassword> = (props) => {
         Forgot Pasword ?
       </Typography>
 
-      <Dialog
-        open={retriveFormOpen}
-        transition="zoom"
-        onClose={toggleRetriveFormOpen}
-      >
+      <Dialog open={retriveFormOpen} transition="zoom" onClose={toggleRetriveFormOpen}>
         <styled.Form component="form" onSubmit={onFormSubmit}>
           <Typography>Type your email to get restore link</Typography>
           <Divider />
@@ -60,12 +56,7 @@ export const RetrivePasswordForm: React.FC<IRetrivePassword> = (props) => {
           </styled.Inputs>
 
           <styled.Actions>
-            <Button
-              type="submit"
-              text="Reset Password"
-              endIcon={<Icon icon="send" />}
-              inProgress={isLoading}
-            />
+            <Button type="submit" text="Reset Password" endIcon={<Icon icon="send" />} inProgress={isLoading} />
           </styled.Actions>
         </styled.Form>
       </Dialog>

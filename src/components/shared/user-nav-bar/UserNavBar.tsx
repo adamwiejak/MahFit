@@ -1,5 +1,5 @@
 import * as config from "./config";
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import React from "react";
 import Button from "../../UI/button/Button";
 import Icon from "../../UI/Icon";

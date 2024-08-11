@@ -29,19 +29,19 @@ export const inputs: FormInput<DemoAccountFormData>[] = [
 
 export const paragraphs = [
   <>
-    You are logging in to a <span>demo-account</span>, it is local acount but
-    still needs network connetcion to provide you all app features.
+    You are logging in to a <span>demo-account</span>, it is local acount but still needs network connetcion to provide
+    you all app features.
   </>,
 
   <>
-    Demo account leverages <span>local-storage</span>. It's all temporary and
-    all data will be <span>removed</span> when you log out.
+    Demo account leverages <span>local-storage</span>. It's all temporary. Saved local data and account itself are{" "}
+    <span>permanently removed</span> when you log out.
   </>,
 
   <></>,
 
   <>
     Demo acoount comes with predefied dummy <span>friends/users/workouts </span>
-    to provide you full app experience.
+    to provide you full app experience. Feel <span>free to play</span> with it.
   </>,
 ];

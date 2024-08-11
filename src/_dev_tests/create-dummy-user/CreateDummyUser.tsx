@@ -8,10 +8,9 @@ import Icon from "../../components/UI/Icon";
 import RadioGroup from "../../components/UI/RadioGroup";
 import Button from "../../components/UI/button/Button";
 import Input from "../../components/UI/input/Input";
-import { UserData } from "../../API/User";
-import Database from "../../utils/Firebase/database";
+import Database, { UserData, usersQuery } from "../../utils/Firebase/database";
 import User from "../../classes/User";
-import { generateRandomRecords } from "../../helpers/functions/dummy-data";
+import UserAPI from "../../API/User";
 
 export interface ISingupForm extends BoxProps {}
 
@@ -21,7 +20,7 @@ const CreateDummyUserForm: React.FC<ISingupForm> = (props) => {
 
   async function cleanupUsers() {
     try {
-      const promise = Database.getColection<UserData[]>(Database.usersQuery);
+      const promise = Database.getColection<UserData[]>(usersQuery);
       const users = await asyncTaskHandler(promise);
       const undummyFilter = users?.filter((u) => u.isDummy !== true);
       console.log("DELATED_ACCOUNTS:", undummyFilter);
@@ -40,11 +39,9 @@ const CreateDummyUserForm: React.FC<ISingupForm> = (props) => {
     const birthDate = new Date().toDateString();
     const email = `${nickname.toLowerCase()}@.example.com`;
     const base = { uid, email, gender, photoURL, nickname, birthDate };
-    const details = { records: generateRandomRecords() };
 
     try {
-      const fakeUser = new User({ base, details, isDummy: true });
-      await asyncTaskHandler(Database.setUserInDB(fakeUser));
+      await asyncTaskHandler(UserAPI.setUserInDB({ base, isDummy: true }));
     } catch (err: any) {
       const { displaySnackbar } = err as TaskError;
       displaySnackbar("error");
@@ -74,26 +71,14 @@ const CreateDummyUserForm: React.FC<ISingupForm> = (props) => {
             disabled={isLoading}
             options={config.radioGroup.options}
             error={!!formState.errors.gender?.message}
-            {...form.register(
-              config.radioGroup.name,
-              config.radioGroup.options
-            )}
+            {...form.register(config.radioGroup.name, config.radioGroup.options)}
           />
         </styled.Inputs>
 
         <styled.Actions>
-          <Button
-            type="submit"
-            inProgress={isLoading}
-            text="Create Dummy User in DB"
-            endIcon={<Icon icon="send" />}
-          />
+          <Button type="submit" inProgress={isLoading} text="Create Dummy User in DB" endIcon={<Icon icon="send" />} />
 
-          <Button
-            inProgress={isLoading}
-            onClick={cleanupUsers}
-            text="Remove Undummy Users/Authentication"
-          />
+          <Button inProgress={isLoading} onClick={cleanupUsers} text="Remove Undummy Users/Authentication" />
         </styled.Actions>
       </styled.Form>
     </styled.Wrapper>

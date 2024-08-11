@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import * as config from "./config";
 import useAsyncTaskHandler from "../../../../hooks/useAsyncTask";
 import Input from "../../../UI/input/Input";
@@ -29,38 +29,30 @@ const LoginForm: React.FC<ILoginFormProps> = (props) => {
   });
 
   return (
-    <styled.CardBox {...rest}>
-      <styled.Form component="form" onSubmit={onSubmit}>
-        <styled.Inputs>
-          {config.inputs.map(({ name, type, label, icon, registerOptions }) => (
-            <Input
-              key={name}
-              type={type}
-              label={label}
-              color="secondary"
-              disabled={isLoading}
-              onClear={form.onInputClear(name)}
-              {...form.register(name, registerOptions)}
-              error={!!formState.errors[name]?.message}
-              helperText={formState.errors[name]?.message}
-              adornmentStart={icon && <Icon icon={icon} />}
-            />
-          ))}
-        </styled.Inputs>
-
-        <styled.Actions>
-          <Button
-            text="Log In"
-            type="submit"
+    <styled.Form component="form" onSubmit={onSubmit}>
+      <styled.Inputs>
+        {config.inputs.map(({ name, type, label, icon, registerOptions }) => (
+          <Input
+            key={name}
+            type={type}
+            label={label}
             color="secondary"
-            inProgress={isLoading}
-            endIcon={<Icon icon="send" />}
+            disabled={isLoading}
+            onClear={form.onInputClear(name)}
+            {...form.register(name, registerOptions)}
+            error={!!formState.errors[name]?.message}
+            helperText={formState.errors[name]?.message}
+            adornmentStart={icon && <Icon icon={icon} />}
           />
+        ))}
+      </styled.Inputs>
 
-          <RetrivePasswordForm />
-        </styled.Actions>
-      </styled.Form>
-    </styled.CardBox>
+      <styled.Actions>
+        <Button text="Log In" type="submit" color="secondary" inProgress={isLoading} endIcon={<Icon icon="send" />} />
+
+        <RetrivePasswordForm />
+      </styled.Actions>
+    </styled.Form>
   );
 };
 

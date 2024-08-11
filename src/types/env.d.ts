@@ -11,16 +11,14 @@ declare module "*.svg";
 // }
 
 type Theme = "light" | "dark" | undefined;
-
-type Order = "sortDown" | "sortUp" | undefined;
-
 type Ref<T> = React.MutableRefObject<T>;
+
+type ResponsiveImageAsset = {
+  alt?: string;
+  images: { src: string; width: number }[];
+};
 
 type Tween = (...args: any) => {
   cleanup?: () => void;
   tl: gsap.core.Timeline;
 };
-
-interface IContextProvider {
-  children: any | JSX.Element | JSX.Element[];
-}

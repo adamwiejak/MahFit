@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import * as config from "./config";
 import { Divider } from "@mui/material";
 import { ListItemIcon } from "@mui/material";
@@ -18,19 +18,13 @@ const UserAvatar = () => {
   const avatarElRef = useRef<HTMLDivElement>(null);
   const [menuOpened, toggleMenu] = useBoolean(false);
 
-  const src = userData
-    ? userData.base.photoURL || avatarImages[userData.base.gender]
-    : undefined;
+  const src = userData ? userData.base.photoURL || avatarImages[userData.base.gender] : undefined;
 
   return (
     <>
       <styled.Avatar src={src} ref={avatarElRef} onClick={toggleMenu} />
 
-      <Menu
-        open={menuOpened}
-        onClose={toggleMenu}
-        anchorEl={avatarElRef.current}
-      >
+      <Menu open={menuOpened} onClose={toggleMenu} anchorEl={avatarElRef.current}>
         {config.buttons.map(({ icon, href, text }) => (
           <MenuItem key={href}>
             <ListItemIcon>

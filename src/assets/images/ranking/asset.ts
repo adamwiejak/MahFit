@@ -1,4 +1,3 @@
-import { ResponsiveImageAsset } from "../../../classes/ResponsiveImage";
 import ranking_sx from "./ranking_123.jpg";
 import ranking_lg from "./ranking_612.jpg";
 

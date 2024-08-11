@@ -2,8 +2,7 @@ import { gsap, gsapDuration, gsapEasing } from "./index";
 
 export const faintin = {
   name: "faintIn",
-  effect: (target: any) =>
-    gsap.fromTo(target, { autoAlpha: 0, y: "5vh" }, { autoAlpha: 1, y: 0 }),
+  effect: (target: any) => gsap.fromTo(target, { autoAlpha: 0, y: "5vh" }, { autoAlpha: 1, y: 0 }),
 };
 
 export const shake = {

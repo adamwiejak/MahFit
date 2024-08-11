@@ -1,13 +1,13 @@
 import * as T from "./types";
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import reducer, { initialState } from "./_reducer";
-import { Friend, Lift, Uid, UserData } from "../../API/User";
+import { Friend, Lift, Uid } from "../../API/User";
+import { FriendUser } from "../../classes/FriendUser";
 
 //////////////////////////////////////////////////////////////////
 
 const FilterFriendsContext = createContext<T.IFilterFriendsContext>({
   state: initialState,
-  init: ([]) => {},
   setFriend: () => {},
   sortFriends: () => {},
   resetFilters: () => {},
@@ -16,16 +16,22 @@ const FilterFriendsContext = createContext<T.IFilterFriendsContext>({
   toggleFilterFavs: () => {},
 });
 
-export const FilterFriendsContextProvider: React.FC<IContextProvider> = (
-  props
-) => {
+interface IFriendsFillterContext {
+  friendsList?: Friend[];
+  children: JSX.Element | JSX.Element[];
+}
+
+export const FilterFriendsContextProvider: React.FC<IFriendsFillterContext> = (props) => {
+  const { friendsList = [], children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  function init(list: Friend[]) {
-    dispatch({ type: T.initActionType, payload: list });
-  }
+  // initiate the list
+  useEffect(() => {
+    dispatch({ type: T.initActionType, payload: friendsList });
+  }, [friendsList]);
+  ///////
 
-  function setFriend(friendData: UserData) {
+  function setFriend(friendData: FriendUser) {
     dispatch({ type: T.setFriendActionType, payload: friendData });
   }
 
@@ -34,12 +40,7 @@ export const FilterFriendsContextProvider: React.FC<IContextProvider> = (
   }
 
   function sortFriends(lift: Lift) {
-    const toggleTo = state.sorted?.order === "sortUp" ? "sortDown" : "sortUp";
-
-    dispatch({
-      type: T.sortFriendsActionType,
-      payload: { by: lift, order: toggleTo },
-    });
+    dispatch({ type: T.sortFriendsActionType, payload: lift });
   }
 
   function toggleFilterFavs() {
@@ -56,7 +57,6 @@ export const FilterFriendsContextProvider: React.FC<IContextProvider> = (
 
   const value = {
     state,
-    init,
     getFriend,
     setFriend,
     sortFriends,
@@ -65,11 +65,7 @@ export const FilterFriendsContextProvider: React.FC<IContextProvider> = (
     toggleFilterFavs,
   };
 
-  return (
-    <FilterFriendsContext.Provider value={value}>
-      {props.children}
-    </FilterFriendsContext.Provider>
-  );
+  return <FilterFriendsContext.Provider value={value}>{children}</FilterFriendsContext.Provider>;
 };
 
 export default FilterFriendsContext;

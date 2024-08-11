@@ -2,9 +2,9 @@ import useBoolean from "../../../hooks/useBoolean";
 import Button from "../../UI/button/Button";
 import Icon from "../../UI/Icon";
 import type { IButton } from "../../UI/button/Button";
-import Dialog from "../../modals/dialog/Dialog";
 import DemoAccountForm from "../forms/demo-account-form/DemoAccountForm";
 import useTimer from "../../../hooks/useTimer";
+import Dialog from "../dialog/Dialog";
 
 /////////////////////////////////////////////////////
 
@@ -22,12 +22,7 @@ const DemoAccountProvider: React.FC<IDemoAccountProvider> = (props) => {
 
   return (
     <>
-      <Button
-        {...rest}
-        onClick={toggleModal}
-        text={text || "Demo Account"}
-        startIcon={<Icon icon="user" />}
-      />
+      <Button {...rest} onClick={toggleModal} text={text || "Demo Account"} startIcon={<Icon icon="user" />} />
 
       <Dialog
         fullWidth

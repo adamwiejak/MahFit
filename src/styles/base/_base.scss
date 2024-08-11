@@ -22,6 +22,17 @@
   }
 }
 
+input {
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-box-shadow: 0 0 0 1000px rgba(163, 2, 2, 0) inset !important;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -33,9 +44,10 @@ body {
   overflow-x: hidden;
 
   section {
+    display: grid;
     min-height: 100vh;
     position: relative;
-    background-color: white;
+    place-items: center;
     border-top: solid 1px black;
   }
 

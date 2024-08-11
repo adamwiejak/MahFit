@@ -1,15 +1,15 @@
+import { UserData } from "../utils/Firebase/database";
 import User from "./User";
-import { UserData } from "../API/User";
 
 export class FriendUser extends User {
-  isFav: boolean;
+  fav: boolean;
 
-  constructor(data: UserData, isFav: boolean) {
+  constructor(data: UserData, fav: boolean) {
     super(data);
-    this.isFav = isFav;
+    this.fav = fav;
   }
 
-  getIsFav() {
-    return this.isFav;
+  isFav() {
+    return this.fav;
   }
 }

@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import * as config from "./config";
 import useAsyncTask, { TaskError } from "../../../../hooks/useAsyncTask";
 import Input from "../../../UI/input/Input";
@@ -18,6 +18,7 @@ const SignupForm: React.FC<ISingupForm> = (props) => {
   const { formState, form } = useForm<config.FormData>();
 
   const onSubmit = form.handleSubmit(async (data) => {
+    console.log(data);
     const { password: p, repeatPassword: rP } = data;
     try {
       if (p !== rP) throw new TaskError(new Error("Passwords do not match"));
@@ -33,57 +34,41 @@ const SignupForm: React.FC<ISingupForm> = (props) => {
   });
 
   return (
-    <styled.CardBox {...rest}>
-      <styled.Form component="form" onSubmit={onSubmit}>
-        <styled.Inputs>
-          {config.inputs.map(({ name, type, label, icon, registerOptions }) => (
-            <Input
-              key={name}
-              type={type}
-              label={label}
-              color="secondary"
-              disabled={isLoading}
-              onClear={form.onInputClear(name)}
-              {...form.register(name, registerOptions)}
-              error={!!formState.errors[name]?.message}
-              helperText={formState.errors[name]?.message}
-              adornmentStart={icon ? <Icon icon={icon} /> : undefined}
-            />
-          ))}
-
-          <DatePicker
-            name="birthDate"
-            label="Birth Date"
-            disabled={isLoading}
-            control={form.control}
-          />
-
-          <RadioGroup
-            row
+    <styled.Form {...rest} component="form" onSubmit={onSubmit}>
+      <styled.Inputs>
+        {config.inputs.map(({ name, type, label, icon, registerOptions }) => (
+          <Input
+            key={name}
+            type={type}
+            label={label}
             color="secondary"
-            label="Gender"
             disabled={isLoading}
-            options={config.radioGroup.options}
-            error={!!formState.errors.gender?.message}
-            helperText={formState.errors.gender?.message}
-            {...form.register(
-              config.radioGroup.name,
-              config.radioGroup.registerOptions
-            )}
+            onClear={form.onInputClear(name)}
+            {...form.register(name, registerOptions)}
+            error={!!formState.errors[name]?.message}
+            helperText={formState.errors[name]?.message}
+            adornmentStart={icon ? <Icon icon={icon} /> : undefined}
           />
-        </styled.Inputs>
+        ))}
 
-        <styled.Actions>
-          <Button
-            type="submit"
-            text="Sign Up"
-            color="secondary"
-            inProgress={isLoading}
-            endIcon={<Icon icon="send" />}
-          />
-        </styled.Actions>
-      </styled.Form>
-    </styled.CardBox>
+        <DatePicker name="birthDate" label="Birth Date" disabled={isLoading} control={form.control} />
+
+        <RadioGroup
+          row
+          color="secondary"
+          label="Gender"
+          disabled={isLoading}
+          options={config.radioGroup.options}
+          error={!!formState.errors.gender?.message}
+          helperText={formState.errors.gender?.message}
+          {...form.register(config.radioGroup.name, config.radioGroup.registerOptions)}
+        />
+      </styled.Inputs>
+
+      <styled.Actions>
+        <Button type="submit" text="Sign Up" color="secondary" inProgress={isLoading} endIcon={<Icon icon="send" />} />
+      </styled.Actions>
+    </styled.Form>
   );
 };
 

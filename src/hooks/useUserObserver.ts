@@ -2,9 +2,9 @@ import UserAPI from "../API/User";
 import { useSnackbar } from "notistack";
 import { useAppDispatch } from "../store";
 import { useEffect } from "react";
+import Auth from "../utils/Firebase/auth";
 import { onLoginUser, onLogoutUser } from "../store/thunks";
 import { globalSliceActions as G } from "../store/_global-slice";
-import Auth from "../utils/Firebase/auth";
 
 const useUserObserver = () => {
   const dispatch = useAppDispatch();

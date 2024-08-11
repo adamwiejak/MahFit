@@ -1,4 +1,3 @@
-import { ResponsiveImageAsset } from "../../../classes/ResponsiveImage";
 // import xs from "../avatars/avatar-male.png";
 import xs from "./bodybuider_184.png";
 import lg from "./bodybuider_920.png";

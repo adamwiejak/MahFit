@@ -1,10 +1,7 @@
 import { getScrolledY } from "../../helpers/functions/functions";
-import { gsap, gsapDuration, gsapEasing } from "../../utils/Gsap/config";
+import { gsap, gsapDuration, gsapEasing } from "../../utils/Gsap";
 
-export const toggleButtonTween: Tween = (
-  btnRef: Ref<HTMLButtonElement>,
-  enterOffset = 0.25
-) => {
+export const toggleButtonTween: Tween = (btnRef: Ref<HTMLButtonElement>, enterOffset = 0.25) => {
   const tl = gsap.timeline({
     paused: true,
     defaults: { duration: gsapDuration.short, ease: gsapEasing.circ },

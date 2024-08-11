@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import * as config from "./config";
 import Select from "../../UI/Select";
 import Input from "../../UI/input/Input";

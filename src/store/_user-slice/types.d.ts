@@ -1,4 +1,4 @@
-import { UserData } from "../../API/User";
+import { UserData } from "../../utils/Firebase/database";
 
 export type UserSlice = {
   userData: UserData | null;

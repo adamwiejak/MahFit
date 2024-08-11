@@ -1,11 +1,6 @@
 import { FriendUser } from "../../classes/FriendUser";
-import type {
-  Friend,
-  Lift,
-  Uid,
-  UserData,
-  WorkoutData,
-} from "../../API/User/types";
+import type { Friend, Lift, Uid } from "../../API/User";
+import { WorkoutData } from "../../utils/Firebase/database";
 
 export const initActionType = "INIT";
 export const setFriendActionType = "SET_FRIEND";
@@ -18,14 +13,16 @@ export type Action =
   | { type: typeof filterFavActionType }
   | { type: typeof resetFiltersActionType }
   | { type: typeof initActionType; payload: Friend[] }
-  | { type: typeof setFriendActionType; payload: UserData }
-  | { type: typeof sortFriendsActionType; payload: Sorted }
+  | { type: typeof sortFriendsActionType; payload: Lift }
+  | { type: typeof setFriendActionType; payload: FriendUser }
   | { type: typeof searchFriendActionType; payload: string };
 
-export type Sorted = { by: Lift; order: Order };
+export type Sorted = { lift: Lift; order: "sortDown" | "sortUp" | undefined };
 
+// REDUCER STATE
 export interface State {
-  search: string;
+  isLoading: boolean;
+  searchPhraze: string;
   filtredFavs: boolean;
   workouts: WorkoutData[];
   sorted: Sorted | undefined;
@@ -33,13 +30,13 @@ export interface State {
   friends: Record<string, FriendUser> | undefined;
 }
 
+// CONTEXT VALUE
 export type IFilterFriendsContext = {
   state: State;
   resetFilters: () => void;
   toggleFilterFavs: () => void;
-  init: (list: Friend[]) => void;
   sortFriends: (lift: Lift) => void;
   searchFriends: (input: string) => void;
-  setFriend: (friend: UserData) => void;
+  setFriend: (friend: FriendUser) => void;
   getFriend: (uid: Uid) => FriendUser | undefined;
 };

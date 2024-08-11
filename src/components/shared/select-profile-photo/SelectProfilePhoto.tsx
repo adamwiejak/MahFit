@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import * as config from "./config";
 import React from "react";
 import { Avatar, AvatarProps, MenuItem } from "@mui/material";
@@ -50,11 +50,7 @@ const SelectProfilePhoto: React.FC<ISelectPhoto> = (props) => {
         {...avatarProps}
       />
 
-      <styled.Menu
-        open={isMenuOpened}
-        onClose={toggleMenu}
-        anchorEl={anchorElRef.current}
-      >
+      <styled.Menu open={isMenuOpened} onClose={toggleMenu} anchorEl={anchorElRef.current}>
         {config.avatars.map((img) => (
           <MenuItem key={img} onClick={() => onSelectBaseAvatar(img)}>
             <Avatar src={img} variant="square" />
@@ -62,13 +58,7 @@ const SelectProfilePhoto: React.FC<ISelectPhoto> = (props) => {
         ))}
 
         <MenuItem component="label">
-          <Input
-            type="file"
-            id="input"
-            {...inputProps}
-            sx={{ display: "none" }}
-            onChange={onChangeHandler}
-          />
+          <Input type="file" id="input" {...inputProps} sx={{ display: "none" }} onChange={onChangeHandler} />
           <Icon icon="add" color="warning" />
         </MenuItem>
       </styled.Menu>

@@ -1,11 +1,11 @@
-import firebaseApp from "../_init";
+import firebaseAp from "../_init";
 import { getStorage, ref } from "firebase/storage";
 import { uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { deleteObject } from "firebase/storage";
 import { TaskError } from "../../../classes/TaskError";
 
-const _storage = getStorage(firebaseApp);
+const _storage = getStorage(firebaseAp);
 
 export const uploadFile = (file: File, storagePath: string) => {
   return uploadBytes(ref(_storage, storagePath), file);

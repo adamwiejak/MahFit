@@ -31,7 +31,7 @@ export const components: ThemeOptions["components"] = {
   MuiDialog: {
     styleOverrides: {
       root: {
-        backdropFilter: "blur(5px)",
+        backdropFilter: "blur(8px) brightness(0.75)",
       },
     },
   },

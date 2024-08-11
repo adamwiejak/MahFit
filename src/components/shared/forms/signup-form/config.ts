@@ -1,9 +1,9 @@
 import * as regEx from "../../../../helpers/data/regex";
 import { FormInput, FormRadioGroup } from "../../../../types/forms";
 import { gendersMockup } from "../../../../helpers/data/mockups";
-import { SinginUserData } from "../../../../API/User";
+import { SinginData } from "../../../../API/User";
 
-export interface FormData extends SinginUserData {
+export interface FormData extends SinginData {
   repeatPassword: string;
 }
 

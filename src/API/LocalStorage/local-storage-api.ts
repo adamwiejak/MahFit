@@ -1,10 +1,13 @@
-import { CachedUserData, GuestData, UserData } from "../User";
+import { UserData } from "../../utils/Firebase/database";
+import { Uid } from "../User";
+import { CachedTempSigninData, CachedTempGuestData, chachedDummyFriends } from "./types";
 
 const KEYS_MAP = {
-  guest: "GUEST",
-  user: "USER_DATA",
+  guest: "TEMP_GUEST_DATA",
   localUser: "LOCAL_USER_DATA",
-  themePref: "LOCAL_THEME_PREF",
+  signinData: "TEMP_SIGN_IN_DATA",
+  cachedFriends: "CACHED_FRIENDS",
+  // themePref: "LOCAL_THEME_PREF",
 };
 
 function _set(k: string, v: any) {
@@ -25,20 +28,31 @@ function _remove(k: string) {
 // export const getLocalThemePref = () => _get<Theme>(KEYS_MAP.themePref);
 // export const removeLocalThemePref = () => _remove(KEYS_MAP.themePref);
 
-// GUEST DATA
-export const getGuestData = () => _get<GuestData>(KEYS_MAP.guest);
-export const setGuestData = (guest: GuestData) => _set(KEYS_MAP.guest, guest);
+// TEMPORARY GUEST DATA
+export const setGuestData = (guest: CachedTempGuestData) => _set(KEYS_MAP.guest, guest);
+export const getGuestData = () => _get<CachedTempGuestData>(KEYS_MAP.guest);
+export const removeGuestData = () => _remove(KEYS_MAP.guest);
 
-// LOCAL USER
-export const getLocalUser = () => _get<UserData>(KEYS_MAP.localUser);
+// TEMPORARY SINGIN USER DATA
+export const setSigninData = (data: CachedTempSigninData) => _set(KEYS_MAP.signinData, data);
+export const getSigninData = () => _get<CachedTempSigninData>(KEYS_MAP.signinData)!;
+export const removeSigninData = () => _remove(KEYS_MAP.signinData);
+
+// LOCAL USER DATA
 export const setLocalUser = (data: UserData) => _set(KEYS_MAP.localUser, data);
+export const getLocalUser = () => _get<UserData>(KEYS_MAP.localUser);
+export const removeLocalUser = () => _remove(KEYS_MAP.localUser);
 
-export const cleanLocalUser = () => {
-  _remove(KEYS_MAP.guest);
-  _remove(KEYS_MAP.localUser);
-};
+// CACHE DUMMY USERS
+export function getCachedFriend(uid: Uid) {
+  const cachedFriends = _get<chachedDummyFriends>(KEYS_MAP.cachedFriends);
+  if (!cachedFriends) return undefined;
+  console.log("returned cached dummy friend data");
+  return cachedFriends[uid];
+}
 
-//  USER
-export const delateCachedUser = () => _remove(KEYS_MAP.user);
-export const getCachedUser = () => _get<CachedUserData>(KEYS_MAP.user);
-export const cacheUser = (data: CachedUserData) => _set(KEYS_MAP.user, data);
+export function setCachedFriend(data: UserData) {
+  const cachedFriends = _get<chachedDummyFriends>(KEYS_MAP.cachedFriends) || {};
+  cachedFriends[data.base.uid] = data;
+  _set(KEYS_MAP.cachedFriends, cachedFriends);
+}

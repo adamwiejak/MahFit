@@ -1,11 +1,7 @@
 import gsap from "gsap";
 import { AuthTask } from "../../../API/User";
 
-export const swapAuthForm: Tween = (
-  task: AuthTask,
-  wrapperRef: Ref<HTMLElement>,
-  firstRunRef: Ref<boolean>
-) => {
+export const swapAuthForm: Tween = (task: AuthTask, wrapperRef: Ref<HTMLElement>, firstRunRef: Ref<boolean>) => {
   const wrapperEl = wrapperRef.current;
   const [header, forms, button] = wrapperEl.children;
   const [loginFormEl, signupFormEl] = forms.children;

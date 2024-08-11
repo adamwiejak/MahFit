@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import { Avatar, CardProps, Skeleton, Typography } from "@mui/material";
 
 interface ISkeleton extends CardProps {
@@ -13,17 +13,11 @@ const UserWidgetPlaceholder: React.FC<ISkeleton> = (props) => {
     <styled.Container {...rest} elevation={10}>
       {isLoading ? <Skeleton /> : <Avatar />}
 
-      <styled.Info>
-        {isLoading ? <Skeleton /> : <Typography>{uid}</Typography>}
-      </styled.Info>
+      <styled.Info>{isLoading ? <Skeleton /> : <Typography>{uid}</Typography>}</styled.Info>
 
-      <styled.Records>
-        <Skeleton />
-      </styled.Records>
+      <Skeleton />
 
-      <styled.Actions elevation={5}>
-        <Skeleton />
-      </styled.Actions>
+      <Skeleton />
     </styled.Container>
   );
 };

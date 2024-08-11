@@ -1,5 +1,5 @@
 import React from "react";
-import * as styled from "./spinner.styles";
+import * as styled from "./.styles";
 import type { CircularProgressProps } from "@mui/material";
 
 interface ISpinner {

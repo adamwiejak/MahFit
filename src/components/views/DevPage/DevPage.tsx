@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import Section1 from "./Section1";
 import { CardProps } from "@mui/material";
 import Section2 from "./_section-2/Section2";

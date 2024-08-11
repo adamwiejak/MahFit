@@ -1,4 +1,4 @@
-import { gsap } from "../../../utils/Gsap/config";
+import { gsap } from "../../../utils/Gsap";
 import { gsapDuration } from "../../../utils/Gsap/config";
 import { gsapEasing } from "../../../utils/Gsap/config";
 
@@ -13,12 +13,7 @@ export const openSpinerTween = (backdropRef: React.RefObject<HTMLElement>) => {
     },
   });
 
-  tl.fromTo(backdropEl, { opacity: 0 }, { opacity: 1 }).fromTo(
-    spiner,
-    { scale: 0 },
-    { scale: 1 },
-    "<"
-  );
+  tl.fromTo(backdropEl, { opacity: 0 }, { opacity: 1 }).fromTo(spiner, { scale: 0 }, { scale: 1 }, "<");
 
   return { tl };
 };

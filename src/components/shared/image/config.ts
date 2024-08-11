@@ -1,22 +1,14 @@
-import { gsap, gsapDuration, gsapEasing } from "../../../utils/Gsap/config";
-
+import { gsap, gsapDuration, gsapEasing } from "../../../utils/Gsap";
 const { stamp } = gsapEasing;
-const { standard, test, shortest, long } = gsapDuration;
+const { long } = gsapDuration;
 
-export const showImageTween: Tween = (containerRef: Ref<HTMLDivElement>) => {
+export const rmeoveOverlayTween = (containerRef: Ref<HTMLDivElement>) => {
   const containerEl = containerRef.current;
   const overlay = Array.from(containerEl.children).at(-1)!;
 
   const tl = gsap.timeline({
-    paused: true,
     defaults: { ease: stamp, duration: long },
   });
 
-  tl.to(overlay, { opacity: 0 }, "<");
-
-  const cleanup = () => {
-    tl.kill();
-  };
-
-  return { tl, cleanup };
+  return tl.to(overlay, { opacity: 0 }, "<");
 };

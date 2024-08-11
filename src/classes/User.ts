@@ -1,62 +1,59 @@
-import {
-  UserBaseInfo,
-  UserData,
-  UserDetailsInfo,
-  WorkoutData,
-} from "../API/User";
+import { Lift, UserBaseInfo, UserDetails } from "../API/User";
+import { UserData, WorkoutData } from "../utils/Firebase/database";
 
 export default class User {
   private isDummy: boolean;
   private base: UserBaseInfo;
-  private details: UserDetailsInfo;
+  private details: UserDetails;
 
-  constructor(data: UserData) {
+  constructor(data: { base: UserBaseInfo; details?: UserDetails; isDummy?: boolean }) {
     this.base = data.base;
-    this.isDummy = data?.isDummy || false;
+    this.isDummy = data.isDummy || false;
     this.details = {
-      records: data.details?.records || {},
       workouts: data.details?.workouts || [],
+      records: data.details?.records || new Map(),
       friendsList: data.details?.friendsList || [],
     };
-  }
-
-  getIsDummy() {
-    return this.isDummy;
   }
 
   getUid() {
     return this.base.uid;
   }
 
+  getBaseInfo() {
+    return this.base;
+  }
+
+  getDetailsInfo() {
+    return this.details;
+  }
+
+  getIsDummy() {
+    return this.isDummy;
+  }
+
   getUserData(): UserData {
     return { isDummy: this.isDummy, details: this.details, base: this.base };
   }
 
-  getGender() {
-    return this.base.gender;
-  }
-
-  getNickname() {
-    return this.base.nickname;
-  }
-
   getRecords() {
-    return this.details.records;
+    return this.details!.records;
+  }
+
+  getCurrRecord(lift: Lift) {
+    const liftRecords = Object.values(this.details!.records?.get(lift) || {});
+    return Math.max(...liftRecords) || 0;
   }
 
   getFriendsList() {
-    return this.details.friendsList;
-  }
-
-  getPhotoUrl() {
-    return this.base.photoURL;
+    return this.details!.friendsList;
   }
 
   getWorkouts() {
-    return this.details.workouts;
+    return this.details!.workouts || [];
   }
 
   getWorkout(uid: WorkoutData["uid"]) {
-    return this.details.workouts.find((w) => w.uid === uid);
+    return this.details!.workouts?.find((w) => w.uid === uid);
   }
 }

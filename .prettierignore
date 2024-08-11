@@ -2,4 +2,4 @@
 build
 coverage
 
-src\context\friends-filter\types.d.ts
+*\types.d.ts

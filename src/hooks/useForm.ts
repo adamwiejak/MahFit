@@ -1,6 +1,6 @@
 import { FieldValues } from "react-hook-form";
 import { useForm as useReactHookForm } from "react-hook-form";
-import type { Path, UseFormProps } from "react-hook-form";
+import type { Path } from "react-hook-form";
 
 // TODO: Fix props type (provide default values)
 const useForm = <T extends FieldValues>(props?: any) => {

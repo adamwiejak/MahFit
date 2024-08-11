@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import * as config from "./config";
 import { useRef } from "react";
 import SignupForm from "../../shared/forms/signup-form/SignupForm";
@@ -32,40 +32,25 @@ const AuthForm: React.FC<IAutForm> = (props) => {
       <styled.Header variant="h5">A/B</styled.Header>
 
       <styled.Main>
-        <LoginForm elevation={10} />
-        <SignupForm elevation={10} />
+        <styled.CardBox>
+          <LoginForm elevation={10} />
+        </styled.CardBox>
+        <styled.CardBox>
+          <SignupForm elevation={10} />
+        </styled.CardBox>
         <Spinner open={accessToken === undefined} />
       </styled.Main>
 
       <Link to={`/auth/${task === "login" ? "signup" : "login"}`}>
-        <Button
-          text=""
-          size="small"
-          color="warning"
-          variant="text"
-          disabled={inProgress}
-        />
+        <Button text="" size="small" variant="text" disabled={inProgress} sx={{ color: "warning.dark" }} />
       </Link>
 
       <styled.Footer>
-        <FacebookAuthProvider
-          disabled={inProgress}
-          size="small"
-          variant="outlined"
-        />
+        <FacebookAuthProvider disabled={inProgress} size="small" />
 
-        <GoogleAuthProvider
-          size="small"
-          variant="outlined"
-          disabled={inProgress}
-        />
+        <GoogleAuthProvider size="small" disabled={inProgress} />
 
-        <DemoAccountProvider
-          disabled={inProgress}
-          color="success"
-          size="small"
-          variant="outlined"
-        />
+        <DemoAccountProvider disabled={inProgress} color="success" size="small" />
       </styled.Footer>
     </styled.Container>
   );

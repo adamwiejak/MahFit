@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import { globalSliceActions as G } from "../../../store/_global-slice";
 import { SwitchProps, Tooltip } from "@mui/material";
 import { getGlobalSlice, useAppDispatch } from "../../../store";

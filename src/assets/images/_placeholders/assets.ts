@@ -1,5 +1,3 @@
-import { type ResponsiveImageAsset } from "../../../classes/ResponsiveImage";
-
 import _3to1_xl from "./placeholder_3-1_1980px.jpg";
 import _3to1_lg from "./placeholder_3-1_1300px.jpg";
 import _3to1_md from "./placeholder_3-1_900px.jpg";

@@ -1,8 +1,7 @@
 import firebaseApp from "../_init";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { deleteUser } from "firebase/auth";
-import { getAuth } from "firebase/auth";
 import { signInAnonymously } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { signOut, signInWithEmailAndPassword } from "firebase/auth";

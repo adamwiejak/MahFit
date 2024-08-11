@@ -1,5 +1,5 @@
-import { Uid, WorkoutData, WorkoutType } from "../API/User";
-import { randomNumberBetween } from "../helpers/functions/functions";
+import { Uid, WorkoutType } from "../API/User";
+import { WorkoutData } from "../utils/Firebase/database";
 
 const workoutsColorMap: Map<WorkoutType, string> = new Map([
   ["push", "red"],
@@ -8,11 +8,6 @@ const workoutsColorMap: Map<WorkoutType, string> = new Map([
   ["upper", "orange"],
   ["custom", "pink"],
 ]);
-
-const _randonmColor = () => {
-  const colors = ["red", "green", "blue", "yellow"];
-  return colors[randomNumberBetween(0, colors.length)];
-};
 
 export default class Workout {
   start: Date;

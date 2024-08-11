@@ -1,10 +1,10 @@
-import { LoginUserData } from "../../../../API/User";
+import { LoginData } from "../../../../API/User";
 import { emailRegEx } from "../../../../helpers/data/regex";
 import { passwordRegEx } from "../../../../helpers/data/regex";
 import { required } from "../../../../helpers/data/regex";
 import { FormInput } from "../../../../types/forms";
 
-export interface FormData extends LoginUserData {}
+export interface FormData extends LoginData {}
 
 export const inputs: FormInput<FormData>[] = [
   {

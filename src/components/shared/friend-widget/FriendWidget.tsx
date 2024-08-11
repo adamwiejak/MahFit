@@ -1,16 +1,15 @@
-import * as styled from "./styles";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { CardProps, Typography } from "@mui/material";
-import type { Uid } from "../../../API/User";
+import * as styled from "./.styles";
+import React, { useContext, useEffect, useState } from "react";
 import Placehoder from "./_Placehoder";
-import IconButton from "../../UI/IconButton";
-import LiftRecord from "../lift-record/LiftRecord";
-import FilterFriendsContext from "../../../context/friends-filter";
 import UserAPI from "../../../API/User";
-import { TaskError } from "../../../classes/TaskError";
+import type { Uid } from "../../../API/User";
+import IconButton from "../../UI/IconButton";
+import { CardProps, Typography } from "@mui/material";
+import FilterFriendsContext from "../../../context/friends-filter";
 import { FriendUser } from "../../../classes/FriendUser";
-
-type Data = FriendUser | null | undefined;
+import FriendWidgetActions from "../friend-widget-actions/FriendWidgetActions";
+import RecordsBox from "../records-box/RecordsBox";
+import LocalStorageAPI from "../../../API/LocalStorage";
 
 interface IFriendWidget extends CardProps {
   uid: Uid;
@@ -18,62 +17,55 @@ interface IFriendWidget extends CardProps {
 
 const FriendWidget: React.FC<IFriendWidget> = (props) => {
   const { uid, ...rest } = props;
-  const [friend, setFriendUser] = useState<Data>(undefined);
   const { state, getFriend, setFriend } = useContext(FilterFriendsContext);
+  const [friend, setFriendUser] = useState<FriendUser | null | undefined>(getFriend(uid));
 
-  const fetchFriendData = useRef(async function () {
+  async function fetchFriendData() {
+    const { getCachedFriend, setCachedFriend } = LocalStorageAPI;
     try {
-      const userData = await UserAPI.getUser(uid);
-      if (!userData) throw new TaskError(new Error(`User ${uid} not exist`));
-      setFriend(userData);
-    } catch (err) {
+      const isFav = !!state.filtredFriends?.find((f) => f.uid === uid)?.isFav;
+      const friendData = getCachedFriend(uid) || (await UserAPI.getUserData(uid));
+      if (!friendData) throw new Error(`User ${uid} not exist`);
+      setFriendUser(new FriendUser(friendData, isFav));
+      setCachedFriend(friendData);
+    } catch (err: any) {
       setFriendUser(null);
-      const { displaySnackbar } = err as TaskError;
-      displaySnackbar("warning");
     }
-  });
+  }
 
-  if (friend === undefined) fetchFriendData.current();
-  useEffect(() => setFriendUser(getFriend(uid)), [state.friends]);
+  function checkoutFriend() {
+    console.log(friend?.getUserData());
+  }
+
+  if (friend === undefined) fetchFriendData();
+
+  useEffect(() => {
+    if (friend instanceof FriendUser) setFriend(friend);
+  }, [friend]);
 
   return friend ? (
     <styled.Container elevation={10} {...rest}>
       <styled.Image elevation={20}>
-        <img src={friend.getPhotoUrl()} />
+        <img src={friend.getBaseInfo().photoURL} />
       </styled.Image>
 
       <styled.Info>
         <IconButton
           size="small"
-          icon={friend.isFav ? "starFilled" : "starBorder"}
-          iconColor={friend.isFav ? "warning" : "inherit"}
+          icon={friend.isFav() ? "starFilled" : "starBorder"}
+          iconColor={friend.isFav() ? "warning" : "inherit"}
         />
-        <Typography
-          variant="button"
-          sx={{ cursor: "pointer" }}
-          onClick={() => console.log(friend)}
-        >
-          {friend.getNickname()}
+        <Typography variant="button" onClick={checkoutFriend}>
+          {friend.getBaseInfo().nickname}
         </Typography>
       </styled.Info>
 
-      <styled.Records>
-        <LiftRecord value={friend.getRecords().deadLift} type="deadLift" />
-        <LiftRecord value={friend.getRecords().squat} type="squat" />
-        <LiftRecord value={friend.getRecords().benchPress} type="benchPress" />
-      </styled.Records>
+      <RecordsBox records={friend.getRecords()} />
 
-      <styled.Actions elevation={20}>
-        <IconButton size="small" icon="removeFriend" />
-        <IconButton size="small" icon="dotsVertical" />
-      </styled.Actions>
+      <FriendWidgetActions elevation={20} uid={friend.getUid()} />
     </styled.Container>
   ) : (
-    <Placehoder
-      onClick={() => console.log(state, friend)}
-      isLoading={friend === undefined}
-      uid={uid}
-    />
+    <Placehoder isLoading={friend === undefined} uid={uid} />
   );
 };
 

@@ -1,10 +1,6 @@
 import { useState, useCallback } from "react";
 
-type UseBoolean = [
-  boolean,
-  () => void,
-  React.Dispatch<React.SetStateAction<boolean>>
-];
+type UseBoolean = [boolean, () => void, React.Dispatch<React.SetStateAction<boolean>>];
 
 const useBoolean = (initialValue: boolean): UseBoolean => {
   const [value, setValue] = useState(initialValue);

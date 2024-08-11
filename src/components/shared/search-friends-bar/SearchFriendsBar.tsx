@@ -1,5 +1,5 @@
 import Icon from "../../UI/Icon";
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import { useContext } from "react";
 import Input from "../../UI/input/Input";
 import { CardProps } from "@mui/material";
@@ -11,38 +11,31 @@ interface ISearchFriendsBar extends CardProps {}
 
 const SearchFriendsBar: React.FC<ISearchFriendsBar> = (props) => {
   const { ...rest } = props;
+  const { state, searchFriends, resetFilters } = useContext(FilterFriendsContext);
+  const filtred = !!state.searchPhraze || state.filtredFavs;
 
-  const { state, searchFriends, resetFilters } =
-    useContext(FilterFriendsContext);
-
-  const filtred = !!state.search || state.filtredFavs;
+  function searcheHandler(phraze: string) {
+    // setTimeout with mantain isLoading context state
+    searchFriends(phraze);
+  }
 
   return (
     <styled.Bar {...rest}>
       {filtred && (
         <styled.Action elevation={15}>
-          <Button
-            color="warning"
-            text="Clear Filters"
-            onClick={resetFilters}
-            endIcon={<Icon icon="refresh" />}
-          />
+          <Button color="warning" text="Clear Filters" onClick={resetFilters} endIcon={<Icon icon="refresh" />} />
         </styled.Action>
       )}
 
       <Input
         size="small"
-        value={state.search}
+        value={state.searchPhraze}
         onClear={() => searchFriends("")}
         adornmentStart={<Icon icon="search" />}
-        onChange={(e) => searchFriends(e.currentTarget.value)}
+        onChange={(e) => searcheHandler(e.currentTarget.value)}
       />
 
-      <IconButton
-        icon="addFriend"
-        color="secondary"
-        onClick={() => console.log(state)}
-      />
+      <IconButton icon="addFriend" color="secondary" onClick={() => console.log(state)} />
     </styled.Bar>
   );
 };

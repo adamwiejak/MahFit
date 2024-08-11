@@ -9,10 +9,11 @@ export const onLogoutUser: Thunk = () => async (dispatch, getStore) => {
   dispatch(G.toggleInProgress(true));
   try {
     dispatch(U.clearUser());
+
     if (accessToken) {
       enqueueSnackbar("Sucessfully Loged Out", { variant: "info" });
     }
-  } catch (err: unknown) {
+  } catch (err) {
     throw err;
   }
 };

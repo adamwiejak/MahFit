@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import { FilterFriendsContextProvider } from "../../../../context/friends-filter";
 import CreateDummyUserForm from "../../../../_dev_tests/create-dummy-user/CreateDummyUser";
 import DummyFriendsList from "../../../../_dev_tests/dummy-friends-list/DummyFriendsList";

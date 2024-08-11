@@ -1,4 +1,4 @@
-import * as styled from "./styles";
+import * as styled from "./.styles";
 import * as config from "./config";
 import Input from "../../../UI/input/Input";
 import Icon from "../../../UI/Icon";
@@ -8,6 +8,7 @@ import useForm from "../../../../hooks/useForm";
 import UserAPI from "../../../../API/User";
 import useAsyncTask from "../../../../hooks/useAsyncTask";
 import Select from "../../../UI/Select";
+import { getGlobalSlice } from "../../../../store";
 
 interface IDemoAccontForm {
   timer: number;
@@ -15,10 +16,12 @@ interface IDemoAccontForm {
 
 const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
   const { timer, ...rest } = props;
-  const { formState, form } = useForm<config.DemoAccountFormData>();
+  const { inProgress } = getGlobalSlice();
   const { asyncTaskHandler, isLoading } = useAsyncTask();
+  const { formState, form } = useForm<config.DemoAccountFormData>();
 
-  const btnDisabled = isLoading || !!timer;
+  const disabled = isLoading || inProgress;
+  const submitBtnDisabled = isLoading || !!timer || inProgress;
 
   function onBaseAvatarSelect(files: FileList) {
     form.setValue("photo", files, { shouldValidate: true });
@@ -27,11 +30,14 @@ const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
   const onSubmit = form.handleSubmit(async (data) => {
     const { photo, nickname, gender } = data;
     const file = photo?.item(0);
+
+    //TODO: controled input form img?
     if (!file) return form.setError("photo", { message: "Select an image" });
+
     const reader = new FileReader();
     reader.onload = async function () {
-      const image = reader.result as string;
-      await asyncTaskHandler(UserAPI.openDemo({ nickname, image, gender }));
+      const photoURL = reader.result as string;
+      await asyncTaskHandler(UserAPI.openDemo({ nickname, photoURL, gender }));
     };
     reader.readAsDataURL(file);
   });
@@ -46,19 +52,14 @@ const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
         ))}
       </styled.Card>
 
-      <styled.Form
-        sx={{ mt: 5 }}
-        component="form"
-        onSubmit={onSubmit}
-        {...rest}
-      >
+      <styled.Form sx={{ mt: 5 }} component="form" onSubmit={onSubmit} {...rest}>
         <styled.Inputs>
           {config.inputs.map(({ name, icon, label, registerOptions }, idx) => (
             <Input
               key={idx}
               size="small"
               label={label}
-              disabled={isLoading}
+              disabled={disabled}
               onClear={form.onInputClear(name)}
               {...form.register(name, registerOptions)}
               error={!!formState.errors[name]?.message}
@@ -74,7 +75,7 @@ const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
               label={label}
               options={options}
               variant="outlined"
-              disabled={isLoading}
+              disabled={disabled}
               error={!!formState.errors[name]?.message}
               {...form.register(name, registerOptions)}
               helperText={formState.errors[name]?.message}
@@ -84,7 +85,7 @@ const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
           <SelectProfilePhoto
             onBaseAvatarSelect={onBaseAvatarSelect}
             inputProps={{
-              disabled: isLoading,
+              disabled: disabled,
               error: !!formState.errors.photo?.message,
               ...form.register("photo"),
             }}
@@ -95,8 +96,8 @@ const DemoAccountForm: React.FC<IDemoAccontForm> = (props) => {
           <Button
             type="submit"
             color="success"
-            disabled={btnDisabled}
-            inProgress={isLoading}
+            disabled={submitBtnDisabled}
+            inProgress={isLoading || inProgress}
             text={`Create Demo Account ${timer ? `(${timer})` : ""}`}
             endIcon={<Icon icon="send" />}
           />

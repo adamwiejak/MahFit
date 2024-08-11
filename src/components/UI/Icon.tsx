@@ -1,12 +1,11 @@
 import React from "react";
 import { Box, type SvgIconProps } from "@mui/material";
 import { iconsAsset } from "../../assets/icons/iconsAsset";
-import { Lift } from "../../API/User";
 
 export type IconName = keyof typeof iconsAsset;
 
 export interface IIcon extends SvgIconProps {
-  icon: IconName | Lift;
+  icon: IconName;
 }
 
 const Icon: React.FC<IIcon> = (props) => {
